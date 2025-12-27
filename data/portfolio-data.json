@@ -1,15 +1,14 @@
 {
   "meta": {
-    "title": "Dima Morar | React | Next.js Developer",
+    "title": "Dmytro Morar | React | Next.js Developer",
     "description": "Portfolio website showcasing React / Next.js developer work and skills"
   },
   "personal": {
-    "name": "Dima Morar",
+    "name": "Dmytro Morar",
     "title": "React / Next.js Developer",
     "location": "Kyiv, Ukraine",
     "avatar": "/my-photo.jpg",
     "email": "dmitry@morar.dev",
-    "phone": "+380669582045",
     "workingHours": "Monday - Friday, 8am - 5pm",
     "availableForWork": true,
     "badges": ["React", "Next.js", "TypeScript", "Tailwind CSS", "CI/CD"],
@@ -47,7 +46,13 @@
         "flag": "🇺🇸"
       }
     ],
-    "interests": ["Design Systems", "Accessibility", "Typography", "Motion Design", "Photography"]
+    "interests": [
+      "Design Systems",
+      "Accessibility",
+      "Typography",
+      "Motion Design",
+      "Photography"
+    ]
   },
   "navigation": [
     {
@@ -76,7 +81,16 @@
         "Setting up CI/CD pipelines and automating deployment processes",
         "Deploying applications to VPS environments and ensuring production readiness"
       ],
-      "technologies": ["React", "Next.js", "TypeScript", "Vite", "React Query", "Axios", "Tailwind CSS", "shadcn/ui"]
+      "technologies": [
+        "React",
+        "Next.js",
+        "TypeScript",
+        "Vite",
+        "React Query",
+        "Axios",
+        "Tailwind CSS",
+        "shadcn/ui"
+      ]
     },
     {
       "title": "React / NextJS Developer",
@@ -118,7 +132,14 @@
         "Introduced React Query and Styled Components for a maintainable codebase",
         "Supported onboarding and recruitment of new developers"
       ],
-      "technologies": ["React", "NextJS", "TypeScript", "Redux", "StyledComponent", "ReactQuery"]
+      "technologies": [
+        "React",
+        "NextJS",
+        "TypeScript",
+        "Redux",
+        "StyledComponent",
+        "ReactQuery"
+      ]
     },
     {
       "title": "Frontend Developer",
@@ -131,7 +152,15 @@
         "Improved site performance and loading speed",
         "Managed production deployments and updates"
       ],
-      "technologies": ["React", "TypeScript", "ES6", "SASS", "PostCSS", "Gulp", "Webpack"]
+      "technologies": [
+        "React",
+        "TypeScript",
+        "ES6",
+        "SASS",
+        "PostCSS",
+        "Gulp",
+        "Webpack"
+      ]
     },
     {
       "title": "Web Developer",
@@ -145,11 +174,30 @@
         "Customized admin panels for better user experience",
         "Integrated designs into CMS platforms"
       ],
-      "technologies": ["JavaScript", "React", "HTML5/CSS3", "SASS", "SCSS", "Gulp", "WordPress", "PrestaShop CMS", "OpenCart CMS"]
+      "technologies": [
+        "JavaScript",
+        "React",
+        "HTML5/CSS3",
+        "SASS",
+        "SCSS",
+        "Gulp",
+        "WordPress",
+        "PrestaShop CMS",
+        "OpenCart CMS"
+      ]
     }
   ],
   "technicalSkills": {
-    "core": ["HTML5/CSS3", "ES5+", "React", "NextJS", "Responsive Design", "Performance", "SEO", "CI/CD"],
+    "core": [
+      "HTML5/CSS3",
+      "ES5+",
+      "React",
+      "NextJS",
+      "Responsive Design",
+      "Performance",
+      "SEO",
+      "CI/CD"
+    ],
     "react": [
       "NextJS",
       "Redux",
@@ -165,9 +213,21 @@
       "MUI",
       "StyledComponent"
     ],
-    "tools": ["Vite", "Webpack", "Babel", "ESLint", "Prettier", "PostCSS", "Gulp"],
+    "tools": [
+      "Vite",
+      "Webpack",
+      "Babel",
+      "ESLint",
+      "Prettier",
+      "PostCSS",
+      "Gulp"
+    ],
     "other": ["WordPress", "OpenCart", "Prestashop", "Figma", "SASS"],
     "teamWork": ["Git", "SCRUM"],
-    "softSkills": ["Client Communication", "Team Leadership", "Project Management"]
+    "softSkills": [
+      "Client Communication",
+      "Team Leadership",
+      "Project Management"
+    ]
   }
 }
