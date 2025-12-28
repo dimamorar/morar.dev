@@ -63,7 +63,7 @@ All three sections are unified in a single Next.js application for optimal SEO, 
 
 ### Data Management
 - **JSON**: `data/portfolio-data.json` - Portfolio data (source of truth)
-- **Markdown**: `content/blog/` - Blog posts
+- **Payload CMS API**: `https://cms.morar.dev/api/posts` - Blog posts (headless CMS)
 - **Markdown**: `content/docs/` - Documentation from Obsidian
 
 ---
@@ -103,10 +103,6 @@ morar.dev/
 │   └── [existing components]    # Portfolio components
 │
 ├── content/                      # Content files
-│   ├── blog/
-│   │   ├── ai-react-integration.md
-│   │   ├── typescript-tips.md
-│   │   └── [slug].md
 │   └── docs/
 │       ├── react/
 │       │   ├── hooks.md
@@ -121,7 +117,8 @@ morar.dev/
 ├── lib/                          # Utility functions
 │   ├── data.ts                  # Portfolio data accessors (existing)
 │   ├── projects.ts              # Project utilities (existing)
-│   ├── blog.ts                  # Blog utilities
+│   ├── blog.ts                  # Blog utilities (Payload CMS integration)
+│   ├── payload.ts               # Payload CMS API configuration
 │   ├── docs.ts                  # Documentation utilities
 │   ├── mdx.ts                   # MDX processing
 │   └── utils.ts                 # General utilities (existing)
@@ -156,33 +153,33 @@ morar.dev/
 - Generates updated CV PDF
 
 ### 2. Blog Posts
-**Source:** `content/blog/*.md`
+**Source:** Payload CMS API (`https://cms.morar.dev/api/posts`)
 
-**Frontmatter Template:**
-```yaml
----
-title: "Article Title"
-description: "Brief description for SEO and previews"
-date: "2024-01-15"
-category: "AI" # AI, Development, Books, Essays
-tags: ["React", "AI", "Tutorial"]
-readingTime: 5 # minutes (auto-calculated)
-published: true
-featured: false
----
-```
+**CMS Platform:**
+- Payload CMS (headless CMS)
+- Lexical rich text editor
+- REST API for content delivery
+- Admin panel at `https://cms.morar.dev/admin`
 
-**Content:**
-- Markdown with MDX support
-- Code blocks with syntax highlighting
-- Images in `public/blog/` directory
-- Support for React components in posts
+**Content Structure:**
+- Title, slug, content (Lexical format)
+- Publication date (`publishedAt`)
+- Author information
+- Meta fields (title, description for SEO)
+- Support for code blocks, images, banners, and custom blocks
 
 **Update Process:**
-- Create new `.md` file in `content/blog/`
-- Add frontmatter
-- Write content in markdown
-- Commit and deploy
+1. Access Payload CMS admin panel
+2. Create/edit posts in the admin interface
+3. Publish posts (status: `published`)
+4. Content automatically available via API
+5. Next.js fetches and renders at build time (SSG)
+
+**Integration:**
+- Static Site Generation (SSG) at build time
+- Incremental Static Regeneration (ISR) with 1-hour revalidation
+- Lexical content serialized to HTML server-side
+- Reading time calculated automatically from content
 
 ### 3. Documentation/Vault
 **Source:** `content/docs/**/*.md` (synced from Obsidian)
@@ -366,12 +363,15 @@ Home | Blog | Docs | Projects | Contact
 - [x] Create content directory structure
 - [x] Set up MDX processing
 
-### Phase 2: Blog
-- [ ] Blog listing page with filtering
-- [ ] Blog post pages with MDX rendering
+### Phase 2: Blog ✅
+- [x] Payload CMS integration
+- [x] Blog listing page with SSG
+- [x] Blog post pages with Lexical content rendering
+- [x] Static generation at build time
+- [x] SEO optimization (metadata, OG tags)
 - [ ] Related posts functionality
 - [ ] RSS feed generation
-- [ ] SEO optimization
+- [ ] Post filtering and search
 
 ### Phase 3: Documentation
 - [ ] Docs structure and routing
@@ -428,7 +428,7 @@ Home | Blog | Docs | Projects | Contact
 ```mermaid
 graph TD
     A[portfolio-data.json] -->|import| B[lib/data.ts]
-    C[content/blog/*.md] -->|process| D[lib/blog.ts]
+    C[Payload CMS API] -->|fetch| D[lib/blog.ts]
     E[content/docs/**/*.md] -->|process| F[lib/docs.ts]
     
     B -->|getPersonalInfo| G[Portfolio Page]
@@ -437,17 +437,18 @@ graph TD
     
     D -->|getAllPosts| H[Blog Listing]
     D -->|getPostBySlug| I[Blog Post]
+    D -->|serializeLexicalContent| I
     
     F -->|getAllDocs| J[Docs Home]
     F -->|getDocBySlug| K[Doc Page]
     F -->|getDocTree| L[Docs Sidebar]
     
-    M[MDX Processor] -->|render| I
-    M -->|render| K
+    M[Lexical Serializer] -->|serializeToHtml| I
+    N[MDX Processor] -->|render| K
     
-    N[Search Index] -->|fuse.js| O[Search Results]
-    D -->|index| N
-    F -->|index| N
+    O[Search Index] -->|fuse.js| P[Search Results]
+    D -->|index| O
+    F -->|index| O
 ```
 
 ---
@@ -460,9 +461,11 @@ graph TD
 
 ### Build Process
 1. Next.js builds static pages where possible
-2. MDX files processed at build time
-3. Search index generated at build time
-4. Sitemap generated automatically
+2. Payload CMS posts fetched at build time (SSG)
+3. Lexical content serialized to HTML at build time
+4. MDX files processed at build time (for docs)
+5. Search index generated at build time
+6. Sitemap generated automatically
 
 ### CI/CD
 - Git push triggers build
@@ -471,6 +474,9 @@ graph TD
 
 ### Environment Variables
 ```env
+# Payload CMS Configuration
+PAYLOAD_CMS_URL=https://cms.morar.dev
+
 # Optional - for future features
 NEXT_PUBLIC_ANALYTICS_ID=
 NEXT_PUBLIC_SEARCH_API_KEY=
@@ -527,8 +533,8 @@ NEXT_PUBLIC_SEARCH_API_KEY=
 ### Q: Why MDX over plain Markdown?
 **A:** MDX allows embedding React components in markdown, enabling interactive blog posts and documentation.
 
-### Q: Why not use a headless CMS?
-**A:** For monthly blog posts and manual Obsidian sync, markdown files are simpler, faster, and more developer-friendly.
+### Q: Why use Payload CMS instead of markdown files?
+**A:** Payload CMS provides a user-friendly admin interface for content management, supports rich content editing with Lexical, and enables non-technical content updates. Static generation at build time ensures optimal performance while maintaining the benefits of a headless CMS.
 
 ### Q: How to handle Obsidian-specific features?
 **A:** Most Obsidian markdown features (links, embeds, callouts) can be converted or replicated with remark/rehype plugins.

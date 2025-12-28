@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { ArrowRight, Github, Linkedin, Mail } from "lucide-react";
 import { getPersonalInfo, getAboutInfo } from "@/lib/data";
+import { getLatestPost } from "@/lib/blog";
 
-export default function Home() {
+export default async function Home() {
   const personalInfo = getPersonalInfo();
   const aboutInfo = getAboutInfo();
+  const latestPost = await getLatestPost();
 
-  // Get social links, filtering out Twitter if not present
   const githubLink = personalInfo.social.find((s) => s.platform === "GitHub");
   const linkedinLink = personalInfo.social.find(
     (s) => s.platform === "LinkedIn"
@@ -85,30 +86,23 @@ export default function Home() {
 
         <div className="pt-8">
           <h2 className="text-lg font-mono font-medium mb-4">Recent posts</h2>
-          <div className="space-y-4">
-            <Link href="/blog" className="block group">
-              <article className="border rounded-lg p-4 hover:bg-muted/50 transition-colors">
-                <p className="text-xs text-muted-foreground mb-1">
-                  Coming soon
-                </p>
-                <h3 className="font-medium group-hover:underline">
-                  Blog posts will appear here
-                </h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Check back soon for updates and articles.
-                </p>
-              </article>
+          {latestPost ? (
+            <Link
+              href={`/blog/${latestPost.slug}`}
+              className="text-sm text-foreground hover:text-foreground/80 inline-flex items-center transition-colors"
+            >
+              {latestPost.title}
+              <ArrowRight className="ml-1 h-3 w-3" />
             </Link>
-          </div>
-          <div className="mt-4">
+          ) : (
             <Link
               href="/blog"
-              className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center transition-colors"
+              className="text-sm text-foreground hover:text-foreground/80 inline-flex items-center transition-colors"
             >
               View all posts
               <ArrowRight className="ml-1 h-3 w-3" />
             </Link>
-          </div>
+          )}
         </div>
       </div>
     </div>

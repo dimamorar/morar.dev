@@ -58,6 +58,7 @@
 - **@hookform/resolvers** - Form validation resolvers
 
 ### Additional Libraries
+- **@payloadcms/richtext-lexical** - Lexical content serialization for Payload CMS
 - **next-themes** - Theme management
 - **date-fns** - Date utilities
 - **class-variance-authority** - Component variant management
@@ -74,6 +75,10 @@ The application uses Next.js 14 App Router with the following structure:
 app/
 ├── layout.tsx          # Root layout with providers
 ├── page.tsx            # Home page
+├── blog/
+│   ├── page.tsx        # Blog listing (SSG)
+│   └── [slug]/
+│       └── page.tsx    # Blog post pages (SSG)
 ├── projects/
 │   └── [slug]/
 │       ├── page.tsx    # Dynamic project pages
@@ -89,12 +94,13 @@ app/
 
 ### Data Management
 - **JSON-Based**: Portfolio data stored in `data/portfolio-data.json`
-- **Type-Safe Access**: Helper functions in `lib/data.ts` and `lib/projects.ts`
-- **Static Generation**: Data loaded at build time
+- **Payload CMS**: Blog posts fetched from `https://cms.morar.dev/api/posts`
+- **Type-Safe Access**: Helper functions in `lib/data.ts`, `lib/projects.ts`, and `lib/blog.ts`
+- **Static Generation**: All data loaded at build time with ISR (1-hour revalidation)
 
 ### Routing
 - **Static Routes**: Home page (`/`)
-- **Dynamic Routes**: Project pages (`/projects/[slug]`)
+- **Dynamic Routes**: Project pages (`/projects/[slug]`), Blog posts (`/blog/[slug]`)
 - **Hash Navigation**: Section anchors (`#skills`, `#experience`)
 
 ---
@@ -135,6 +141,8 @@ morar.dev/
 ├── lib/                         # Utility functions
 │   ├── data.ts                  # Portfolio data accessors
 │   ├── projects.ts              # Project data management
+│   ├── blog.ts                  # Blog utilities (Payload CMS integration)
+│   ├── payload.ts               # Payload CMS API configuration
 │   └── utils.ts                 # General utilities
 │
 ├── public/                      # Static assets
@@ -206,6 +214,80 @@ morar.dev/
 - **Adaptive Layouts**: Grid and flexbox with responsive columns
 - **Touch-Friendly**: Mobile menu and interactions
 
+### 9. Blog Integration (Payload CMS)
+- **Headless CMS**: Payload CMS for content management
+- **Static Generation**: All blog posts pre-rendered at build time (SSG)
+- **Incremental Static Regeneration**: Content updates every hour (ISR)
+- **Lexical Content**: Rich text editor content serialized to HTML
+- **SEO Optimized**: Dynamic metadata, Open Graph tags, structured data
+- **Reading Time**: Automatically calculated from content
+
+---
+
+## Payload CMS Integration
+
+### Overview
+The blog section is powered by Payload CMS, a headless content management system. All blog posts are fetched from the Payload API and statically generated at build time for optimal performance.
+
+### Configuration
+- **CMS URL**: `https://cms.morar.dev` (configurable via `PAYLOAD_CMS_URL` env variable)
+- **API Endpoint**: `/api/posts`
+- **Admin Panel**: `https://cms.morar.dev/admin`
+
+### Key Files
+- **`lib/payload.ts`**: Payload CMS API configuration and URL helpers
+- **`lib/blog.ts`**: Blog utilities for fetching and processing posts
+- **`app/blog/page.tsx`**: Blog listing page with SSG
+- **`app/blog/[slug]/page.tsx`**: Individual blog post pages with SSG
+
+### Functions
+
+#### `getAllPosts()`
+Fetches all published posts from Payload CMS API.
+- Returns: `Promise<BlogPost[]>`
+- Uses ISR with 1-hour revalidation
+- Automatically serializes Lexical content to HTML
+- Calculates reading time from content
+
+#### `getPostBySlug(slug: string)`
+Fetches a single post by slug.
+- Returns: `Promise<BlogPost | null>`
+- Uses ISR with 1-hour revalidation
+- Returns `null` if post not found
+
+#### `serializeLexicalContent(content: CmsLexicalContent)`
+Converts Lexical editor JSON to HTML.
+- Uses `@payloadcms/richtext-lexical` package
+- Handles all block types (code, media, banners, etc.)
+- Returns serialized HTML string
+
+#### `getAllPostSlugs()`
+Returns all post slugs for static generation.
+- Used by `generateStaticParams()` in Next.js
+- Enables pre-rendering of all post pages at build time
+
+### Type Definitions
+All types use the `Cms` prefix:
+- `CmsPost` - Raw post data from API
+- `CmsAuthor` - Author information
+- `CmsLexicalContent` - Lexical editor content structure
+- `CmsMedia` - Media block information
+- `BlogPost` - Transformed post data for rendering
+
+### Static Generation
+Both blog pages use Next.js static generation:
+- **`generateStaticParams()`**: Pre-generates all post pages at build time
+- **`revalidate = 3600`**: Revalidates content every hour (ISR)
+- **Build-time fetching**: All posts fetched during build process
+- **Runtime updates**: New posts available within 1 hour via ISR
+
+### Content Rendering
+Lexical content is serialized to HTML server-side and rendered using `dangerouslySetInnerHTML`. The HTML includes:
+- Code blocks with syntax highlighting
+- Images with proper sizing
+- Banner/callout blocks
+- Custom block types
+
 ---
 
 ## Data Flow
@@ -216,23 +298,31 @@ morar.dev/
 graph TD
     A[portfolio-data.json] -->|import| B[lib/data.ts]
     C[lib/projects.ts] -->|export| D[Project Data]
-    B -->|getPersonalInfo| E[EnhancedProfile]
-    B -->|getExperienceInfo| F[ExperienceCard]
-    B -->|getTechnicalSkillsInfo| G[Skills Section]
-    B -->|getNavItems| H[PortfolioHeader]
-    D -->|getProjectBySlug| I[Project Page]
-    D -->|getAllProjects| J[Project List]
+    E[Payload CMS API] -->|fetch| F[lib/blog.ts]
     
-    E -->|render| K[Home Page]
-    F -->|render| K
-    G -->|render| K
-    H -->|render| K
-    I -->|render| L[Project Detail]
-    J -->|render| K
+    B -->|getPersonalInfo| G[EnhancedProfile]
+    B -->|getExperienceInfo| H[ExperienceCard]
+    B -->|getTechnicalSkillsInfo| I[Skills Section]
+    B -->|getNavItems| J[PortfolioHeader]
+    D -->|getProjectBySlug| K[Project Page]
+    D -->|getAllProjects| L[Project List]
     
-    M[AnimationContext] -->|provide| N[AnimatedSection]
-    N -->|use| O[useIntersectionObserver]
-    O -->|trigger| P[Animations]
+    F -->|getAllPosts| M[Blog Listing]
+    F -->|getPostBySlug| N[Blog Post]
+    F -->|serializeLexicalContent| N
+    
+    G -->|render| O[Home Page]
+    H -->|render| O
+    I -->|render| O
+    J -->|render| O
+    K -->|render| P[Project Detail]
+    L -->|render| O
+    M -->|render| Q[Blog Page]
+    N -->|render| R[Post Page]
+    
+    S[AnimationContext] -->|provide| T[AnimatedSection]
+    T -->|use| U[useIntersectionObserver]
+    U -->|trigger| V[Animations]
 ```
 
 ### Data Access Pattern
@@ -567,13 +657,17 @@ pnpm build
 - Self-hosted (Node.js server)
 
 ### Environment Variables
-Currently none required. If adding features like:
-- Analytics
-- Contact form backend
-- CMS integration
 
-Add to `.env.local`:
-```
+**Required:**
+- None (Payload CMS URL defaults to `https://cms.morar.dev`)
+
+**Optional:**
+Add to `.env.local` to override defaults:
+```env
+# Payload CMS Configuration
+PAYLOAD_CMS_URL=https://cms.morar.dev
+
+# Future features
 NEXT_PUBLIC_ANALYTICS_ID=...
 ```
 
@@ -604,13 +698,17 @@ NEXT_PUBLIC_ANALYTICS_ID=...
 
 ### Potential Features
 1. **Projects Section**: Uncomment and enhance project showcase on home
-2. **Blog**: Add blog functionality for articles
+2. **Blog Enhancements**: 
+   - ✅ Payload CMS integration (completed)
+   - [ ] Related posts functionality
+   - [ ] Post categories and tags filtering
+   - [ ] RSS feed generation
+   - [ ] Search functionality
 3. **Contact Form**: Backend integration for contact form
 4. **Dark/Light Theme**: Theme switcher (next-themes already installed)
 5. **Analytics**: Integration with analytics service
-6. **CMS Integration**: Headless CMS for content management
-7. **Internationalization**: Multi-language support
-8. **Search**: Project and content search functionality
+6. **Internationalization**: Multi-language support
+7. **Search**: Project and content search functionality
 
 ### Technical Improvements
 1. **Testing**: Add unit and integration tests
