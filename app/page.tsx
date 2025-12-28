@@ -18,7 +18,7 @@ export default async function Home() {
       <div className="space-y-8">
         <div className="space-y-4">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-            Hi, I&apos;m {personalInfo.name}
+            {personalInfo.name}
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl">
             {aboutInfo.bio}
@@ -89,10 +89,9 @@ export default async function Home() {
           {latestPost ? (
             <Link
               href={`/blog/${latestPost.slug}`}
-              className="text-sm text-foreground hover:text-foreground/80 inline-flex items-center transition-colors"
+              className="font-mono text-sm text-foreground hover:text-foreground/80 inline-flex items-center transition-colors underline"
             >
               {latestPost.title}
-              <ArrowRight className="ml-1 h-3 w-3" />
             </Link>
           ) : (
             <Link

@@ -74,25 +74,28 @@ export default async function BlogPost({
         className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-8 transition-colors"
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
-        Back to blog
+        back
       </Link>
 
       <article className="prose prose-invert prose-zinc max-w-none">
         <header className="mb-8">
+          <h1 className="text-4xl font-bold tracking-tight mb-4">
+            {post!.title}
+          </h1>
+
           <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-            <time dateTime={post!.publishedAt}>{publishedDate}</time>
+            <time dateTime={post!.publishedAt}>
+              {publishedDate.toLocaleLowerCase()}
+            </time>
             <span>·</span>
             <span>{post!.readingTime} min read</span>
             {authors && (
               <>
                 <span>·</span>
-                <span>By {authors}</span>
+                <span>by {authors}</span>
               </>
             )}
           </div>
-          <h1 className="text-4xl font-bold tracking-tight mb-4">
-            {post!.title}
-          </h1>
         </header>
 
         <div
