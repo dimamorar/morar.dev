@@ -123,9 +123,6 @@ export async function getLatestPost(): Promise<BlogPost | null> {
   }
 }
 
-/**
- * Fetch a single post by slug
- */
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   try {
     const url = getCollectionUrl(
@@ -154,9 +151,6 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   }
 }
 
-/**
- * Serialize Lexical content to HTML
- */
 export async function serializeLexicalContent(content: CmsLexicalContent): Promise<string> {
   try {
     const html = await convertLexicalToHTML({
@@ -170,9 +164,6 @@ export async function serializeLexicalContent(content: CmsLexicalContent): Promi
   }
 }
 
-/**
- * Transform Payload CMS post to BlogPost format
- */
 async function transformPost(post: CmsPost): Promise<BlogPost> {
   const serializedContent = await serializeLexicalContent(post.content);
   
@@ -205,9 +196,6 @@ async function transformPost(post: CmsPost): Promise<BlogPost> {
   };
 }
 
-/**
- * Get all post slugs for static generation
- */
 export async function getAllPostSlugs(): Promise<string[]> {
   const posts = await getAllPosts();
   return posts.map(post => post.slug);

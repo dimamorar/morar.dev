@@ -1,16 +1,12 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-// @ts-expect-error - notFound is available in Next.js 14, TypeScript types may be cached
 import { notFound } from "next/navigation";
-// @ts-expect-error - Metadata is available in Next.js 14, TypeScript types may be cached
 import { Metadata } from "next";
 import { format } from "date-fns";
 import { getPostBySlug, getAllPostSlugs } from "@/lib/blog";
 
-// Enable ISR - revalidate every hour
 export const revalidate = 3600;
 
-// Generate static params for all post pages at build time
 export async function generateStaticParams() {
   const slugs = await getAllPostSlugs();
   return slugs.map((slug) => ({
@@ -33,12 +29,11 @@ export async function generateMetadata({
   }
 
   const excerpt = post.excerpt || post.title;
-  const authors = post.authors.map((a) => a.name).join(", ");
 
   return {
     title: `${post.title} - Dmytro Morar`,
     description: excerpt,
-    authors: post.authors.map((a) => a.name),
+    authors: post.authors.map((a) => ({ name: a.name })),
     openGraph: {
       title: post.title,
       description: excerpt,
