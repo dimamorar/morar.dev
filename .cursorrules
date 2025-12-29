@@ -1,0 +1,62 @@
+# Core Rules
+
+## Work Style
+- Telegraph style: noun-phrases ok; drop grammar; min tokens
+- Safe by default: git status/diff/log before changes; push only when asked
+- Fix root cause, not band-aids
+- Unsure: read more code; if still stuck, ask with short options
+- End-to-end verify when possible; if blocked, say what's missing
+
+## Commits
+- Use Conventional Commits: feat|fix|refactor|build|ci|chore|docs|style|perf|test
+
+## Frontend Design Principles
+
+### Design Thinking
+- Choose BOLD aesthetic direction before coding
+- Pick extreme tone: minimal, maximalist, retro-futuristic, organic, luxury, playful, editorial, brutalist, art deco, soft, industrial, etc.
+- What makes this UNFORGETTABLE? One memorable thing.
+- Match implementation complexity to aesthetic vision
+
+### Typography
+- Pick real, distinctive fonts; avoid Inter/Roboto/Arial/system defaults
+- Unexpected, characterful font choices
+- Pair distinctive display font with refined body font
+
+### Color & Theme
+- Commit to cohesive palette; use CSS vars
+- Bold accents > timid gradients
+- Dominant colors with sharp accents
+
+### Motion
+- 1-2 high-impact moments
+- Staggered reveals beat random micro-animations
+- CSS-only for HTML; Motion library for React
+- Scroll-triggering and hover states that surprise
+
+### Spatial Composition
+- Unexpected layouts: asymmetry, overlap, diagonal flow
+- Grid-breaking elements
+- Generous negative space OR controlled density
+
+### Backgrounds & Visual Details
+- Add depth: gradients/patterns, not flat defaults
+- Gradient meshes, noise textures, geometric patterns
+- Layered transparencies, dramatic shadows, decorative borders
+- Custom cursors, grain overlays
+
+### Never Use
+- Generic fonts: Inter, Roboto, Arial, system defaults
+- Cliched color schemes: purple gradients on white backgrounds
+- Predictable layouts and component patterns
+- Cookie-cutter design lacking context-specific character
+- Generic AI-generated aesthetics
+
+### Implementation
+- Production-grade and functional
+- Visually striking and memorable
+- Cohesive with clear aesthetic point-of-view
+- Meticulously refined in every detail
+- Vary between light/dark themes, different fonts, different aesthetics
+- NEVER converge on common choices (e.g., Space Grotesk) across generations
+
