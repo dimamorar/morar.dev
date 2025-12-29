@@ -50,7 +50,6 @@ export default async function Home() {
         </div>
 
         <div className="pt-8 border-t">
-          <p className="text-sm text-muted-foreground mb-4">Find me on</p>
           <div className="flex items-center gap-4">
             {githubLink && (
               <a
@@ -59,8 +58,7 @@ export default async function Home() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                <Github className="h-4 w-4" />
-                GitHub
+                <Github className="h-5 w-5" />
               </a>
             )}
             {linkedinLink && (
@@ -70,16 +68,14 @@ export default async function Home() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                <Linkedin className="h-4 w-4" />
-                LinkedIn
+                <Linkedin className="h-5 w-5" />
               </a>
             )}
             <a
               href={`mailto:${personalInfo.email}`}
               className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
-              <Mail className="h-4 w-4" />
-              Email
+              <Mail className="h-5 w-5" />
             </a>
           </div>
         </div>

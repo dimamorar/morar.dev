@@ -62,10 +62,8 @@ export default async function BlogPost({
 
   // TypeScript doesn't recognize that notFound() throws, so we assert post is non-null
   const publishedDate = post!.publishedAt
-    ? format(new Date(post!.publishedAt), "MMMM d, yyyy")
+    ? format(new Date(post!.publishedAt), "d MMM, yyyy")
     : "Draft";
-
-  const authors = post!.authors.map((a) => a.name).join(", ");
 
   return (
     <div className="container-narrow py-12 md:py-16">
@@ -89,12 +87,6 @@ export default async function BlogPost({
             </time>
             <span>·</span>
             <span>{post!.readingTime} min read</span>
-            {authors && (
-              <>
-                <span>·</span>
-                <span>by {authors}</span>
-              </>
-            )}
           </div>
         </header>
 

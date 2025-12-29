@@ -42,6 +42,8 @@ body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
   font-feature-settings: "rlig" 1, "calt" 1;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
 }
 
 @layer utilities {
@@ -95,10 +97,23 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground antialiased;
   }
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-mono tracking-tight;
+  }
+  a {
+    text-decoration: underline;
+    text-underline-offset: 8px;
+    text-decoration-style: dashed;
+  }
+  a:hover {
+    color: #006cac;
   }
 }
 
