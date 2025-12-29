@@ -111,6 +111,7 @@ body {
     text-decoration: underline;
     text-underline-offset: 8px;
     text-decoration-style: dashed;
+    line-height: 1.5rem;
   }
   a:hover {
     color: #006cac;
