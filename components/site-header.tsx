@@ -19,12 +19,17 @@ export function SiteHeader() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-6">
-            <Link href="/blog" className="text-sm hover:opacity-70 transition-opacity !no-underline">
+          <nav className="hidden md:flex items-center gap-4 text-base">
+            <Link href="/about" className="hover:opacity-70 transition-opacity !no-underline">
+              About
+            </Link>
+            <span className="text-muted-foreground"> / </span>
+            <Link href="/blog" className="hover:opacity-70 transition-opacity !no-underline">
               Posts
             </Link>
-            <Link href="/about" className="text-sm hover:opacity-70 transition-opacity !no-underline">
-              About
+            <span className="text-muted-foreground"> / </span>
+            <Link href="/vault" className="hover:opacity-70 transition-opacity !no-underline">
+              Vault
             </Link>
           </nav>
 
@@ -41,20 +46,27 @@ export function SiteHeader() {
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-border py-4">
-            <nav className="flex flex-col gap-4">
+            <nav className="flex flex-col gap-4 text-base">
+              <Link
+                href="/about"
+                className="hover:opacity-70 transition-opacity !no-underline"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                About
+              </Link>
               <Link
                 href="/blog"
-                className="text-sm hover:opacity-70 transition-opacity !no-underline"
+                className="hover:opacity-70 transition-opacity !no-underline"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Posts
               </Link>
               <Link
-                href="/about"
-                className="text-sm hover:opacity-70 transition-opacity !no-underline"
+                href="/vault"
+                className="hover:opacity-70 transition-opacity !no-underline"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                About
+                Vault
               </Link>
             </nav>
           </div>
