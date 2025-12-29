@@ -30,7 +30,7 @@ export function ProfileSection() {
               className="hover:opacity-70 transition-opacity"
               aria-label="GitHub"
             >
-              <Github className="h-5 w-5" />
+              <Github className="h-6 w-6" />
             </a>
           )}
           {linkedinLink && (
@@ -41,7 +41,7 @@ export function ProfileSection() {
               className="hover:opacity-70 transition-opacity"
               aria-label="LinkedIn"
             >
-              <Linkedin className="h-5 w-5" />
+              <Linkedin className="h-6 w-6" />
             </a>
           )}
           <a
@@ -49,7 +49,7 @@ export function ProfileSection() {
             className="hover:opacity-70 transition-opacity"
             aria-label="Email"
           >
-            <Mail className="h-5 w-5" />
+            <Mail className="h-6 w-6" />
           </a>
         </div>
       </div>
