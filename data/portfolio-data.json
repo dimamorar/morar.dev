@@ -26,12 +26,7 @@
     ]
   },
   "about": {
-    "bio": "I'm a developer with over seven years of experience, working in different roles from developer to team-lead. I love creating things through code, especially when they bring real value to people. I'm really excited about AI and what it means for the future of web development.",
-    "focus": [
-      "Developing high-performance React and Next.js apps",
-      "Building scalable frontend architectures",
-      "Implementing modern web development practices and patterns"
-    ],
+    "bio": "I'm a developer with over 7+ years of experience. I love creating things through code. I'm excited about AI and want to build something really valuable to people.",
     "languages": [
       {
         "name": "Ukrainian",

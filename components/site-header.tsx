@@ -14,12 +14,12 @@ export function SiteHeader() {
       <div className="container-narrow border-b border-border">
         <div className="flex items-center justify-between py-4">
           {/* Name on left */}
-          <Link href="/" className="text-xl font-bold !no-underline">
+          <Link href="/" className="text-xl font-bold !no-underline hover:opacity-100 hover:text-current">
             {personalInfo.name}
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1 text-sm">
+          <nav className="hidden md:flex items-center gap-1 text-base">
             <Link href="/about" className="hover:opacity-70 transition-opacity !no-underline">
               About
             </Link>
@@ -46,7 +46,7 @@ export function SiteHeader() {
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-border py-4">
-            <nav className="flex flex-col gap-4 text-sm">
+            <nav className="flex flex-col gap-4 text-base">
               <Link
                 href="/about"
                 className="hover:opacity-70 transition-opacity !no-underline"
