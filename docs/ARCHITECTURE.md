@@ -459,6 +459,14 @@ graph TD
 - **Primary**: Vercel (recommended for Next.js)
 - **Alternative**: Self-hosted (VPS, Docker)
 
+### Infrastructure
+- **Payload CMS**: Deployed on Hetzner server at `https://cms.morar.dev`
+- **Server**: Hetzner (77.42.17.21) - 8 vCPU, 16 GB RAM, 160 GB Storage
+- **Reverse Proxy**: Caddy (automatic SSL)
+- **Database**: MongoDB 8.0 on Hetzner (shared between local and production)
+
+See **[DEPLOYMENT.md](./DEPLOYMENT.md)** for detailed infrastructure documentation.
+
 ### Build Process
 1. Next.js builds static pages where possible
 2. Payload CMS posts fetched at build time (SSG)

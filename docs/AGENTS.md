@@ -1,4 +1,3 @@
-AGENTS.MD
 Dima owns this.
 Start: say hi + 1 motivating line. Work style: telegraph; noun-phrases ok; drop grammar; min tokens.
 

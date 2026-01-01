@@ -6,6 +6,8 @@ This folder contains all project documentation, architecture decisions, rules, a
 
 - **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Source of truth for architecture decisions, technical stack, and implementation strategy
 - **[APP_DOCUMENTATION.md](./APP_DOCUMENTATION.md)** - Technical documentation of the current application structure and features
+- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Infrastructure, deployment, and development workflow documentation
+- **[PAYLOAD_CMS.md](./PAYLOAD_CMS.md)** - Payload CMS development guide, security patterns, and best practices
 
 ## Adding New Documentation
 
@@ -25,6 +27,8 @@ docs/
 ├── README.md              # This file
 ├── ARCHITECTURE.md        # Architecture and technical decisions
 ├── APP_DOCUMENTATION.md   # Application technical docs
+├── DEPLOYMENT.md          # Infrastructure and deployment documentation
+├── PAYLOAD_CMS.md         # Payload CMS development guide
 └── [other-docs].md        # Additional documentation
 ```
 
