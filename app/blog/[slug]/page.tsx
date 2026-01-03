@@ -2,8 +2,9 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { format } from "date-fns";
 import { getPostBySlug, getAllPostSlugs } from "@/lib/blog";
+import { CalendarRange } from "lucide-react";
 
-export const revalidate = 3600;
+// export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const slugs = await getAllPostSlugs();
@@ -64,13 +65,14 @@ export default async function BlogPost({
 
   return (
     <div className="container-narrow py-6 md:py-6">
-      <article className="prose prose-invert prose-zinc max-w-none leading-[28px]">
+      <article className="prose max-w-none leading-[28px] ml-[-1.5rem] mr-[-1.5rem]">
         <header className="mb-8">
-          <h1 className="inline-block text-2xl font-bold text-accent sm:text-3xl">
+          <h1 className="inline-block text-2xl font-bold text-accent sm:text-3xl mb-2">
             {post!.title}
           </h1>
 
           <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+            <CalendarRange className="w-4 h-4" />
             <time dateTime={post!.publishedAt}>
               {publishedDate.toLocaleLowerCase()}
             </time>
@@ -79,10 +81,7 @@ export default async function BlogPost({
           </div>
         </header>
 
-        <div
-          className="prose prose-invert prose-zinc max-w-none"
-          dangerouslySetInnerHTML={{ __html: post!.content }}
-        />
+        <div dangerouslySetInnerHTML={{ __html: post!.content }} />
       </article>
     </div>
   );

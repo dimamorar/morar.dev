@@ -165,6 +165,7 @@ function serializeNestedContent(content: any, converters: any): string {
 
 export function serializeLexicalContent(content: CmsLexicalContent): string {
   try {
+
     // Merge default converters with custom block converters
     // Note: defaultHTMLConverters already includes HeadingHTMLConverter and HorizontalRuleHTMLConverter
     const converters: any = {
@@ -235,11 +236,11 @@ export function serializeLexicalContent(content: CmsLexicalContent): string {
               ? serializeNestedContent(caption, conv)
               : "";
 
-            html += `<img src="http://localhost:3001${mediaUrl}" alt="${alt}" class="border border-border rounded-[0.8rem]" />`;
+            html += `<img src="http://localhost:3001${mediaUrl}" alt="${alt}" class="border border-border mb-2 mt-2 aspect-video w-full rounded-md object-cover" />`;
             if (captionText) {
               html += `<div class="mt-6">${captionText}</div>`;
             }
-          }
+          } 
 
           html += "</div>";
           return html;
