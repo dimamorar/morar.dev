@@ -339,6 +339,7 @@ The portfolio site exposes a revalidation API endpoint that allows the CMS to tr
 **Authentication**: Requires `REVALIDATE_SECRET` token in request body
 
 **Request Body**:
+
 ```json
 {
   "secret": "your-secret-token",
@@ -349,6 +350,7 @@ The portfolio site exposes a revalidation API endpoint that allows the CMS to tr
 ```
 
 **Response**:
+
 ```json
 {
   "revalidated": true,
@@ -359,18 +361,21 @@ The portfolio site exposes a revalidation API endpoint that allows the CMS to tr
 ```
 
 **How It Works**:
+
 1. CMS saves content and calls this API endpoint
 2. API validates secret token
 3. API calls `revalidatePath()` for the specified path
 4. API calls `revalidateTag()` for cache tags
 5. Next request to that path fetches fresh data from CMS
 
-**Security**: 
+**Security**:
+
 - All requests must include valid `REVALIDATE_SECRET`
 - Token must match environment variable
 - Invalid requests return 401 Unauthorized
 
 **Path Mapping**:
+
 - CMS path: `/posts/{slug}` → Portfolio path: `/blog/{slug}`
 - Collection updates also revalidate list pages (e.g., `/blog`)
 
@@ -810,6 +815,7 @@ NEXT_PUBLIC_ANALYTICS_ID=...
 See [DEPLOYMENT.md](./DEPLOYMENT.md) for SSH tunnel setup and local development workflow.
 
 **Revalidation API:**
+
 ```env
 # Secret token for on-demand revalidation (must match CMS)
 REVALIDATE_SECRET=your-secret-token-here
