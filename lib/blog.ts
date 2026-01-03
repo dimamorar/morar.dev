@@ -138,17 +138,15 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
     const response = await fetch(url, {
       next: { revalidate: 3600 },
     } as RequestInit);
-
     if (!response.ok) {
       throw new Error(`Failed to fetch post: ${response.statusText}`);
     }
-
+    
     const data: CmsPostResponse = await response.json();
 
     if (data.docs.length === 0) {
       return null;
     }
-
     return transformPost(data.docs[0]);
   } catch (error) {
     console.error("Error fetching post:", error);

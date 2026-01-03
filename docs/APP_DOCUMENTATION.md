@@ -314,9 +314,10 @@ All types use the `Cms` prefix:
 Both blog pages use Next.js static generation:
 
 - **`generateStaticParams()`**: Pre-generates all post pages at build time
-- **`revalidate = 3600`**: Revalidates content every hour (ISR)
+- **`revalidate = 3600`**: Revalidates content every hour (ISR fallback)
+- **On-demand revalidation**: Immediate updates via `/api/revalidate` webhook
 - **Build-time fetching**: All posts fetched during build process
-- **Runtime updates**: New posts available within 1 hour via ISR
+- **Runtime updates**: New posts available immediately via on-demand revalidation, or within 1 hour via ISR
 
 ### Content Rendering
 
@@ -326,6 +327,54 @@ Lexical content is serialized to HTML server-side and rendered using `dangerousl
 - Images with proper sizing
 - Banner/callout blocks
 - Custom block types
+
+### On-Demand Revalidation API
+
+**File**: `app/api/revalidate/route.ts`
+
+The portfolio site exposes a revalidation API endpoint that allows the CMS to trigger immediate cache invalidation when content changes.
+
+**Endpoint**: `POST /api/revalidate`
+
+**Authentication**: Requires `REVALIDATE_SECRET` token in request body
+
+**Request Body**:
+```json
+{
+  "secret": "your-secret-token",
+  "path": "/blog/post-slug",
+  "tag": "posts",
+  "collection": "posts"
+}
+```
+
+**Response**:
+```json
+{
+  "revalidated": true,
+  "now": 1234567890,
+  "path": "/blog/post-slug",
+  "tag": "posts"
+}
+```
+
+**How It Works**:
+1. CMS saves content and calls this API endpoint
+2. API validates secret token
+3. API calls `revalidatePath()` for the specified path
+4. API calls `revalidateTag()` for cache tags
+5. Next request to that path fetches fresh data from CMS
+
+**Security**: 
+- All requests must include valid `REVALIDATE_SECRET`
+- Token must match environment variable
+- Invalid requests return 401 Unauthorized
+
+**Path Mapping**:
+- CMS path: `/posts/{slug}` → Portfolio path: `/blog/{slug}`
+- Collection updates also revalidate list pages (e.g., `/blog`)
+
+See [CMS Revalidation Documentation](../5.1_cms/docs/REVALIDATION.md) for full details.
 
 ---
 
@@ -759,6 +808,12 @@ NEXT_PUBLIC_ANALYTICS_ID=...
 
 **For Local Payload CMS Development:**
 See [DEPLOYMENT.md](./DEPLOYMENT.md) for SSH tunnel setup and local development workflow.
+
+**Revalidation API:**
+```env
+# Secret token for on-demand revalidation (must match CMS)
+REVALIDATE_SECRET=your-secret-token-here
+```
 
 ### Performance Considerations
 
