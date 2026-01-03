@@ -1,5 +1,3 @@
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { format } from "date-fns";
@@ -60,22 +58,13 @@ export default async function BlogPost({
     notFound();
   }
 
-  // TypeScript doesn't recognize that notFound() throws, so we assert post is non-null
   const publishedDate = post!.publishedAt
     ? format(new Date(post!.publishedAt), "d MMM, yyyy")
     : "Draft";
 
   return (
-    <div className="container-narrow py-12 md:py-16">
-      <Link
-        href="/blog"
-        className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-8 transition-colors"
-      >
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        back
-      </Link>
-
-      <article className="prose prose-invert prose-zinc max-w-none">
+    <div className="container-narrow py-6 md:py-6">
+      <article className="prose prose-invert prose-zinc max-w-none leading-[28px]">
         <header className="mb-8">
           <h1 className="inline-block text-2xl font-bold text-accent sm:text-3xl">
             {post!.title}

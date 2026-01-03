@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 :root {
-  /* steipete.me theme colors - Light Mode */
   --background: 0 0% 99.2%;
   --foreground: 300 2% 15%;
 
@@ -33,18 +32,25 @@
   --ring: 201 100% 34%;
 
   --radius: 0.5rem;
+
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  --default-mono-font-family: var(--font-mono);
 }
 
 html {
   scroll-behavior: smooth;
+  overflow-y: scroll;
 }
 
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
   font-feature-settings: "rlig" 1, "calt" 1;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
+  font-family: var(--font-mono);
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
 }
 
 @layer utilities {
@@ -99,6 +105,14 @@ body {
   }
   body {
     @apply bg-background text-foreground antialiased;
+    font-family: var(--font-mono);
+  }
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: var(--default-mono-font-family);
+    font-size: 1em;
   }
   h1,
   h2,
@@ -106,7 +120,7 @@ body {
   h4,
   h5,
   h6 {
-    @apply font-mono tracking-tight;
+    @apply tracking-tight;
   }
   a {
     text-decoration: underline;
@@ -119,7 +133,6 @@ body {
   }
 }
 
-/* Add animation for glowing effects */
 @keyframes pulse-glow {
   0%,
   100% {
