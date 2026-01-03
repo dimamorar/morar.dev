@@ -77,7 +77,7 @@ export default async function BlogPost({
 
       <article className="prose prose-invert prose-zinc max-w-none">
         <header className="mb-8">
-          <h1 className="text-4xl font-bold tracking-tight mb-4">
+          <h1 className="inline-block text-2xl font-bold text-accent sm:text-3xl">
             {post!.title}
           </h1>
 
