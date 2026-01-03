@@ -12,10 +12,10 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 bg-background">
       <div className="container-narrow border-b border-border">
-        <div className="flex items-center justify-between py-4">
+        <div className="flex items-center justify-between py-4 mr-[-1.5rem] ml-[-1.5rem]">
           <Link
             href="/"
-            className="text-xl font-bold !no-underline hover:opacity-100 hover:text-current"
+            className="text-2xl font-bold !no-underline hover:opacity-100 hover:text-current"
           >
             {personalInfo.name}
           </Link>

@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { format } from "date-fns";
 import { getPostBySlug, getAllPostSlugs } from "@/lib/blog";
 import { CalendarRange } from "lucide-react";
+import { BlogContent } from "@/components/blog-content";
 
 // export const revalidate = 3600;
 
@@ -81,7 +82,7 @@ export default async function BlogPost({
           </div>
         </header>
 
-        <div dangerouslySetInnerHTML={{ __html: post!.content }} />
+        <BlogContent html={post!.content} />
       </article>
     </div>
   );

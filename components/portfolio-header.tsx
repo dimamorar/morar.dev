@@ -61,7 +61,6 @@ export function PortfolioHeader() {
       )}
     >
       <div className="container mx-auto px-4 flex items-center justify-between">
-        {/* Logo/Name */}
         <Link href="/" className="flex items-center group">
           <div className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 font-bold text-xl relative overflow-hidden transition-transform duration-300 group-hover:scale-105">
             {personalInfo.name}

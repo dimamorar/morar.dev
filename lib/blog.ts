@@ -2,10 +2,7 @@ import { getCollectionUrl } from "./payload";
 import {
   convertLexicalToHTML,
   defaultHTMLConverters,
-  HeadingHTMLConverter,
-  HorizontalRuleHTMLConverter,
 } from "@payloadcms/richtext-lexical/html";
-import type { HTMLConverter } from "@payloadcms/richtext-lexical/html";
 
 export interface CmsAuthor {
   id: string;
@@ -191,7 +188,8 @@ export function serializeLexicalContent(content: CmsLexicalContent): string {
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
 
-          return `<pre class="not-prose"><code class="language-${language}">${escapedCode}</code></pre>`;
+          // Add data attributes for easier parsing while maintaining backward compatibility
+          return `<pre class="not-prose" data-code-block="true"><code class="language-${language}" data-language="${language}">${escapedCode}</code></pre>`;
         },
         // Banner block converter (synchronous)
         banner: ({ node, converters: conv, nodesToHTML }: any) => {
