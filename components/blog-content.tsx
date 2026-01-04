@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useMemo } from "react";
 import { CodeBlock } from "./code-block";
 
 interface ContentSegment {
@@ -14,15 +14,7 @@ interface BlogContentProps {
 }
 
 export function BlogContent({ html }: BlogContentProps) {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
   const segments = useMemo(() => {
-    if (!isMounted) return [];
-
     const result: ContentSegment[] = [];
     let lastIndex = 0;
 
@@ -81,17 +73,11 @@ export function BlogContent({ html }: BlogContentProps) {
     }
 
     return result;
-  }, [html, isMounted]);
+  }, [html]);
 
-  // On server and initial client render, show raw HTML to match server output
-  if (!isMounted) {
-    return <div dangerouslySetInnerHTML={{ __html: html }} />;
-  }
-
-  // After mount, render with enhanced code blocks
   return (
     <>
-      {segments.map((segment: ContentSegment, index: number) => {
+      {segments.map((segment, index) => {
         if (segment.type === "code") {
           return (
             <CodeBlock
