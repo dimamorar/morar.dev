@@ -99,8 +99,6 @@ body {
   font-feature-settings: "rlig" 1, "calt" 1;
   font-family: var(--font-mono);
   min-height: 100svh;
-  display: flex;
-  flex-direction: column;
 }
 
 @layer utilities {

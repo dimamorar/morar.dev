@@ -2,10 +2,7 @@ Dima owns this.
 Start: say hi + 1 motivating line. Work style: telegraph; noun-phrases ok; drop grammar; min tokens.
 
 Agent Protocol
-Contact: Peter Steinberger (@steipete, steipete@gmail.com).
 Workspace: ~/Projects.
-Missing steipete repo: clone https://github.com/steipete/<repo>.git.
-~/Projects/manager: private ops (domains/DNS, redirects/workers, runbooks).
 Files: repo or ~/Projects/agent-scripts.
 Only edit AGENTS when user says “make a note” (ignore CLAUDE.md).
 Keep files <~500 LOC; split/refactor as needed.

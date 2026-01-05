@@ -12,9 +12,9 @@ export function ProfileSection() {
 
   return (
     <div className="container-narrow py-12 md:py-16">
-      <div className="flex flex-col text-center md:text-left">
+      <div className="flex flex-col text-center md:text-left -ml-6 -mr-6">
         <div className="mb-4">
-          <h1 className="text-2xl md:text-3xl font-bold">Hi I'm Dima</h1>
+          <h1 className="text-2xl md:text-3xl font-bold">Hi, I&apos;m Dima</h1>
         </div>
 
         <div className="space-y-2 mb-6 text-sm md:text-base">

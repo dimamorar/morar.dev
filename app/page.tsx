@@ -11,19 +11,19 @@ export default async function Home() {
       <ProfileSection />
 
       <div className="container-narrow pb-12 md:pb-16">
-        <div className="border-t border-border pt-8">
+        <div className="border-t border-border pt-8  -ml-4">
           <h2 className="text-lg font-medium mb-4">Recent posts</h2>
           {latestPost ? (
             <Link
               href={`/blog/${latestPost.slug}`}
-              className="text-sm inline-flex items-center transition-colors"
+              className="text-sm inline-flex items-center transition-colors leading-6"
             >
               {latestPost.title}
             </Link>
           ) : (
             <Link
               href="/blog"
-              className="text-sm inline-flex items-center transition-colors"
+              className="text-sm inline-flex items-center transition-colors leading-6"
             >
               View all posts
               <ArrowRight className="ml-1 h-3 w-3" />
