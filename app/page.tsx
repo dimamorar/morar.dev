@@ -1,25 +1,32 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { ProfileSection } from "@/components/profile-section";
-import { getLatestPost } from "@/lib/blog";
+import { getLatestPosts } from "@/lib/blog";
 
 export default async function Home() {
-  const latestPost = await getLatestPost();
+  const latestPosts = await getLatestPosts(3);
 
   return (
     <>
       <ProfileSection />
 
       <div className="container-narrow pb-12 md:pb-16">
-        <div className="border-t border-border pt-8  -ml-4">
+        <div className="border-t border-border pt-8 -ml-4">
           <h2 className="text-lg font-medium mb-4">Recent posts</h2>
-          {latestPost ? (
-            <Link
-              href={`/blog/${latestPost.slug}`}
-              className="text-sm inline-flex items-center transition-colors leading-6"
-            >
-              {latestPost.title}
-            </Link>
+          {latestPosts.length > 0 ? (
+            <div className="space-y-3">
+              {latestPosts.map((post) => (
+                <Link
+                  key={post.id}
+                  href={`/blog/${post.slug}`}
+                  className="block group"
+                >
+                  <div className="text-sm leading-6 group-hover:underline">
+                    {post.title}
+                  </div>
+                </Link>
+              ))}
+            </div>
           ) : (
             <Link
               href="/blog"

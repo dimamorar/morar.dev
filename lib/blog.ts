@@ -98,10 +98,15 @@ export async function getAllPosts(): Promise<BlogPost[]> {
 }
 
 export async function getLatestPost(): Promise<BlogPost | null> {
+  const posts = await getLatestPosts(1);
+  return posts.length > 0 ? posts[0] : null;
+}
+
+export async function getLatestPosts(limit: number = 3): Promise<BlogPost[]> {
   try {
     const url = getCollectionUrl(
       "posts",
-      "where[_status][equals]=published&depth=1&sort=-publishedAt&limit=1"
+      `where[_status][equals]=published&depth=1&sort=-publishedAt&limit=${limit}`
     );
 
     const response = await fetch(url, {
@@ -109,19 +114,15 @@ export async function getLatestPost(): Promise<BlogPost | null> {
     } as RequestInit);
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch latest post: ${response.statusText}`);
+      throw new Error(`Failed to fetch latest posts: ${response.statusText}`);
     }
 
     const data: CmsPostResponse = await response.json();
 
-    if (data.docs.length === 0) {
-      return null;
-    }
-
-    return transformPost(data.docs[0]);
+    return Promise.all(data.docs.map(transformPost));
   } catch (error) {
-    console.error("Error fetching latest post:", error);
-    return null;
+    console.error("Error fetching latest posts:", error);
+    return [];
   }
 }
 
