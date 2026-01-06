@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { format } from "date-fns";
+import { CalendarRange } from "lucide-react";
 import { getAllPosts, getAllPostSlugs } from "@/lib/blog";
 
 export const metadata: Metadata = {
@@ -38,34 +39,34 @@ export default async function Blog() {
             <p>No blog posts available yet. Check back soon!</p>
           </div>
         ) : (
-          <div className="space-y-1">
+          <div className="space-y-8">
             {posts.map((post) => {
               const publishedDate = post.publishedAt
-                ? format(new Date(post.publishedAt), "MMM d, yyyy")
+                ? format(new Date(post.publishedAt), "d MMM, yyyy")
                 : "Draft";
 
               return (
-                <Link
-                  key={post.id}
-                  href={`/blog/${post.slug}`}
-                  className="block group py-4 border-b last:border-0 hover:bg-zinc-900/30 transition-colors rounded-lg px-2 -mx-2"
-                >
-                  <article>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
-                      <time dateTime={post.publishedAt}>{publishedDate}</time>
-                      <span>·</span>
-                      <span>{post.readingTime} min read</span>
-                    </div>
-                    <h2 className="font-mono font-medium text-lg group-hover:underline">
+                <article key={post.id}>
+                  <h2 className="text-[18px]">
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="text-primary no-underline hover:underline hover:decoration-dashed hover:underline-offset-4"
+                    >
                       {post.title}
-                    </h2>
-                    {post.excerpt && (
-                      <p className="text-muted-foreground text-sm mt-1">
-                        {post.excerpt}
-                      </p>
-                    )}
-                  </article>
-                </Link>
+                    </Link>
+                  </h2>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
+                    <CalendarRange className="w-4 h-4" />
+                    <time dateTime={post.publishedAt}>{publishedDate}</time>
+                    <span>•</span>
+                    <span>{post.readingTime} min read</span>
+                  </div>
+                  {post.excerpt && (
+                    <p className="text-muted-foreground text-sm mt-2">
+                      {post.excerpt}
+                    </p>
+                  )}
+                </article>
               );
             })}
           </div>
