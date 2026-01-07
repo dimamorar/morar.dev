@@ -36,6 +36,7 @@ export interface CmsPost {
   title: string;
   slug: string;
   content: CmsLexicalContent;
+  excerpt?: string | null;
   publishedAt: string;
   createdAt: string;
   updatedAt: string;
@@ -307,8 +308,15 @@ async function transformPost(post: CmsPost): Promise<BlogPost> {
   // Average reading speed: 200 words per minute
   const readingTimeMinutes = Math.max(1, Math.ceil(wordCount / 200));
 
-  // Extract excerpt from content (first 200 characters of text)
-  const excerpt = textContent.substring(0, 200).replace(/\s+/g, " ");
+  // Prefer CMS-provided excerpt; fallback to auto-generated from content
+  const cmsExcerpt =
+    typeof post.excerpt === "string" ? post.excerpt.trim() : "";
+  const autoExcerpt = textContent.substring(0, 200).replace(/\s+/g, " ");
+  const finalExcerpt =
+    cmsExcerpt ||
+    (autoExcerpt.length < textContent.length
+      ? `${autoExcerpt}...`
+      : autoExcerpt);
 
   // Handle authors (can be populated objects or IDs)
   const authors: CmsAuthor[] =
@@ -334,7 +342,7 @@ async function transformPost(post: CmsPost): Promise<BlogPost> {
     updatedAt: post.updatedAt,
     authors,
     readingTime: readingTimeMinutes,
-    excerpt: excerpt.length < textContent.length ? `${excerpt}...` : excerpt,
+    excerpt: finalExcerpt,
     cover,
   };
 }
