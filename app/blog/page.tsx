@@ -1,8 +1,10 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { format } from "date-fns";
 import { CalendarRange } from "lucide-react";
 import { getAllPosts, getAllPostSlugs } from "@/lib/blog";
+import { PAYLOAD_CMS_URL } from "@/lib/payload";
 
 export const metadata: Metadata = {
   title: "Blog - Dmytro Morar",
@@ -62,9 +64,21 @@ export default async function Blog() {
                     <span>{post.readingTime} min read</span>
                   </div>
                   {post.excerpt && (
-                    <p className="text-muted-foreground text-sm mt-2">
-                      {post.excerpt}
-                    </p>
+                    <div className="flex gap-4 mt-2">
+                      {post.cover?.url && (
+                        <div className="shrink-0 w-32 h-20 relative">
+                          <Image
+                            src={`${PAYLOAD_CMS_URL}${post.cover.url}`}
+                            alt={post.cover.alt || post.title}
+                            fill
+                            className="object-cover rounded border border-border"
+                          />
+                        </div>
+                      )}
+                      <p className="text-muted-foreground text-sm flex-1">
+                        {post.excerpt}
+                      </p>
+                    </div>
                   )}
                 </article>
               );

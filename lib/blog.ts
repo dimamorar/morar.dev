@@ -41,6 +41,8 @@ export interface CmsPost {
   updatedAt: string;
   authors: CmsAuthor[] | string[];
   populatedAuthors?: CmsAuthor[];
+  cover?: CmsMedia | string;
+  populatedCover?: CmsMedia;
   meta?: {
     title?: string;
     description?: string;
@@ -71,6 +73,7 @@ export interface BlogPost {
   authors: CmsAuthor[];
   readingTime: number; // in minutes
   excerpt?: string;
+  cover?: CmsMedia;
 }
 
 // In dev mode, bypass cache to always get fresh data
@@ -314,6 +317,13 @@ async function transformPost(post: CmsPost): Promise<BlogPost> {
       ? (post.authors as CmsAuthor[])
       : []);
 
+  // Handle cover (can be populated object or ID)
+  const cover: CmsMedia | undefined =
+    post.populatedCover ||
+    (post.cover && typeof post.cover === "object"
+      ? (post.cover as CmsMedia)
+      : undefined);
+
   return {
     id: post.id,
     title: post.title,
@@ -325,6 +335,7 @@ async function transformPost(post: CmsPost): Promise<BlogPost> {
     authors,
     readingTime: readingTimeMinutes,
     excerpt: excerpt.length < textContent.length ? `${excerpt}...` : excerpt,
+    cover,
   };
 }
 
