@@ -59,18 +59,11 @@ export function SiteHeader() {
           <div className="md:hidden border-t border-border py-4">
             <nav className="flex flex-col gap-4 text-base">
               <Link
-                href="/about"
-                className="hover:opacity-70 transition-opacity !no-underline"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                About
-              </Link>
-              <Link
                 href="/blog"
                 className="hover:opacity-70 transition-opacity !no-underline"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Posts
+                Blog
               </Link>
               <Link
                 href="/vault"
@@ -78,6 +71,13 @@ export function SiteHeader() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Vault
+              </Link>
+              <Link
+                href="/about"
+                className="hover:opacity-70 transition-opacity !no-underline"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                About
               </Link>
             </nav>
           </div>
