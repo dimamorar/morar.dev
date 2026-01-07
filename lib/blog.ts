@@ -73,6 +73,12 @@ export interface BlogPost {
   excerpt?: string;
 }
 
+// In dev mode, bypass cache to always get fresh data
+const fetchOptions: RequestInit =
+  process.env.NODE_ENV === "development"
+    ? { cache: "no-store" }
+    : { next: { revalidate: 3600 } };
+
 export async function getAllPosts(): Promise<BlogPost[]> {
   try {
     const url = getCollectionUrl(
@@ -80,9 +86,7 @@ export async function getAllPosts(): Promise<BlogPost[]> {
       "where[_status][equals]=published&depth=1&sort=-publishedAt"
     );
 
-    const response = await fetch(url, {
-      next: { revalidate: 3600 },
-    } as RequestInit);
+    const response = await fetch(url, fetchOptions);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch posts: ${response.statusText}`);
@@ -109,16 +113,13 @@ export async function getLatestPosts(limit: number = 3): Promise<BlogPost[]> {
       `where[_status][equals]=published&depth=1&sort=-publishedAt&limit=${limit}`
     );
 
-    const response = await fetch(url, {
-      next: { revalidate: 3600 },
-    } as RequestInit);
+    const response = await fetch(url, fetchOptions);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch latest posts: ${response.statusText}`);
     }
 
     const data: CmsPostResponse = await response.json();
-
     return Promise.all(data.docs.map(transformPost));
   } catch (error) {
     console.error("Error fetching latest posts:", error);
@@ -133,9 +134,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
       `where[slug][equals]=${slug}&where[_status][equals]=published&depth=1`
     );
 
-    const response = await fetch(url, {
-      next: { revalidate: 3600 },
-    } as RequestInit);
+    const response = await fetch(url, fetchOptions);
     if (!response.ok) {
       throw new Error(`Failed to fetch post: ${response.statusText}`);
     }
