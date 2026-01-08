@@ -19,11 +19,9 @@ export default async function Home() {
                 <Link
                   key={post.id}
                   href={`/blog/${post.slug}`}
-                  className="block group"
+                  className="block"
                 >
-                  <div className="text-sm leading-6 group-hover:underline">
-                    {post.title}
-                  </div>
+                  <div className="text-sm leading-6">{post.title}</div>
                 </Link>
               ))}
             </div>
