@@ -1,4 +1,4 @@
-import { getCollectionUrl } from "./payload";
+import { getCollectionUrl, PAYLOAD_CMS_URL } from "./payload";
 import {
   convertLexicalToHTML,
   defaultHTMLConverters,
@@ -238,7 +238,7 @@ export function serializeLexicalContent(content: CmsLexicalContent): string {
               ? serializeNestedContent(caption, conv)
               : "";
 
-            html += `<img src="http://localhost:3001${mediaUrl}" alt="${alt}" class="border border-border mb-2 mt-2 aspect-video w-full rounded-md object-cover" />`;
+            html += `<img src="${PAYLOAD_CMS_URL}${mediaUrl}" alt="${alt}" class="border border-border mb-2 mt-2 aspect-video w-full rounded-md object-cover" />`;
             if (captionText) {
               html += `<div class="mt-6">${captionText}</div>`;
             }
@@ -246,6 +246,19 @@ export function serializeLexicalContent(content: CmsLexicalContent): string {
 
           html += "</div>";
           return html;
+        },
+        // Upload converter for inline images (inserted without media block)
+        upload: ({ node }: any) => {
+          const { value, relationTo } = node;
+          if (relationTo === "media" && value && typeof value === "object") {
+            const mediaUrl = value.url || "";
+            const alt = (value.alt || value.filename || "").replace(
+              /"/g,
+              "&quot;"
+            );
+            return `<img src="${PAYLOAD_CMS_URL}${mediaUrl}" alt="${alt}" class="border border-border mb-2 mt-2 aspect-video w-full rounded-md object-cover" />`;
+          }
+          return "";
         },
       },
       // Unknown node handler - logs and returns empty for debugging
