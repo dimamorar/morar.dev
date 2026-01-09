@@ -56,7 +56,6 @@ export default async function BlogPost({
 }: {
   params: { slug: string };
 }) {
-  const tags = ["ai", "codex", "workflow"];
   const post = await getPostBySlug(params.slug);
 
   if (!post) {
@@ -89,17 +88,18 @@ export default async function BlogPost({
 
         <footer className="mt-10 mb-10">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex flex-wrap items-center gap-3 text-sm">
-              {tags.map((tag) => (
-                <Link
-                  key={tag}
-                  href={`/tags/${tag}`}
-                  className="text-muted-foreground underline underline-offset-4 decoration-dotted hover:text-accent transition-colors"
-                >
-                  #{tag}
-                </Link>
-              ))}
-            </div>
+            {post.tags.length > 0 && (
+              <div className="flex flex-wrap items-center gap-3 text-sm">
+                {post.tags.map((tag) => (
+                  <span
+                    key={tag.id}
+                    className="text-muted-foreground"
+                  >
+                    #{tag.title}
+                  </span>
+                ))}
+              </div>
+            )}
 
             <InlineTopButton className="self-center sm:self-auto" />
           </div>

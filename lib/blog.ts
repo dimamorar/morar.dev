@@ -9,6 +9,12 @@ export interface CmsAuthor {
   name: string;
 }
 
+export interface CmsTag {
+  id: string;
+  title: string;
+  slug: string;
+}
+
 export interface CmsMedia {
   id: string;
   url: string;
@@ -44,6 +50,7 @@ export interface CmsPost {
   populatedAuthors?: CmsAuthor[];
   cover?: CmsMedia | string;
   populatedCover?: CmsMedia;
+  tags?: CmsTag[] | string[];
   meta?: {
     title?: string;
     description?: string;
@@ -72,6 +79,7 @@ export interface BlogPost {
   createdAt: string;
   updatedAt: string;
   authors: CmsAuthor[];
+  tags: CmsTag[];
   readingTime: number; // in minutes
   excerpt?: string;
   cover?: CmsMedia;
@@ -345,6 +353,12 @@ async function transformPost(post: CmsPost): Promise<BlogPost> {
       ? (post.cover as CmsMedia)
       : undefined);
 
+  // Handle tags (can be populated objects or IDs)
+  const tags: CmsTag[] =
+    Array.isArray(post.tags) && post.tags.length > 0 && typeof post.tags[0] === "object"
+      ? (post.tags as CmsTag[])
+      : [];
+
   return {
     id: post.id,
     title: post.title,
@@ -354,6 +368,7 @@ async function transformPost(post: CmsPost): Promise<BlogPost> {
     createdAt: post.createdAt,
     updatedAt: post.updatedAt,
     authors,
+    tags,
     readingTime: readingTimeMinutes,
     excerpt: finalExcerpt,
     cover,
