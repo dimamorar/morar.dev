@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import Link from "next/link";
 import { format } from "date-fns";
 import { getPostBySlug, getAllPostSlugs } from "@/lib/blog";
 import { CalendarRange } from "lucide-react";
@@ -54,6 +55,7 @@ export default async function BlogPost({
 }: {
   params: { slug: string };
 }) {
+  const tags = ["ai", "codex", "workflow"];
   const post = await getPostBySlug(params.slug);
 
   if (!post) {
@@ -83,6 +85,20 @@ export default async function BlogPost({
         </header>
 
         <BlogContent html={post!.content} />
+
+        <footer className="mt-10 mb-10">
+          <div className="flex flex-wrap items-center gap-3 text-sm">
+            {tags.map((tag) => (
+              <Link
+                key={tag}
+                href={`/tags/${tag}`}
+                className="text-muted-foreground underline underline-offset-4 decoration-dotted hover:text-accent transition-colors"
+              >
+                #{tag}
+              </Link>
+            ))}
+          </div>
+        </footer>
       </article>
     </div>
   );
