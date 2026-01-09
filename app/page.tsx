@@ -11,7 +11,7 @@ export default async function Home() {
       <ProfileSection />
 
       <div className="container-narrow pb-12 md:pb-16">
-        <div className="border-t border-border pt-8 -ml-4">
+        <div className="border-t border-border pt-8 -ml-4 px-4 md:px-0">
           <h2 className="text-lg font-medium mb-4">Recent posts</h2>
           {latestPosts.length > 0 ? (
             <div className="space-y-3">

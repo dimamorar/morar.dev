@@ -68,7 +68,7 @@ export default async function BlogPost({
 
   return (
     <div className="container-narrow py-6 md:py-6">
-      <article className="prose max-w-none leading-[28px] ml-[-1.5rem] mr-[-1.5rem]">
+      <article className="prose max-w-none leading-[28px] px-4 -ml-6 -mr-6">
         <header className="mb-8">
           <h1 className="inline-block text-2xl font-bold text-accent sm:text-3xl mb-2">
             {post!.title}
