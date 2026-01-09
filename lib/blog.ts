@@ -379,3 +379,28 @@ export async function getAllPostSlugs(): Promise<string[]> {
   const posts = await getAllPosts();
   return posts.map((post) => post.slug);
 }
+
+export async function getPostsByTag(tagSlug: string): Promise<BlogPost[]> {
+  const allPosts = await getAllPosts();
+  return allPosts.filter((post) =>
+    post.tags.some((tag) => tag.slug === tagSlug)
+  );
+}
+
+export async function getAllTags(): Promise<CmsTag[]> {
+  try {
+    const url = getCollectionUrl("tags", "");
+
+    const response = await fetch(url, fetchOptions);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch tags: ${response.statusText}`);
+    }
+
+    const data: { docs: CmsTag[] } = await response.json();
+    return data.docs;
+  } catch (error) {
+    console.error("Error fetching tags:", error);
+    return [];
+  }
+}

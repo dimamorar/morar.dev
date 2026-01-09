@@ -91,12 +91,13 @@ export default async function BlogPost({
             {post.tags.length > 0 && (
               <div className="flex flex-wrap items-center gap-3 text-sm">
                 {post.tags.map((tag) => (
-                  <span
+                  <Link
                     key={tag.id}
-                    className="text-muted-foreground"
+                    href={`/tags/${tag.slug}`}
+                    className="text-muted-foreground underline underline-offset-4 decoration-dotted hover:text-accent transition-colors"
                   >
                     #{tag.title}
-                  </span>
+                  </Link>
                 ))}
               </div>
             )}
