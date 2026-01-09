@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { getPostBySlug, getAllPostSlugs } from "@/lib/blog";
 import { CalendarRange } from "lucide-react";
 import { BlogContent } from "@/components/blog-content";
+import { InlineTopButton } from "@/components/inline-top-button";
 
 // export const revalidate = 3600;
 
@@ -87,16 +88,20 @@ export default async function BlogPost({
         <BlogContent html={post!.content} />
 
         <footer className="mt-10 mb-10">
-          <div className="flex flex-wrap items-center gap-3 text-sm">
-            {tags.map((tag) => (
-              <Link
-                key={tag}
-                href={`/tags/${tag}`}
-                className="text-muted-foreground underline underline-offset-4 decoration-dotted hover:text-accent transition-colors"
-              >
-                #{tag}
-              </Link>
-            ))}
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-wrap items-center gap-3 text-sm">
+              {tags.map((tag) => (
+                <Link
+                  key={tag}
+                  href={`/tags/${tag}`}
+                  className="text-muted-foreground underline underline-offset-4 decoration-dotted hover:text-accent transition-colors"
+                >
+                  #{tag}
+                </Link>
+              ))}
+            </div>
+
+            <InlineTopButton className="self-center sm:self-auto" />
           </div>
         </footer>
       </article>
