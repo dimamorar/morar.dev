@@ -20,7 +20,7 @@ export function InlineTopButton({ className }: InlineTopButtonProps) {
       type="button"
       onClick={handleClick}
       className={cn(
-        "flex items-center gap-1 text-base text-muted-foreground hover:text-accent transition-colors",
+        "flex items-center gap-1 text-base text-muted-foreground hover:text-accent hover:cursor-pointer transition-colors",
         className
       )}
       aria-label="Scroll to top"
