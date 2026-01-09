@@ -5,6 +5,7 @@ import {
   getExperienceInfo,
   getTechnicalSkillsInfo,
 } from "@/lib/data";
+import { Download } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "About - Dmytro Morar",
@@ -23,6 +24,16 @@ export default function About() {
       <div className="space-y-8">
         <h1 className="text-4xl font-bold mb-4">About</h1>
         <p className="text-lg text-muted-foreground">{aboutInfo.bio}</p>
+
+        <a
+          href="/dmytro_morar_cv.pdf"
+          download
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground no-underline hover:text-accent transition-colors"
+          aria-label="Download Dmytro Morar CV"
+        >
+          <Download className="h-5 w-5" />
+          CV
+        </a>
 
         <h2 className="text-2xl font-semibold mb-4">Skills</h2>
         <ul className="space-y-2">
@@ -55,16 +66,28 @@ export default function About() {
         </div>
 
         <h2 className="text-2xl font-semibold mb-4">Get in touch</h2>
-        <p>
-          If you want to work together or just say hi, reach out at{" "}
+        <div className="space-y-3">
+          <p>
+            If you want to work together or just say hi, reach out at{" "}
+            <a
+              href={`mailto:${personalInfo.email}`}
+              className="text-muted-foreground underline hover:text-primary"
+            >
+              {personalInfo.email}
+            </a>
+            .
+          </p>
+
           <a
-            href={`mailto:${personalInfo.email}`}
-            className="text-muted-foreground underline hover:text-primary"
+            href="/dmytro_morar_cv.pdf"
+            download
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground no-underline hover:text-accent transition-colors"
+            aria-label="Download Dmytro Morar CV"
           >
-            {personalInfo.email}
+            <Download className="h-5 w-5" />
+            CV
           </a>
-          .
-        </p>
+        </div>
       </div>
     </div>
   );
