@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
-@import 'fumadocs-ui/style.css';
+@plugin "tailwindcss-animate";
+
+@layer components {
+  @import "fumadocs-ui/style.css";
+}
 
 @theme {
   --color-border: hsl(var(--border));
@@ -256,7 +260,7 @@ body {
   font-family: var(--font-mono);
 }
 
-[data-sidebar-item][data-active='true'] {
+[data-sidebar-item][data-active="true"] {
   color: hsl(var(--accent));
   font-weight: 600;
   border-left: 2px solid hsl(var(--accent));
@@ -275,7 +279,7 @@ body {
   font-family: var(--font-mono);
 }
 
-[data-toc] a[data-active='true'] {
+[data-toc] a[data-active="true"] {
   color: hsl(var(--accent));
   font-weight: 600;
 }

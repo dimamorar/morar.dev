@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
 
     // Revalidate tag if provided
     if (tag) {
-      revalidateTag(tag);
+      revalidateTag(tag, {});
       console.log(`Revalidated tag: ${tag}`);
     }
 
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
       }
       // Revalidate blog list page
       revalidatePath("/blog");
-      revalidateTag("posts");
+      revalidateTag("posts", {});
       console.log("Revalidated posts collection");
     }
 

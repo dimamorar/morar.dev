@@ -28,10 +28,10 @@ export function SiteHeader() {
               Blog
             </Link>
             <Link
-              href="/vault"
+              href="/docs"
               className="hover:opacity-70 transition-opacity !no-underline"
             >
-              Vault
+              Docs
             </Link>
             <Link
               href="/about"
@@ -66,11 +66,11 @@ export function SiteHeader() {
                 Blog
               </Link>
               <Link
-                href="/vault"
+                href="/docs"
                 className="hover:opacity-70 transition-opacity !no-underline"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Vault
+                Docs
               </Link>
               <Link
                 href="/about"
