@@ -1,0 +1,634 @@
+---
+title: "Security"
+description: "https://thecopenhagenbook.com/"
+---
+
+## Books
+https://thecopenhagenbook.com/
+
+
+## **Authentication**
+> A mechanism for verifying a user's identity, confirming that the client is exactly who they claim to be.
+> 
+> Used to establish trust between the client and the server before granting access to protected resources.
+
+### **Main Goal**
+
+Authentication answers the question **"Who are you?"**.
+
+After successful verification, the server can issue a token, a session, or otherwise confirm the user's identity.
+
+---
+
+### **Types of Authentication**
+
+### 1. Basic Authentication
+
+- Sending an `Authorization: Basic <base64(username:password)>` header.
+- Simple implementation, but **insecure without HTTPS** — the password is easy to decode.
+- Usually used only for internal or temporary APIs.
+
+### 2. Session-based Authentication
+
+- After login, the server creates a **session** and stores it in memory or a database.
+- The client receives a **cookie with a session ID**, which is sent with every request.
+- Disadvantage: the server stores state → scaling requires sharing sessions.
+- Advantage: possibility of forced logout (by deleting the session on the server).
+
+### 3. Token-based Authentication
+
+- The server issues a token (usually JWT), which the client stores and sends in the header:
+    
+    `Authorization: Bearer <token>`.
+    
+- The server **does not store state** — the token is self-contained.
+- Suitable for SPA and microservices, but requires monitoring expiration and revocation of tokens.
+
+---
+
+### 4. OAuth 2.0 and Bearer Tokens
+
+- OAuth 2.0 — **a framework for delegated authentication**, where a proxy server issues a `Bearer Token`.
+- The token confirms the client's right to access the API.
+- Used with external providers (Google, GitHub, Facebook).
+
+---
+
+### 5. Multi-factor Authentication (MFA)
+
+- Adds a second level of verification (SMS code, TOTP, biometrics).
+- Increases security even if the password is compromised.
+
+---
+
+### **6. Authentication Lifecycle**
+
+1. The user enters login and password.
+2. The server verifies data and generates a session or token.
+3. The client stores the identifier and sends it with every request.
+4. The server validates and updates as necessary (refresh flow).
+
+## **Session-based vs Token-based Authentication**
+
+> Two approaches to storing user state after logging into the system.
+> 
+> 
+> Session-based uses server state (stateful), while Token-based transfers responsibility to the client (stateless).
+> 
+
+---
+
+### **Session-based Authentication**
+
+### **How it works**
+
+- After a successful login, the server creates a **session** with a unique `session_id`.
+- Session data (user, duration, rights) are stored on the server — in memory, Redis, or a DB.
+- The client receives a cookie with this `session_id` and automatically sends it in every request.
+- The server looks for the entry by ID and restores the user's context.
+
+### **Features**
+
+- **Stateful** — the server stores active sessions.
+- Supports **forced logout** (by deleting the entry on the server).
+- Requires balancing and synchronization during scaling.
+- **CSRF vulnerability**, as the cookie is automatically sent by the browser.
+
+---
+
+### **Token-based Authentication**
+
+### **How it works**
+
+- After login, the server issues a **token**, usually JWT.
+- The token contains user data and is signed with a secret.
+- The client stores the token and adds it to the header
+    
+    `Authorization: Bearer <token>`.
+    
+- The server verifies the signature without accessing the database.
+
+### **Features**
+
+- **Stateless** — the server does not store user sessions.
+- Scales easily, suitable for SPA and microservices.
+- **Logout is harder** — you can't just "delete" a token, you have to wait for it to expire or use a blacklist.
+- Vulnerable to **XSS** if the token is stored in `localStorage`.
+
+---
+
+### **Comparison**
+
+| Criterion | Session-based | Token-based |
+| --- | --- | --- |
+| State | Stored on server | Stored on client |
+| Scaling | Harder (stateful) | Easier (stateless) |
+| Logout | Instant | Requires blacklist/TTL |
+| Security | Prone to CSRF | Prone to XSS |
+| Usage | SSR apps, legacy | SPA, mobile clients, API |
+
+---
+
+### **Summary**
+
+Session-based is convenient for classic sites with server-side rendering.
+
+Token-based — the standard for modern SPAs and distributed APIs.
+
+## Bearer Tokens (OAuth 2.0 Context)
+
+> A Bearer token is an access token that confirms its owner has the right to make a request on behalf of the user.
+> 
+> 
+> Used in the **OAuth 2.0** standard and passed through the `Authorization: Bearer <token>` header.
+> 
+
+---
+
+### Main Idea
+
+OAuth 2.0 is **a framework for delegated authentication and authorization**, where a user trusts a third-party service (identity provider) to confirm their identity and issue an access token.
+
+The token is the only thing the client uses to access protected APIs.
+
+---
+
+### **Working Principle**
+
+1. **The client requests authorization** — the user logs in through a provider (e.g., Google).
+2. **The Identity Provider** verifies the data and issues an **Authorization Code**.
+3. The client exchanges this code for an **Access Token** (and optionally a Refresh Token).
+4. The client stores the Access Token and adds it to the header of every request:
+    
+    `Authorization: Bearer <access_token>`.
+    
+5. The resource server validates the token and provides access.
+
+---
+
+### **What is "Bearer"**
+
+The word *Bearer* means: **whoever presents the token is considered the owner of the access rights**.
+
+→ If the token is stolen, the attacker receives the same rights.
+
+Therefore, it is critically important to:
+
+- Transfer tokens only via HTTPS,
+- Store them in a secure place,
+- Set a short lifespan.
+
+---
+
+### **Token Types in OAuth 2.0**
+
+- **Access Token** — a short-lived token used to access the API.
+- **Refresh Token** — a long-lived token that allows updating the Access Token without re-logging.
+- **ID Token** — a token containing user information (in OpenID Connect).
+
+---
+
+### **Security Features**
+
+- A Bearer token is not encrypted, but **signed** (e.g., as a JWT).
+- Verified by the server by signature or by request to the Authorization Server.
+- Loss of token = loss of access → it must be possible to **revoke** it.
+
+---
+
+### **Application**
+
+- The main standard for **REST API**, **SPA**, and **mobile clients**.
+- Used in conjunction with OpenID Connect to pass user information.
+
+---
+
+## **JWT (JSON Web Token)**
+
+> A compact, safe token format used to transfer authentication data between a client and a server.
+> 
+> 
+> JWT is signed with a secret or a private key, which allows verifying the authenticity and integrity of data without accessing the DB.
+> 
+
+---
+
+### **Structure**
+
+JWT consists of **three parts**, separated by dots:
+
+`header.payload.signature`
+
+1. **Header** — metadata: token type and signing algorithm.
+    
+    ```json
+    { "alg": "HS256", "typ": "JWT" }
+    
+    ```
+    
+2. **Payload** — payload with data (claims):
+    - standard fields:
+        
+        `iss` (issuer), `sub` (subject), `iat` (issued at), `exp` (expiration)
+        
+    - custom:
+        
+        `{ "userId": 42, "role": "admin" }`
+        
+3. **Signature** — the result of `HMACSHA256(base64url(header) + "." + base64url(payload), secret)`
+    
+    The signature provides protection against tampering.
+    
+
+---
+
+### **Encoding**
+
+- Header and Payload are encoded in **Base64URL** (a variant of Base64 safe for URLs).
+- Signature — a cryptographic signature confirming the integrity of the token.
+- A full JWT looks like a single string:
+    
+    ```
+    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQyLCJyb2xlIjoiYWRtaW4ifQ.FpXx8...
+    
+    ```
+    
+
+---
+
+### **How Validation Works**
+
+1. The client sends the token in the `Authorization: Bearer <jwt>` header.
+2. The server decodes Header + Payload, calculates the signature, and compares it with the one passed.
+3. If the signature matches and the expiration time (`exp`) has not passed, the token is valid.
+4. The server receives the user's data from the Payload without a repeated request to the DB.
+
+---
+
+### **Advantages**
+
+- **Stateless** — does not require storing sessions.
+- Compact (passed in an HTTP header).
+- Universal format (compatible with any platform).
+
+### **Disadvantages**
+
+- **Cannot be revoked** until it expires (without a separate blacklist).
+- Token size grows with a large Payload.
+- Cannot store sensitive data — the token can be read (it is not encrypted).
+
+---
+
+### **Security Practice**
+
+- Pass only via **HTTPS**.
+- Make the duration short (`exp ≈ 15 min`).
+- Store the token in an **HttpOnly cookie** or secure storage.
+- During logout or compromise — use a **revocation list** mechanism.
+
+## **Authorization**
+
+> An access control mechanism that determines what a user can do after passing authentication.
+> 
+> 
+> Answers the question **"What is allowed?"** — what resources and operations are available to a specific user.
+> 
+
+---
+
+### **Main Idea**
+
+After successful authentication, the server knows *who* the user is.
+
+Authorization determines *what they are allowed to do*: view, modify, delete, or create data.
+
+Authorization decisions are made based on **roles**, **rights**, or **access policies**.
+
+---
+
+### **Main Authorization Models**
+
+### **1. Role-Based Access Control (RBAC)**
+
+- Each user is assigned a **role** (admin, editor, user).
+- Each role has a set of permissions.
+- Verification is performed on the principle:
+    
+    "If the role contains the required right — access is granted."
+    
+- A simple and common model.
+
+### **2. Attribute-Based Access Control (ABAC)**
+
+- The decision depends on **attributes**: user, resource, context (time, IP, device).
+- A more flexible model, suitable for complex business logic.
+
+### **3. Policy-Based Access Control (PBAC)**
+
+- Uses declarative **policies** (for example, in JSON format).
+- The server checks rules like:
+    
+    *"user.role === 'manager' && resource.ownerId === user.id"*.
+    
+- Popular in systems with microservice architecture.
+
+---
+
+### **Web-level Authorization**
+
+- On the client — hiding or blocking UI elements without sufficient rights.
+- On the server — **strict verification** before performing any protected action.
+- Verification is usually performed via middleware or a guard that analyzes:
+    - JWT / Access Token (role, scope, permissions).
+    - Session state.
+    - Request parameters and resource.
+
+---
+
+### **Connection with Authentication**
+
+- **Authentication:** confirms user identity.
+- **Authorization:** determines their access level.
+    
+    Both stages are performed sequentially — you cannot authorize an unauthenticated user.
+    
+
+---
+
+### **Security and Best Practices**
+
+- Store access rights on the server, not on the client.
+- Verify permissions **on every request to a protected API**.
+- Use short access tokens and limited scopes.
+- When roles change — **invalidate tokens** of the user.
+
+---
+
+## **Difference between Authentication and Authorization**
+
+> Authentication is responsible for verifying a user's identity, while authorization is for determining their rights and access level.
+> 
+> 
+> These processes happen sequentially: first the system makes sure *who* you are, then it decides *what you are allowed to do*.
+> 
+
+---
+
+### **Authentication**
+
+- Goal: confirm **user identity**.
+- Verifies credentials: login, password, token, certificate, biometrics.
+- Result — creation of a session or issuance of a token.
+- Example: entering login and password on the login page.
+- Answers the question: **"Who are you?"**
+
+---
+
+### **Authorization**
+
+- Goal: determine the **access level** of the user.
+- Verifies roles, rights, or access policies.
+- Decides which data and actions are available.
+- Example: only an admin can delete a user.
+- Answers the question: **"What are you allowed?"**
+
+---
+
+### **Key Differences**
+
+| Criterion | Authentication | Authorization |
+| --- | --- | --- |
+| Purpose | Confirmation of identity | Determination of access rights |
+| Process Stage | Performed first | Follows after authentication |
+| Result | User identified | User granted permissions |
+| Verified via | Login, password, token | Roles, rights, policies |
+| Visibility to user | Usually explicit (login form) | Often implicit (limited functionality) |
+
+---
+
+### **Example**
+
+1. A user logs in using email and password → **authentication**.
+2. The system determines that they have the `editor` role and allows them to edit articles but not delete → **authorization**.
+
+## **Access Token vs Refresh Token**
+
+> Two types of tokens used in authentication and authorization systems.
+> 
+> 
+> **Access Token** provides temporary access to resources, while **Refresh Token** is used to safely update expired access tokens without re-logging the user.
+> 
+
+---
+
+### **Access Token**
+
+### **Purpose**
+
+- The main token confirming that the user is authorized.
+- Sent in every request to the API in the header:
+    
+    `Authorization: Bearer <access_token>`
+    
+- Used to access protected resources.
+
+### **Characteristics**
+
+- **Short lifespan** — from several minutes to an hour.
+- Contains data (claims): `userId`, `role`, `exp`.
+- After expiration — becomes invalid.
+- Loss of token = loss of access (it cannot be revoked without a blacklist mechanism).
+
+---
+
+### **Refresh Token**
+
+### **Purpose**
+
+- Allows obtaining a new Access Token without repeated authentication.
+- Used in the background (silent refresh) or during explicit session updates.
+
+### **Characteristics**
+
+- **Long-lived** (days, weeks, months).
+- Not used directly to access the API.
+- Stored in a more secure place (for example, `HttpOnly cookie`).
+- Can be revoked on the server during logout or compromise.
+
+---
+
+### **Interaction Mechanism**
+
+1. User logs in → server issues **access** and **refresh** tokens.
+2. Client uses access token for API requests.
+3. When the access token expires, the client sends the refresh token to the server.
+4. The server verifies the refresh token and issues a new access token (and if necessary — a new refresh token).
+5. User continues working without re-logging.
+
+---
+
+### **Key Differences**
+
+| Criterion | Access Token | Refresh Token |
+| --- | --- | --- |
+| Purpose | Access to API | Updating access token |
+| Lifespan | Short (minutes/hours) | Long (days/weeks) |
+| Where used | In every request | Only during update |
+| Where stored | Usually in memory / cookie | Only in secure storage |
+| Compromise risk | Loss = access leak | Loss = update leak |
+
+---
+
+### **Security**
+
+- Transfer only via HTTPS.
+- Store Refresh token in **HttpOnly cookie**.
+- Implement **token rotation** (updating refresh token upon every use).
+- Invalidate refresh token upon logout.
+
+## **Where to Store JWT: Cookies vs LocalStorage**
+
+> The storage location of a token directly affects the application's security.
+> 
+> 
+> The main choice is between **HttpOnly cookies**, protected from JavaScript, and **LocalStorage**, accessible from client code.
+> 
+
+---
+
+### **1. Cookies**
+
+### **Features**
+
+- The token is stored in a cookie and automatically transferred by the browser with every request.
+- If the cookie is marked with the **HttpOnly** flag, it is inaccessible from JavaScript.
+- Can have flags:
+    - `Secure` — transfer only via HTTPS
+    - `SameSite` — restriction of cross-site requests
+    - `Expires / Max-Age` — lifespan
+
+### **Advantages**
+
+- Protection from **XSS** (since the token is inaccessible from JS).
+- Easy integration with SSR and browser requests.
+- Suitable for **refresh tokens** or **session cookies**.
+
+### **Disadvantages**
+
+- Prone to **CSRF attacks** if `SameSite` is not configured.
+- Not suitable for mobile clients without cookie storage.
+
+---
+
+### **2. LocalStorage**
+
+### **Features**
+
+- Manual token storage in the browser (`localStorage.setItem('token', ...)`).
+- Token is retrieved and added to the `Authorization: Bearer <jwt>` header with every request.
+
+### **Advantages**
+
+- Implementation simplicity for **SPA** and REST API.
+- Full control over when and how to send the token.
+- Not automatically sent by the browser → **no CSRF**.
+
+### **Disadvantages**
+
+- Prone to **XSS** — any malicious script can read the token.
+- No automatic expiration.
+- Requires additional security measures (CSP, sanitization, logout flow).
+
+---
+
+### **3. Alternative — Memory Storage**
+
+- Storing the token only in memory (RAM) during the session.
+- Cleared upon page refresh → increased security.
+- Compromise between convenience and protection (often used with silent refresh).
+
+---
+
+### **Security Recommendations**
+
+| Token Type | Where to Store | Reason |
+| --- | --- | --- |
+| **Access Token** | In memory or LocalStorage | Fast access from JS needed |
+| **Refresh Token** | In HttpOnly cookie | Maximum protection from XSS |
+
+---
+
+### **Summary**
+
+- **Cookies (HttpOnly)** — safer but require CSRF protection.
+- **LocalStorage** — simpler but vulnerable to XSS.
+- In practice: **Access Token in memory**, **Refresh Token in HttpOnly cookie** — a balance between UX and security.
+
+## **Token Refresh Flow on Frontend**
+
+> A mechanism for extending a user session without repeated login.
+> 
+> 
+> Uses a pair of tokens — a short-lived **Access Token** and a long-lived **Refresh Token** to update authentication transparently for the user.
+> 
+
+---
+
+### **Main Idea**
+
+Access Token is valid for a limited time (for example, 15 min).
+
+When it expires, the client requests a new one using the Refresh Token.
+
+Update is performed automatically (silent refresh) or during the first failed attempt to access the API.
+
+---
+
+### **Step-by-step Scenario**
+
+1. **Initial Login**
+    - User passes authentication.
+    - Server issues two tokens:
+        - Access Token → stored in memory or LocalStorage
+        - Refresh Token → stored in HttpOnly cookie
+2. **Using Access Token**
+    - With every API request, the client adds the header
+        
+        `Authorization: Bearer <access_token>`.
+        
+    - If the token is valid → server returns a response.
+3. **Access Token Expiration**
+    - Upon receiving a `401 Unauthorized` response, the client sends a request to `/auth/refresh`.
+    - The Refresh Token is used in the request (automatically via cookie).
+4. **Issuance of a New Token**
+    - Server verifies the Refresh Token, creates a new Access Token (and if necessary, a new Refresh Token).
+    - Client updates the token in memory and repeats the original request.
+5. **Silent Refresh (variant)**
+    - Client monitors `exp` from the token and updates it **in advance**, before expiration.
+    - Usually implemented via a timer or interceptor in an HTTP client (e.g., Axios).
+
+---
+
+### **Implementation Recommendations**
+
+### **On the Client**
+
+- Intercept 401 responses and automatically call the refresh function.
+- Use a centralized interceptor (e.g., Axios `response interceptor`).
+- Never store refresh tokens in JS-accessible locations.
+- Update access token in advance (e.g., 1–2 minutes before `exp`).
+
+### **On the Server**
+
+- Implement the `/auth/refresh` endpoint.
+- Verify refresh token in the database (or by signature).
+- Apply **token rotation** — issue a new refresh token with every update, invalidate the old one.
+- Limit the number of active refresh tokens per user.
+
+---
+
+### **Summary**
+
+- User stays in the system without re-logging.
+- Session is extended safely if the refresh token is protected.
+- If the refresh token is compromised, the system must be able to revoke it and request re-authentication.

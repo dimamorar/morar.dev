@@ -1,0 +1,73 @@
+---
+title: "Routing in App Router"
+description: "App Router uses a segmented file structure where each directory corresponds to a part of the URL."
+---
+
+## **How routing works in App Router (route segments, nested layouts, dynamic routes)**
+> App Router uses a segmented file structure where each directory corresponds to a part of the URL.  
+> Routes are formed through nested segments and layouts that allow building a hierarchical UI.  
+> Dynamic parameters, parallel segments, and interceptors provide flexible page composition.
+
+---
+
+### Technical Explanation
+
+#### Route Segments
+
+- Each folder in `app/` is a **route segment**.
+    
+    - `app/dashboard` → `/dashboard`
+        
+    - `app/blog/[slug]` → `/blog/:slug`
+        
+- Each segment can have:
+    
+    - **page.js** — the final page;
+        
+    - **layout.js** — a shell that is preserved between navigations;
+        
+    - **loading.js**, **error.js**, **not-found.js** — special states.
+        
+
+#### Nested Layouts
+
+- Layouts form a navigation tree:
+    
+    - global `app/layout.js`;
+        
+    - segment-level `app/dashboard/layout.js`;
+        
+    - child `app/dashboard/settings/layout.js`.
+        
+- Layouts **preserve state**, without re-mounting upon transitions within the segment.
+    
+- They support **shared UI**: sidebars, headers, breadcrumbs.
+    
+
+#### Dynamic Routes
+
+- Created through **square brackets**:
+    
+    - `[id]` → `/products/123`
+        
+    - `[slug]` → `/blog/react-server-components`
+        
+- The value is passed via `params`.
+    
+
+#### Catch-All Routes
+
+- `[...slug]` → allows any path depth.
+    
+    - `/docs/a/b/c`
+        
+- Optional catch-all: `[[...slug]]` — also matches the root `/docs`.
+    
+
+#### Special Routing Features in App Router
+
+- **Parallel segments** (`@modal`, `@feed`) — render several UI branches in parallel.
+    
+- **Intercepting routes** (`(.)`, `(..)`, `(...)`) — allow opening pages in modals.
+    
+- **Route Handlers** (`route.js`) — API endpoints within a segment.

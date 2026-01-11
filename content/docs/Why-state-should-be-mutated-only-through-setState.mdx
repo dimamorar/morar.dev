@@ -1,0 +1,75 @@
+---
+title: "Why state should be mutated only through setState"
+description: "In React, state should only be updated through `setState` (in class components) or setter functions from `useState`."
+---
+
+## Why state should be mutated only through setState / state setters
+
+> In React, state should only be updated through `setState` (in class components) or setter functions from `useState`.  
+> Direct state mutation violates React principles and can lead to unpredictable UI behavior.
+
+---
+
+### 🧩 The Problem of Direct Mutation
+
+React does not track object changes directly — it relies on **reference comparison** (shallow comparison).
+
+If you change the state directly, React won't see that the object reference has changed and **won't trigger a re-render**.
+
+```jsx
+// ❌ Incorrect
+state.user.name = 'Alex';
+```
+
+- The state has changed, but the component will not update.
+- Reconciliation thinks the `state` remains the same since the reference hasn't changed.
+
+---
+
+### 🧩 The Correct Way to Update
+
+### Class Components
+
+```jsx
+this.setState({ user: { ...this.state.user, name: 'Alex' } });
+```
+
+### Functional Components
+
+```jsx
+setUser(prev => ({ ...prev, name: 'Alex' }));
+```
+
+- `setState` and the setter from `useState` **create a new value**, which guarantees a reference change and triggers a render.
+
+---
+
+### 🧩 Why This Matters
+
+1. **Immutability** — the foundation of React's principle.
+    - Allows optimizing comparison (`shouldComponentUpdate`, `React.memo`).
+    - Simplifies rollback (undo/redo) and time-travel debugging.
+2. **Predictable rendering** — re-rendering only happens when data actually changes.
+3. **Concurrent Mode safety** — React can pause and resume rendering without side effects if the state is not mutated directly.
+
+---
+
+### 🧩 Common Mistakes
+
+- Mutating arrays directly (`push`, `splice`) instead of creating copies:
+    
+    ```jsx
+    setList(prev => [...prev, newItem]); // ✅
+    ```
+    
+- Mutating nested objects without spread or `structuredClone`.
+- Expecting an immediate state update after `setState` — it is asynchronous and can be batched.
+
+---
+
+### 💡 Key Ideas
+
+- React determines changes by **new reference**, not by content.
+- State mutation breaks Reconciliation and prevents re-rendering.
+- `setState` and `useState` setters guarantee immutability and predictability.
+- Always **create a new value** rather than changing the old one — this is the core principle of React state management.

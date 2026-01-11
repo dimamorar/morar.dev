@@ -1,0 +1,14 @@
+---
+title: "Git checkout vs. git switch"
+description: "`git switch` is a modern alternative to some of the functions of `git checkout`, designed for clarity."
+---
+
+> `git switch` is a modern alternative to some of the functions of `git checkout`, designed for clarity.
+
+### Explanation
+
+- `git checkout` — a universal command: it can switch branches **and** restore files.
+- `git switch` — only for switching branches (`git switch feature/login`).
+- `git restore` — for restoring files (`git restore index.js`).
+
+Thus, Git divided the `checkout` behavior to increase readability and safety.

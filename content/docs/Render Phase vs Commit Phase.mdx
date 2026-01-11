@@ -1,0 +1,67 @@
+---
+title: "Render Phase vs. Commit Phase"
+description: "React Fiber performs updates in two separate phases: **Render Phase** and **Commit Phase**."
+---
+
+> React Fiber performs updates in two separate phases: **Render Phase** and **Commit Phase**.  
+> The render phase can be interrupted, deferred, or repeated, while the commit phase is always executed synchronously and is guaranteed.
+
+---
+
+### 🧩 Render Phase (reconciliation)
+
+**Goal:** calculate *what* needs to be updated in the UI.
+The Render Phase is also called the **reconciliation phase** because in it React:
+
+- creates or updates Fiber nodes,
+- compares `pendingProps` with `memoizedProps`,
+- determines which Fibers are changed, added, or deleted,
+- forms the **effect list** (a list of changes for the DOM).
+
+#### 🔹 Properties of Render Phase
+
+- **Can be interrupted** → React will give control back to the browser.
+- **Can be resumed** → will continue from the moment of pause.
+- **Can be cancelled** → if new priority updates arrive.
+- **Can be performed repeatedly** → if props/state have changed.
+
+> In the render phase, React **does not touch the DOM**.
+
+It's pure computational work.
+
+---
+
+### 🧩 Commit Phase
+
+**Goal:** apply all calculated changes to the real DOM.
+
+In the commit phase, React:
+1. Performs DOM mutations (insertions/deletions/updates).
+2. Calls layout effects (`useLayoutEffect`).
+3. Activates passive effects (`useEffect`) in a deferred cycle.
+
+#### 🔹 Properties of Commit Phase
+- **Always synchronous**.
+- **Cannot be interrupted**.
+- **Executed quickly**, because only the physical application of calculated changes is done.
+- Uses the **effect list** formed in the render phase.
+
+> Commit Phase is the only place where React interacts with the DOM.
+
+---
+
+### 🧩 Why two phases?
+
+- Separation allows avoiding browser blocking.
+- Unnecessary or outdated results of the render phase can be cancelled.
+- The commit phase is fast, so it executes without the risk of freezes.
+- This is exactly how **concurrent rendering** is implemented.
+
+---
+
+### 💡 Key Ideas
+
+- Render Phase = "what to change". Commit Phase = "apply changes".
+- Render phase can be interrupted, resumed, or cancelled.
+- Commit phase is always synchronous and works with the DOM.
+- This separation is the basis of Fiber, concurrent rendering, and Suspense.

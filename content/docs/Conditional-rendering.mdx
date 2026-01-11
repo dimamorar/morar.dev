@@ -1,0 +1,145 @@
+---
+title: "Conditional rendering"
+description: "Conditional rendering is a mechanism that allows React components to display different elements depending on state or props."
+---
+
+## Conditional rendering
+
+> Conditional rendering is a mechanism that allows React components to display different elements depending on state or props.
+> 
+> It is based on the principle: **UI = function of data**, and changes when the input conditions change.
+
+---
+
+### 🧩 Main Ways of Conditional Rendering
+
+### 1. **`if` operator or `return null`**
+
+Used to completely exclude an element from render.
+
+```jsx
+if (!isLoggedIn) return null;
+return <Dashboard />;
+
+```
+
+---
+
+### 2. **Ternary operator `? :`**
+
+The most common way to display one of two states.
+
+```jsx
+{isLoading ? <Spinner /> : <Content />}
+
+```
+
+---
+
+### 3. **Logical AND (`&&`)**
+
+Convenient for outputting an element if the condition is true.
+
+```jsx
+{error && <ErrorMessage text={error} />}
+
+```
+
+---
+
+### 4. **Switch or dynamic component**
+
+Used when there are several options.
+
+```jsx
+switch (status) {
+  case 'loading': return <Loader />;
+  case 'error': return <Error />;
+  default: return <Content />;
+}
+
+```
+
+---
+
+### 🧩 Advanced Techniques
+
+### 🔹 Render Props
+
+Allows passing display logic as a function in props.
+
+Useful if the parent wants to control **what** and **how** is rendered in the child component.
+
+```jsx
+<VisibilityControl
+  renderContent={() => (isVisible ? <Panel /> : <Hidden />)}
+/>
+
+```
+
+or via function children:
+
+```jsx
+<Toggle>
+  {({ on }) => (on ? <OpenView /> : <ClosedView />)}
+</Toggle>
+
+```
+
+---
+
+### 🔹 Dynamic Import of Components
+
+Allows conditionally loading heavy components only when necessary.
+
+Used together with `React.lazy` and `Suspense`.
+
+```jsx
+const AdminPanel = React.lazy(() => import('./AdminPanel'));
+
+{isAdmin && (
+  <Suspense fallback={<Spinner />}>
+    <AdminPanel />
+  </Suspense>
+)}
+
+```
+
+---
+
+### 🔹 Short-circuit evaluation
+
+For complex expressions, you can use logical operators for concise code:
+
+```jsx
+{user && user.isActive && <Profile user={user} />}
+{!items.length && <EmptyState />}
+
+```
+
+---
+
+### 🔹 Fragments and helper components
+
+To avoid duplicating conditions, you can wrap logic in a component:
+
+```jsx
+function RenderIf({ condition, children }) {
+  return condition ? children : null;
+}
+
+// Usage
+<RenderIf condition={isReady}>
+  <Dashboard />
+</RenderIf>
+
+```
+
+---
+
+### 💡 Key Ideas
+
+- Conditional rendering in React is **pure JavaScript inside JSX**.
+- The choice between `if`, `? :`, `&&` and other approaches depends on context.
+- Render props and dynamic imports make conditional rendering **flexible and scalable**.
+- The simpler the expression in JSX — the easier it is to read and maintain the code.

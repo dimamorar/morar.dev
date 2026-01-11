@@ -1,0 +1,78 @@
+---
+title: "d.ts files"
+description: "Ambient declarations (.d.ts files) describe types for variables, functions, modules, or libraries that **exist in the execution environment** but **do not have "
+---
+
+> Ambient declarations (.d.ts files) describe types for variables, functions, modules, or libraries that **exist in the execution environment** but **do not have their own definitions in TypeScript code**. They inform the compiler which entities are available without the need for implementation.
+
+---
+
+### 🧩 Main Idea
+
+- TypeScript does not execute code, so it needs to "know" the types of external objects.
+- Declaration files allow adding this information — the compiler uses them only for **type checking**, not including them in the `.js` result.
+
+```tsx
+// globals.d.ts
+declare const VERSION: string;
+declare function logMessage(msg: string): void;
+```
+
+```tsx
+// main.ts
+console.log(VERSION); // ✅ compiler knows it's a string
+logMessage("Hello!"); // ✅ type checked
+```
+
+---
+
+### 🧩 Declarations for External Libraries
+
+- If a JS library does not have types, you can either:
+    1. Install official types from DefinitelyTyped:
+
+```bash
+npm i --save-dev @types/lodash
+```
+    2. Or create your own `.d.ts` file:
+    
+```tsx
+// custom-lodash.d.ts
+declare module "lodash" {
+  export function chunk<T>(arr: T[], size?: number): T[][];
+}
+```
+
+---
+
+### 🧩 The `declare` Keyword
+
+- Used to describe **external entities** — without implementation.
+
+```tsx
+declare namespace MyApp {
+  const version: string;
+  function start(): void;
+}
+```
+
+- Without `declare`, TypeScript expects a real implementation (code), not just a declaration.
+
+---
+
+### 🧩 Usage in Large Projects
+
+- Used to describe:
+    - global variables or environment objects (e.g., `process`, `window`)
+    - API of external libraries
+    - modules without types
+    - type declarations in shared packages
+
+---
+
+### 💡 Key Ideas
+
+- `.d.ts` files = **"type contract without code"**.
+- Do not contain logic, only type signatures.
+- Allow TypeScript to "understand" the structure of third-party or global elements.
+- Actively used in libraries (`@types/...`) and large codebases for type consistency.

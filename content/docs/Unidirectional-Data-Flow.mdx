@@ -1,0 +1,68 @@
+---
+title: "Unidirectional Data Flow"
+description: "Unidirectional data flow is a model where data moves strictly in one direction: from state to UI and back through a controlled update chain."
+---
+
+## Unidirectional Data Flow
+
+> Unidirectional data flow is a model where data moves strictly in one direction: from state to UI and back through a controlled update chain.  
+> It makes application behavior predictable, eliminates hidden dependencies, and simplifies debugging.
+
+---
+
+### Technical Explanation
+
+#### **The Essence of Unidirectional Flow**
+
+- State changes always follow a fixed route.
+    
+- The UI does not modify the state directly — it initiates an **action**, which is processed by the system.
+    
+- Every change has a clear source and a clear sequence of steps.
+    
+
+#### **The Problem of Two-way Connections**
+
+- In classical patterns (MVC/MVVM), View and Model can update each other directly.
+    
+- This leads to implicit dependencies, event races, and difficulty in determining the cause of an update.
+    
+
+#### **Unidirectional flow in Flux**
+
+- The flow is organized as:  
+    **View → Action → Dispatcher → Store → View**
+    
+- Every change passes through the Dispatcher, which guarantees the order and delivery of the action to all Stores.
+    
+
+#### **Unidirectional flow in Redux**
+
+- Redux simplifies the Flux model, **but the Action remains a mandatory part**.
+    
+- The flow looks like this:  
+    **dispatch(Action) → reducer → new state → UI**
+    
+- The reducer calculates the new state based on the current state and action.
+    
+- The Store manages the state but does not contain the business logic of mutations.
+    
+
+#### **Why This is Important**
+
+- No hidden mutations: everything starts with an action.
+    
+- The flow is transparent → easy to log and reproduce errors.
+    
+- Supports time-travel debugging, hot reload, and deterministic rendering.
+    
+
+---
+
+### Important Notes
+
+- Unidirectional flow does not work without immutability — the new state must be a new object.
+    
+- The Redux flow does not contain a Dispatcher, but the **action remains a fundamental entity**.
+    
+- This is one of the key principles of React/Redux architecture for large SPAs.

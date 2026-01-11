@@ -1,0 +1,38 @@
+---
+title: "Closure"
+description: "A closure is a mechanism that allows a function to "remember" variables from its outer scope even after that outer function has finished executing. The function"
+---
+
+> A closure is a mechanism that allows a function to "remember" variables from its outer scope even after that outer function has finished executing. The function stores a reference to the environment in which it was created and can access that data later.
+
+---
+
+### 🧩 What is a Closure
+
+- A closure is formed when an **inner function gains access to variables of an outer function**.
+- When such a function is created, the JS engine stores the **lexical environment** — the set of variables available at the time of declaration.
+- Thanks to this, the inner function continues to have access to these variables even if the outer function is already completed.
+
+---
+
+### ⚙️ Why we use closures
+
+1. **Data Encapsulation** — creating private variables and protecting state from external interference.
+2. **State Preservation** — preserving values between function calls (e.g., counters, cache).
+3. **Function Factories** — generating functions with individual behavior based on enclosed data.
+4. **Asynchronous Code** — use in callbacks and event handlers to preserve execution context.
+
+---
+
+### 💡 Key Ideas
+
+- A closure is the result of **lexical binding of functions and environments**.
+- Variables of the outer scope are not copied, but stored **by reference**.
+- A primary tool for **modularity, privacy, and state management**.
+- Each function call creates its own closure with independent variables.
+
+---
+
+### 🔗 Links
+
+[I never understood JavaScript closures — Medium](https://www.notion.so/I-never-understood-JavaScript-closures-by-Olivier-De-Meulder-DailyJS-Medium-0dc572ec7faa46f88dfd89dfbcf67463?pvs=21)

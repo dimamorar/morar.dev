@@ -1,0 +1,75 @@
+---
+title: "Memory Management & Garbage Collection"
+description: "Memory management in JavaScript happens automatically: the engine allocates memory for created values and frees it when they are no longer reachable."
+---
+
+## Memory Management & Garbage Collection
+
+> Memory management in JavaScript happens automatically: the engine allocates memory for created values and frees it when they are no longer reachable.
+> This process is controlled by the **Garbage Collector**.
+
+---
+
+### 🧩 Memory Allocation
+
+- Memory is allocated upon creation of:
+    - **Primitives** (on the stack);
+    - **Objects, arrays, functions** (on the heap);
+    - **Closures** — references to outer variables are kept as long as the function exists.
+- When a value becomes **unreachable** (no active references to it), it is marked for deletion.
+
+```jsx
+let user = { name: 'Alice' };
+user = null; // object is now unreachable, memory will be cleared
+
+```
+
+---
+
+### 🧠 Garbage Collection Mechanism
+
+- GC is based on the principle of **reachability**.
+- **Mark-and-sweep** algorithm:
+    1. The engine marks all values reachable from root objects (`window`, `globalThis`, call stack).
+    2. Everything not marked as reachable is removed from memory.
+
+📘 Modern engines use optimized algorithms: **generational**, **incremental**, **concurrent**, and **ephemeral GC** — so that collection doesn't block the main thread.
+
+---
+
+### ⚙️ Typical Causes of Memory Leaks
+
+1. **Uncleared references to DOM elements**
+    - A removed element stays in memory if JS code still references it.
+2. **Global variables and forgotten timers**
+    - `setInterval` or `setTimeout` continue to hold references.
+3. **Closures**
+    - Captured variables stay in memory if the function isn't destroyed.
+4. **Unbounded cache**
+    - Storing growing structures (`Map`, arrays) without size control.
+
+---
+
+### 🧩 WeakMap and WeakSet
+
+- Store **weak references** — keys do not prevent garbage collection.
+- When an object becomes unreachable, its entries are automatically removed from the collection.
+
+```jsx
+let cache = new WeakMap();
+let obj = {};
+cache.set(obj, "data");
+obj = null; // entry will be removed by GC
+
+```
+
+📘 Used for **caches, private data, and metadata** where manual cleanup management isn't needed.
+
+---
+
+### 💡 Key Ideas
+
+- GC frees memory automatically based on **object reachability**.
+- The main goal is to **avoid leaks** by not holding onto unnecessary references.
+- **WeakMap/WeakSet** help securely store data without interfering with garbage collection.
+- Avoid global variables and "eternal" closures to control memory consumption.

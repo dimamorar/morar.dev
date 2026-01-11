@@ -1,0 +1,92 @@
+---
+title: "Modules (ES Modules vs. CommonJS)"
+description: "Modules are isolated files with their own namespace,"
+---
+
+## Modules (ES Modules vs CommonJS)
+
+> Modules are isolated files with their own namespace,
+> 
+> 
+> which allow structuring code and managing dependencies.
+> 
+> In JavaScript, there are two main module systems: **ES Modules (ESM)** and **CommonJS (CJS)**.
+> 
+
+---
+
+### 🧩 ES Modules (ESM)
+
+- ECMAScript 2015+ standard.
+- Used in browsers and modern bundlers (Webpack, Vite, Rollup).
+- Works at the language level — **static import/export**.
+- Imports are hoisted (**hoisting**) and processed **before code execution**.
+
+```jsx
+// file: math.js
+export function add(a, b) { return a + b; }
+export const PI = 3.14;
+
+// file: main.js
+import { add, PI } from './math.js';
+console.log(add(2, PI));
+
+```
+
+📘 Each module has its own **lexical scope**, and `this` at the top level is equal to `undefined`.
+
+---
+
+### 🧩 CommonJS (CJS)
+
+- Historically used in **Node.js**.
+- Works at the **execution (runtime)** level — modules are loaded synchronously using `require()`.
+- Exported via `module.exports` or `exports`.
+
+```jsx
+// file: math.js
+module.exports = { add: (a, b) => a + b };
+
+// file: main.js
+const { add } = require('./math');
+console.log(add(2, 3));
+
+```
+
+📘 CommonJS does not support **tree-shaking** and cannot be used directly in the browser without a bundler.
+
+---
+
+### ⚙️ Key Differences
+
+| Feature | **ES Modules (ESM)** | **CommonJS (CJS)** |
+| --- | --- | --- |
+| Loading | Asynchronous | Synchronous |
+| Import / Export | `import` / `export` | `require()` / `module.exports` |
+| Dependency Analysis | Static | Dynamic |
+| Tree-shaking | ✅ Yes | ❌ No |
+| Scope | Lexical (strict) | General (file as a function) |
+| Support | Browser, Node.js (ESM mode) | Node.js (classic mode) |
+
+---
+
+### 🧠 Additional Information
+
+- In Node.js, ESM support can be enabled by specifying `"type": "module"` in `package.json`.
+- Extensions: `.mjs` for ESM, `.cjs` for CommonJS.
+- Systems can be mixed with dynamic import:
+    
+    ```jsx
+    const module = await import('./module.js');
+    
+    ```
+    
+
+---
+
+### 💡 Key Ideas
+
+- **ES Modules** — modern, standardized way of modularity.
+- **CommonJS** — old Node.js model, loaded during execution.
+- ESM supports **tree-shaking**, **asynchronous loading** and works in browsers without bundlers.
+- In new code, **ESM** is always preferred.

@@ -1,0 +1,96 @@
+---
+title: "shouldComponentUpdate vs. memoization hooks"
+description: "Both shouldComponentUpdate and memoization hooks (React.memo, useMemo, useCallback) serve the same purpose — to prevent unnecessary re-renders."
+---
+
+## shouldComponentUpdate vs memoization hooks
+
+> Both shouldComponentUpdate and memoization hooks (React.memo, useMemo, useCallback) serve the same purpose — to prevent unnecessary re-renders.
+
+> The only difference is that the former is used in **class components**, while hooks are used in **functional components**.
+
+---
+
+### 🧩 shouldComponentUpdate
+
+- A lifecycle method of a class component.
+- Called **before a re-render** and allows deciding whether the component needs to be updated.
+- Returns `true` (allow update) or `false` (skip re-render).
+
+```jsx
+class UserCard extends React.Component {
+  shouldComponentUpdate(nextProps) {
+    return nextProps.user.id !== this.props.user.id;
+  }
+  render() {
+    return <div>{this.props.user.name}</div>;
+  }
+}
+
+```
+
+**Advantages:** full control over the update logic.
+
+**Disadvantages:** requires manual comparison and complicates the code.
+
+---
+
+### 🧩 PureComponent
+
+- An optimized version of a class component with a **built-in `shouldComponentUpdate`**,
+    
+    performing a **shallow comparison** of props and state.
+    
+
+```jsx
+class UserCard extends React.PureComponent {
+  render() {
+    return <div>{this.props.name}</div>;
+  }
+}
+
+```
+
+---
+
+### 🧩 React.memo (analogue for functional components)
+
+- Performs the same shallow check but for **functional components**.
+- If the props haven't changed, the component does not re-render.
+
+```jsx
+const UserCard = React.memo(({ name }) => <div>{name}</div>);
+
+```
+
+---
+
+### 🧩 useMemo and useCallback
+
+- Optimize **internal calculations and callbacks** to avoid triggering cascade re-renders of child components.
+
+```jsx
+const filtered = useMemo(() => data.filter(x => x.active), [data]);
+const handleClick = useCallback(() => doSomething(id), [id]);
+
+```
+
+---
+
+### 🧩 Comparison
+
+| Approach | Component Type | What it controls | Comparison Level |
+| --- | --- | --- | --- |
+| `shouldComponentUpdate` | Class | Render behavior | Custom logic |
+| `PureComponent` | Class | Props and state | Shallow comparison |
+| `React.memo` | Functional | Props | Shallow comparison |
+| `useMemo` / `useCallback` | Functional | Calculations / functions | Dependencies |
+
+---
+
+### 💡 Key Ideas
+
+- All these tools serve the purpose of **render optimization**.
+- Class components use `shouldComponentUpdate` or `PureComponent`.
+- Functional components use `React.memo` + `useMemo` / `useCallback`.
+- The goal is to not render the component if the **input data hasn't changed**.

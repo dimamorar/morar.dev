@@ -1,0 +1,71 @@
+---
+title: "What Is the Store"
+description: "The Store is the central Redux object that holds the global state and manages its updates."
+---
+
+## What Is the Store
+
+> The Store is the central Redux object that holds the global state and manages its updates.  
+> It accepts actions, runs the reducer, and notifies subscribers of the new state, ensuring a predictable data flow.
+
+---
+
+### Technical Explanation
+
+#### **Store's Role**
+
+- Holds the application's only object — **global state**.
+    
+- Provides three key methods:
+    
+    - `getState()` — get the current state
+        
+    - `dispatch(action)` — initiate an update
+        
+    - `subscribe(listener)` — subscribe to changes
+    
+
+#### **How the Store Processes Updates**
+
+The Store implements a fixed cycle:
+
+**Action → dispatch(action) → Middleware (optional) → Reducer → New State → Notify Subscribers**
+
+- **dispatch** accepts an action.
+    
+- The action passes through a chain of middleware (if connected).
+    
+- The Store calls the root reducer with `(previousState, action)`.
+    
+- The reducer returns a new immutable state.
+    
+- The Store saves the new state.
+    
+- All subscribers are called again.
+    
+
+#### **What the Store DOES NOT Do**
+
+- Does not contain business logic (it's in reducers).
+    
+- Does not change the state directly.
+    
+- Does not perform side effects.
+    
+
+#### **Why There is Only One Store**
+
+- One Store = one source of truth.
+    
+- Ensures consistency and a predictable data flow.
+    
+
+---
+
+### Important Notes
+
+- The Store in Redux is not an analogue of the Flux Store: it does not update the state on its own and does not hold the logic of actions.
+    
+- Dispatch is a built-in Store mechanism, not a separate Dispatcher object.
+    
+- DevTools connect to the Store to display all state updates.

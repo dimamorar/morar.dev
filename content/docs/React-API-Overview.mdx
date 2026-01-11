@@ -1,0 +1,68 @@
+---
+title: "React API Overview"
+description: "React API is based on three key concepts — JSX, Virtual DOM, and Components."
+---
+
+## React API Overview: JSX, Virtual DOM, Components
+
+> React API is based on three key concepts — JSX, Virtual DOM, and Components.
+> 
+> Together they form a declarative model in which the UI is described as a function of state and updated efficiently and predictably.
+
+---
+### 🧩 JSX
+
+- **JSX (JavaScript XML)** — a syntactic extension of JavaScript that allows describing UI structure in a way that looks like XML code.
+- During compilation, JSX is transformed into **`React.createElement()`** calls, which create React Element objects.
+- These objects represent future nodes of the Virtual DOM, without creating real DOM elements until render.
+
+```jsx
+// JSX syntax:
+const element = <h1>Hello, {user.name}</h1>;
+
+// After Babel transpilation:
+const element = React.createElement(
+  'h1',
+  null,
+  'Hello, ',
+  user.name
+);
+
+```
+
+- This approach combines the declarativeness of HTML and the power of JavaScript.
+- JSX can be used inside expressions, loops, conditions, and functions.
+
+---
+
+### 🧩 Virtual DOM
+
+- **Virtual DOM (VDOM)** — a lightweight JavaScript representation of the real DOM.
+- With every state change, React creates a new tree of elements and compares it with the old one (diffing).
+- Then the reconciliation engine updates only the changed nodes in the real DOM.
+- This allows React to perform updates as efficiently as possible, avoiding a full page re-render.
+
+---
+
+### 🧩 Components
+
+- **Components** — the building blocks of a React application.
+- Can be **functional** (via Hooks) or **class-based** (`extends React.Component`).
+- Each component encapsulates logic, state, and markup.
+- Components can be nested and reusable, forming the UI on the principle of composition.
+
+```jsx
+function Greeting({ name }) {
+  return <h1>Hello, {name}!</h1>;
+}
+
+```
+
+---
+
+### 💡 Key Ideas
+
+- **JSX** describes the UI declaratively and compiles to `React.createElement()`.
+- **Virtual DOM** — an optimized layer that prevents unnecessary updates to the real DOM.
+- **Components** — isolated and reusable interface elements.
+- React combines them into a cohesive, performant rendering system.

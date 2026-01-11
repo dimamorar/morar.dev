@@ -1,0 +1,80 @@
+---
+title: "Reactive State"
+description: "Reactive state is a model in which data "subscribes" to its consumers, and any change automatically triggers updates to dependent computations or the UI."
+---
+
+## Reactive State
+
+> Reactive state is a model in which data "subscribes" to its consumers, and any change automatically triggers updates to dependent computations or the UI.  
+> This creates a streaming behavior: _data changes → everything that depends on it reacts instantly and without manual calls_.
+
+---
+
+### Technical Explanation
+
+#### **1. Automatic Dependency Tracking**
+
+- When a function or component reads reactive state, the system registers the dependency.
+    
+- This means: "if this data changes — re-calculate me again."
+    
+- There is no need to manually subscribe or dispatch events.
+    
+
+#### **2. Triggering Updates on Data Change**
+
+When a reactive value changes:
+
+- The MobX/Signals/Reactivity system looks for all dependent computations
+    
+- re-executes only the parts that depend on this value
+    
+- updates the UI selectively, not the entire structure
+    
+
+This is significantly more efficient than a full re-render.
+
+#### **3. Natural Reactivity instead of Manual Control**
+
+Unlike Redux/Flux:
+
+- No need to call `dispatch`
+    
+- No need to write reducers
+    
+- No need to create immutable copies
+    
+- Models work "like regular objects" but with reactive behavior under the hood
+    
+
+#### **4. Reactive state ≠ Unidirectional flow**
+
+This is a **different philosophy**:
+
+- reactive = data "pushes" updates down
+    
+- flux/redux = UI "pulls" updates via dispatch → reducer → new state
+    
+
+In reactive systems, updates happen automatically, like in spreadsheets: changed A → B, C, D automatically change.
+
+#### **5. Where Reactivity is Especially Strong**
+
+- large forms
+    
+- complex UIs with many interconnected values
+    
+- local state of components
+    
+- real-time interface (charting, dashboards)
+    
+- works without excessive architectural overhead
+    
+
+---
+
+### Important Notes
+
+- Reactive state eliminates boilerplate and makes updates "transparent."
+- But reactivity is **harder to debug** in large projects because it's hard to understand who affects whom.
+- This is the opposite approach to Flux/Redux, which make updates completely controlled and explicit.

@@ -1,0 +1,84 @@
+---
+title: "CSS handling in Next.js"
+description: "App Router allows for several styling approaches: global styles, CSS Modules, Tailwind, and CSS-in-JS."
+---
+
+## **How Next.js handles CSS and styling (CSS Modules, global CSS, Tailwind, CSS-in-JS)**
+
+> App Router allows for several styling approaches: global styles, CSS Modules, Tailwind, and CSS-in-JS.  
+> Each method has a different scope and affects bundle size and style isolation.  
+> All styles are compiled during the build and do not block server-side rendering.
+
+---
+
+### Technical Explanation
+
+#### Global CSS
+
+- Imported **only in the root layout** `app/layout.js`.
+    
+- Affects the entire application.
+    
+- Suitable for resets, variables, and global utility classes.
+    
+
+```jsx
+import "./globals.css";
+```
+
+---
+
+#### CSS Modules
+
+- Isolated CSS files with automatically generated classes.
+    
+- Files have the format:  
+    `component.module.css`
+    
+- Suitable for component styling without conflicts.
+    
+
+```jsx
+import styles from "./button.module.css";
+```
+
+---
+
+#### Tailwind CSS
+
+- Utility-first approach that integrates well with App Router.
+    
+- Minimal runtime, all logic in CSS generated during build.
+    
+- The most popular option for modern Next.js projects.
+    
+
+Combinations:
+
+- Tailwind + CSS Modules
+    
+- Tailwind + local component styles
+    
+
+---
+
+#### CSS-in-JS (styled-components, Emotion)
+
+- Supported, but with limitations due to RSC:
+    
+    - styles can **only be applied in Client Components**,
+        
+    - server components cannot use runtime CSS-in-JS.
+        
+- Use if dynamic styles based on state are required.
+    
+
+---
+
+### App Router Approach to Styles
+
+- Styles are always processed during the build.
+    
+- No hydration overhead for styles — everything works independently of RSC.
+    
+- Using Tailwind or CSS Modules minimizes client-side JS.

@@ -1,0 +1,246 @@
+---
+title: "Hooks"
+description: "Hooks are functions that allow you to use state and React features without classes. They provide declarative management of logic, side effects, and performance "
+---
+
+> Hooks are functions that allow you to use state and React features without classes. They provide declarative management of logic, side effects, and performance inside functional components.
+
+---
+
+### 🧩 Core State and Effect Hooks
+
+### `useState(initialValue)`
+
+- Creates local state inside a functional component.
+- Returns a pair `[value, setValue]`.
+- When `setValue` is called, React initiates a re-render.
+- **Batching**: React groups multiple state updates into one render for optimization. In React 18, batching works automatically in all events, promises, and timers.
+- **Synchronicity**: `setValue` is not asynchronous in the traditional sense — it synchronously updates the state, but the render occurs after the completion of the current function.
+
+```jsx
+const [count, setCount] = useState(0);
+
+// Batching: both setCount calls cause one render
+const handleClick = () => {
+  setCount((c) => c + 1);
+  setCount((c) => c + 1); // Result: count + 2 in one render
+};
+```
+
+---
+
+### `useEffect(callback, deps)`
+
+- Allows performing **side effects** (fetch, timers, subscriptions).
+- **Dependency array (`deps`)**:
+  - **Absent** → effect is executed after each render
+  - **Empty `[]`** → effect is executed once upon mounting
+  - **With dependencies `[dep1, dep2]`** → effect is executed when any dependency changes
+- The returned function is used for cleaning (`cleanup`) — called before the next execution of the effect or upon unmounting.
+
+```jsx
+// Executed at each render
+useEffect(() => {
+  console.log("Render");
+});
+
+// Executed once upon mounting
+useEffect(() => {
+  const id = setInterval(() => console.log(count), 1000);
+  return () => clearInterval(id); // Cleanup
+}, []);
+
+// Executed when count changes
+useEffect(() => {
+  document.title = `Count: ${count}`;
+}, [count]);
+```
+
+---
+
+### 🧩 Optimization Hooks
+
+### `useMemo(factory, deps)`
+
+- Caches the **calculation result** between renders.
+- Executes the `factory` function only if dependencies have changed.
+- Used for **expensive calculations** (filtering, sorting large arrays, complex mathematical operations).
+- **Do not use for simple operations** — the overhead for checking dependencies may exceed the benefit.
+
+```jsx
+// Good: expensive calculation
+const filtered = useMemo(() => items.filter((i) => i.active), [items]);
+
+// Bad: simple operation
+const doubled = useMemo(() => count * 2, [count]); // Not needed!
+```
+
+### `useCallback(fn, deps)`
+
+- Caches **the function itself** so that it is not recreated with each render.
+- Used for optimization of child components with `React.memo`.
+- **When to use**: when you pass a function as a prop to a memoized component or as a dependency of another hook.
+
+```jsx
+const handleClick = useCallback(() => doSomething(id), [id]);
+
+// Without useCallback: new function with each render → React.memo does not work
+const Child = React.memo(({ onClick }) => <button onClick={onClick} />);
+```
+
+### ⚖️ useMemo vs useCallback
+
+- **useMemo** — caches **value** (calculation result)
+- **useCallback** — caches **function** (the function itself as an object)
+
+---
+
+### 🧩 References and Context
+
+### `useRef(initialValue)`
+
+- Stores a **mutable value** that does not cause a re-render when changed.
+- **Usage**:
+  1. **DOM-refs**: access to DOM elements
+  2. **Storage of any mutable value**: previous values, timers, indices
+  3. **Avoiding object re-creation**: storage of stable references
+
+```jsx
+// DOM-ref
+const inputRef = useRef(null);
+<input ref={inputRef} />;
+inputRef.current?.focus();
+
+// Storing the previous value
+const prevCountRef = useRef();
+useEffect(() => {
+  prevCountRef.current = count;
+});
+
+// Storing a timer
+const timerRef = useRef();
+useEffect(() => {
+  timerRef.current = setInterval(() => {}, 1000);
+  return () => clearInterval(timerRef.current);
+}, []);
+```
+
+### `useContext(Context)`
+
+- Gets the value from the nearest `Context.Provider`.
+- Simplifies data transfer without "prop drilling".
+
+```jsx
+const theme = useContext(ThemeContext);
+```
+
+---
+
+### 🧩 State Management via Reducer
+
+### `useReducer(reducer, initialState)`
+
+- Analogue of the Redux approach for local state.
+- Convenient with complex update logic.
+
+```jsx
+function reducer(state, action) {
+  switch (action.type) {
+    case "increment":
+      return { count: state.count + 1 };
+    default:
+      return state;
+  }
+}
+const [state, dispatch] = useReducer(reducer, { count: 0 });
+```
+
+---
+
+### 📋 Rules of Hooks
+
+1. **Call hooks only at the top level** — not inside loops, conditions, or nested functions.
+2. **Call hooks only from React functions** — functional components or other custom hooks.
+3. **The order of calls must be stable** — React uses the order to identify hooks between renders.
+
+```jsx
+// ❌ Bad: hook in a condition
+if (condition) {
+  const [state, setState] = useState(0);
+}
+
+// ✅ Good: hook at the top level
+const [state, setState] = useState(0);
+if (condition) {
+  // use of state
+}
+```
+
+**Why it's important**: React stores the state of hooks in an array, using the call order. Changing the order will lead to mixing the state between renders.
+
+---
+
+### ⚠️ Common mistakes and best practices
+
+#### 1. Forgetting dependencies in useEffect
+
+```jsx
+// ❌ Bad: count not in dependencies
+useEffect(() => {
+  console.log(count);
+}, []); // Empty array → count is always 0
+
+// ✅ Good
+useEffect(() => {
+  console.log(count);
+}, [count]);
+```
+
+#### 2. Incorrect use of useMemo/useCallback
+
+```jsx
+// ❌ Bad: simple calculation
+const value = useMemo(() => a + b, [a, b]);
+
+// ✅ Good: expensive calculation
+const sorted = useMemo(() => largeArray.sort(complexSort), [largeArray]);
+```
+
+#### 3. Creating new objects in dependencies
+
+```jsx
+// ❌ Bad: new object with each render
+useEffect(() => {
+  // effect
+}, [{ id, name }]); // Will always trigger!
+
+// ✅ Good: primitive values
+useEffect(() => {
+  // effect
+}, [id, name]);
+```
+
+#### 4. Forgetting cleanup in useEffect
+
+```jsx
+// ❌ Bad: memory leak
+useEffect(() => {
+  const timer = setInterval(() => {}, 1000);
+}, []);
+
+// ✅ Good: cleanup
+useEffect(() => {
+  const timer = setInterval(() => {}, 1000);
+  return () => clearInterval(timer);
+}, []);
+```
+
+---
+
+### 💡 Key Ideas
+
+- Hooks make functional components a **full replacement for class ones**.
+- Each hook function solves a clearly defined task: state, effect, memoization, context.
+- All hooks **must be called at the top level** of the component and **only inside React functions**.
+- By combining hooks, you can build **flexible composition of logic and behavior of components**.
+- **Optimization**: use `useMemo`/`useCallback` only when it's really needed — non-optimal use can worsen performance.

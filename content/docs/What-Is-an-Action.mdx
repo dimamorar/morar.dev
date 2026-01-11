@@ -1,0 +1,68 @@
+---
+title: "What Is an Action"
+description: "An action is an object describing the intent to change the state."
+---
+
+## What Is an Action
+
+> An action is an object describing the intent to change the state.  
+> It tells Redux **what happened**, but does not define **exactly how to update the state** — the reducer does that.
+
+---
+
+### Technical Explanation
+
+#### **Action's Role in Redux**
+
+- An action is the only way to initiate a state change.
+    
+- It formalizes an event: a user click, a server response, a system update, etc.
+    
+- The reducer reads the action and decides how to react to it.
+    
+
+#### **Action Structure**
+
+An action is a simple object with properties:
+
+- **type** — a mandatory string value identifying the event.
+    
+- **payload** — data associated with the event (optional).
+    
+- Additional metadata (if needed): `error`, `meta`.
+    
+
+Conceptual form example:
+
+```js
+{
+  type: 'todos/add',
+  payload: 'Buy milk'
+}
+```
+
+#### **Why type is Critically Important**
+
+- The reducer uses `type` to select a logic branch.
+    
+- The type should be stable, readable, and unique.
+    
+
+#### **Why an Action Should Not Contain Logic**
+
+- It only describes the fact of an event.
+    
+- The logic for changing the state is in the reducer.
+    
+- Asynchronous or side logic is handled by middleware (e.g., Thunk).
+    
+
+---
+
+### Important Notes
+
+- An action is a synchronous object. Asynchrony is implemented through middleware.
+    
+- In the Redux Toolkit, actions are generated automatically via `createSlice`.
+    
+- The action remains the central entity of the Redux flow: **without an action, there is no dispatch**.

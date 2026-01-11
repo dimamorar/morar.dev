@@ -1,0 +1,87 @@
+---
+title: "Strict Mode"
+description: "StrictMode is a React tool for identifying potential problems in code."
+---
+
+## Strict Mode — purpose and double render behavior in dev mode
+
+> StrictMode is a React tool for identifying potential problems in code.
+
+> It does not affect production behavior but helps detect unsafe side effects, incorrect hooks, and deprecated patterns during development.
+
+---
+
+### 🧩 What Strict Mode Does
+
+- Enabled using a wrapper component:
+    
+    ```jsx
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+    
+    ```
+    
+- Activates additional checks and warnings **only in dev mode**.
+- Does not appear in the DOM and does not change the visual behavior of the application.
+
+---
+
+### 🧩 Main Checks
+
+- Double invocation of lifecycles and hooks (mount → unmount → mount).
+- Identification of side effects outside of `useEffect`.
+- Verification of correct resource cleanup in `useEffect` and `useLayoutEffect`.
+- Warnings when using deprecated methods (`componentWillMount`, `findDOMNode`, `legacy context`).
+
+---
+
+### 🧩 Double Render (double invoke)
+
+- React **intentionally calls the component twice** when mounting in Strict Mode.
+- Purpose — to check that:
+    - side effects are not performed outside of `useEffect`,
+    - components correctly handle repeated state creation,
+    - there are no resource leaks during mounting/unmounting.
+
+```jsx
+function Example() {
+  useEffect(() => {
+    console.log('Effect runs');
+    return () => console.log('Cleanup');
+  }, []);
+  return <div>Strict Mode check</div>;
+}
+
+```
+
+**In Dev Mode:**
+
+```
+Effect runs
+Cleanup
+Effect runs
+
+```
+
+**In Prod Mode:**
+
+```
+Effect runs
+```
+
+---
+
+### 🧩 When to Use
+
+- Always wrap the root of the application in `<React.StrictMode>` during development.
+- Disable only when integrating with third-party libraries that do not support double rendering.
+
+---
+
+### 💡 Key Ideas
+
+- Strict Mode works **only in dev mode**.
+- Helps identify unsafe or uncleansed side effects.
+- Double rendering is a **diagnostic measure**, not an error.
+- Its goal is to ensure the **purity, predictability, and safety of React components**.

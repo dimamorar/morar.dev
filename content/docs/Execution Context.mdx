@@ -1,0 +1,63 @@
+---
+title: "Execution Context"
+description: "Execution Context is the environment in which JavaScript code is executed."
+---
+
+## Execution Context
+
+> Execution Context is the environment in which JavaScript code is executed.
+> It determines which variables, functions, and objects are accessible at a specific moment of execution.
+
+---
+
+### 🧩 Types of Execution Context
+
+1. **Global Execution Context (GEC)**
+    - Created once when the script starts.
+    - Defines global objects (`window`, `globalThis`) and the global scope.
+    - Any code outside of functions is executed here.
+2. **Function Execution Context (FEC)**
+    - Created every time a function is called.
+    - For each function, its own **Lexical Environment** and `this` value are formed.
+    - After the function completes, the context is destroyed (unless closed in a closure).
+3. **Block Execution Context (BEC)**
+    - Appeared with ES6 for `let`, `const`, `class` constructs.
+    - Created for blocks `{ ... }`, loops, `if`, `try/catch`.
+    - Provides block scope.
+
+---
+
+### ⚙️ Execution Phases
+
+1. **Creation Phase**
+    - A variable and function object (Variable Environment) is created.
+    - **Hoisting** is performed: function and variable declarations are registered in memory.
+    - The value of `this` is determined.
+2. **Execution Phase**
+    - Code is executed line by line.
+    - Values are assigned to variables, function calls and expressions are executed.
+
+---
+
+### 🧠 Call Stack
+
+- Each new context is placed in the **Call Stack**.
+- When a function completes, its context is removed from the stack.
+- The top element of the stack always corresponds to the **current execution context**.
+
+```jsx
+function a() { console.log('A'); }
+function b() { a(); console.log('B'); }
+b();
+// Stack trace: [GEC] → [b()] → [a()]
+
+```
+
+---
+
+### 💡 Key Ideas
+
+- Each function call creates a **new Execution Context**.
+- The context defines **scope**, **this**, **hoisting**, and links to the outer environment.
+- **Call Stack** manages the order of execution and return of functions.
+- After a function completes, the context is removed, but can be preserved through a **closure**.

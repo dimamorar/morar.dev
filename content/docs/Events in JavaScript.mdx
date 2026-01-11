@@ -1,0 +1,56 @@
+---
+title: "Events in JavaScript"
+description: "An event is a signal from the browser that an action occurred (click, input, scroll, etc.)."
+---
+
+> An event is a signal from the browser that an action occurred (click, input, scroll, etc.).
+>
+> When an event occurs, the browser **creates an event object** and **passes it to the registered handler**.
+
+---
+
+### 🧩 Stages of an Event
+
+JavaScript uses the **event flow model**, consisting of three phases:
+
+1. **Capturing**
+   - The event moves from top to bottom: `window → document → body → target`.
+   - Handlers with `addEventListener(event, handler, true)` trigger at this stage.
+2. **Target**
+   - The event reaches the **element** where it occurred.
+   - Handlers assigned directly to this element are executed.
+3. **Bubbling**
+   - The event moves back up the DOM — from the target to `window`.
+   - Handlers without the third argument (or with `false` by default) trigger at this stage.
+
+---
+
+### ⚙️ Event Transmission Mechanism
+
+When an event occurs:
+
+- The browser creates an **`Event` object** containing information about type, target, coordinates, keys, etc.
+- This object is passed to the handler function.
+- Inside the handler, methods and properties are available:
+  - `event.stopPropagation()` — stops further bubbling.
+  - `event.preventDefault()` — cancels the standard browser action.
+  - `event.target` — the element where the event actually occurred.
+  - `event.currentTarget` — the element where the handler is currently executing (always equals `this` in the handler).
+
+**Example:**
+
+```javascript
+div.addEventListener("click", (e) => {
+  e.target; // Can be <button> (if clicked on a button inside)
+  e.currentTarget; // Always <div> (element with addEventListener)
+});
+```
+
+---
+
+### 💡 Key Ideas
+
+- Events propagate **down (capturing)** and **up (bubbling)** through the DOM tree.
+- The ability to control propagation makes the event model **flexible and efficient**.
+- **Bubbling** allows for event delegation — handling multiple elements through one parent.
+- The event mechanism is at the heart of DOM interactivity.

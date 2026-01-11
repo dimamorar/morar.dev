@@ -1,0 +1,71 @@
+---
+title: "Token Refresh Flow on Frontend"
+description: "A mechanism for extending a user session without repeating the login process."
+---
+
+## **Token Refresh Flow on Frontend**
+
+> A mechanism for extending a user session without repeating the login process.
+> 
+> Uses a pair of tokens — a short-lived **Access Token** and a long-lived **Refresh Token** — to transparently update authentication for the user.
+
+---
+
+### **Main Idea**
+
+The Access Token is valid for a limited time (e.g., 15 minutes).
+
+When it expires, the client requests a new one using the Refresh Token.
+
+The update is performed automatically (silent refresh) or upon the first failed attempt to access the API.
+
+---
+
+### **Step-by-step Scenario**
+
+1. **Initial Login**
+    - The user passes authentication.
+    - The server issues two tokens:
+        - Access Token → stored in memory or LocalStorage
+        - Refresh Token → stored in an HttpOnly cookie
+2. **Using the Access Token**
+    - For each API request, the client adds the header:
+        
+        `Authorization: Bearer <access_token>`.
+        
+    - If the token is valid → the server returns a response.
+3. **Access Token Expiration**
+    - Upon receiving a `401 Unauthorized` response, the client sends a request to `/auth/refresh`.
+    - The Refresh Token is used in the request (automatically via the cookie).
+4. **Issuing a New Token**
+    - The server verifies the Refresh Token, creates a new Access Token (and if necessary, a new Refresh Token).
+    - The client updates the token in memory and repeats the original request.
+5. **Silent Refresh (Optional)**
+    - The client monitors the `exp` from the token and updates it **in advance**, before it expires.
+    - Usually implemented via a timer or an interceptor in the HTTP client (e.g., Axios).
+
+---
+
+### **Implementation Recommendations**
+
+### **On the Client**
+
+- Intercept 401 responses and automatically call the refresh function.
+- Use a centralized interceptor (e.g., Axios `response interceptor`).
+- Never store the refresh token in JS-accessible locations.
+- Update the access token in advance (e.g., 1–2 minutes before `exp`).
+
+### **On the Server**
+
+- Implement the `/auth/refresh` endpoint.
+- Verify the refresh token in the database (or by signature).
+- Apply **token rotation** — issue a new refresh token with each update and invalidate the old one.
+- Limit the number of active refresh tokens per user.
+
+---
+
+### **Summary**
+
+- The user remains in the system without re-logging.
+- The session is extended safely if the refresh token is protected.
+- If the refresh token is compromised, the system must be able to revoke it and request re-authentication.

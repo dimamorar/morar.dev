@@ -1,0 +1,77 @@
+---
+title: "Server Actions"
+description: "Server Actions allow calling server functions directly from components without creating API routes."
+---
+
+## **Server Actions and how they change form handling and mutations in Next.js**
+
+> Server Actions allow calling server functions directly from components without creating API routes.  
+> They execute exclusively on the server, transfer data through a special React protocol, and do not add JS to the client bundle.  
+> This makes mutations simpler, safer, and closer to regular server functions.
+
+---
+
+### Technical Explanation
+
+#### The Main Idea
+
+- A Server Action is a function declared in an RSC or Client Component with the directive:
+    
+
+```js
+"use server";
+```
+
+- Called through a form or through function import.
+    
+- Executed on the server **in a completely isolated context** (not available in global JS).
+    
+
+---
+
+#### Form Handling
+
+- An HTML form can directly call a server action:
+    
+
+```jsx
+<form action={updateUser}>
+  <input name="email" />
+  <button type="submit">Save</button>
+</form>
+```
+
+- Data is automatically serialized and passed to the Server Action.
+    
+- No need for:
+    
+    - API Endpoint
+        
+    - useState for forms
+        
+    - fetch in Client Component
+        
+
+---
+
+#### Calling via JavaScript
+- A Server Action can be imported and called programmatically:
+
+```js
+import { updateUser } from "./actions";
+
+await updateUser({ name: "John" });
+```
+
+---
+#### Advantages
+- Less client JS → faster rendering.
+- Simpler interaction: no need to create a separate API route.
+- Access to database and secrets directly in the Server Action.
+- Typed environment (integrates well with TypeScript).
+
+---
+#### Limitations
+- Browser APIs cannot be used in a Server Action.
+- Client components are needed only if there is interaction (buttons, inputs with JS).
+- It's important to configure the cache correctly, as mutations can punch through static layers.

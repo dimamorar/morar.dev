@@ -1,0 +1,74 @@
+---
+title: "Portal API"
+description: "Portal API allows rendering React components outside the root container while preserving the overall context and event connection."
+---
+
+## Portal API — rendering outside root DOM tree
+
+> Portal API allows rendering React components outside the root container while preserving the overall context and event connection.
+> 
+> This is a solution for displaying elements on top of the main tree, such as modals, popups, or tooltips.
+
+---
+
+### 🧩 What is a Portal
+
+- **A Portal** creates a "tunnel" between the React tree and any other DOM node.
+- The component is visually rendered outside the parent container but logically remains its child element in the React tree.
+- This allows, for example, inserting modal windows into `<body>`, avoiding problems with styles and `z-index`.
+
+---
+
+### 🧩 Creating a Portal
+
+The function `ReactDOM.createPortal(child, container)` is used — it returns a React element that renders `child` into `container`.
+
+```jsx
+import { createPortal } from 'react-dom';
+
+function Modal({ children }) {
+  const modalRoot = document.getElementById('modal-root');
+  return createPortal(children, modalRoot);
+}
+```
+
+**HTML:**
+
+```html
+<div id="root"></div>
+<div id="modal-root"></div>
+```
+
+**Usage:**
+
+```jsx
+<Modal>
+  <Dialog />
+</Modal>
+```
+
+---
+
+### 🧩 Events and Context
+
+- Although the node is physically in a different place in the DOM, events (e.g., `onClick`) continue to **bubble up to React parent components**.
+
+- Context (`Context API`) and state remain accessible as if the element were in a regular React tree.
+
+---
+
+### 🧩 Typical Use Cases
+
+- Modal windows (`Modal`, `Dialog`)
+- Context menus and popup panels (`Popover`, `Tooltip`)
+- Global notifications (`Toast`)
+- Overlay components that overlap the main content
+
+---
+
+### 💡 Key Ideas
+
+- **Portal = a separate render point in the DOM** without losing logical connection with the React tree.
+- Implemented via `createPortal(child, container)`.
+- Preserves event bubbling and access to context.
+- Used for UI elements that require rendering outside the main document flow.

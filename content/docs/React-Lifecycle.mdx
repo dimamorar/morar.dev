@@ -1,0 +1,71 @@
+---
+title: "React Lifecycle"
+description: "The lifecycle of a React component is a sequence of stages that a component goes through from creation to removal from the DOM."
+---
+
+## React Lifecycle: from mounting to unmounting
+
+> The lifecycle of a React component is a sequence of stages that a component goes through from creation to removal from the DOM.
+> 
+> The goal is to provide points (hooks or methods) where you can manage side effects, state, and initialization logic.
+
+---
+
+### 🧩 Main Lifecycle Stages
+
+1. **Mounting** — the component is created and added to the DOM.
+2. **Updating** — occurs when props or state change.
+3. **Unmounting** — the component is removed from the DOM.
+
+---
+
+### 🧩 Lifecycle in Class Components
+
+**1. Mounting:**
+
+- `constructor()` — initializing state and binding methods.
+- `render()` — creating Virtual DOM elements.
+- `componentDidMount()` — called after insertion into the DOM (often used for data requests).
+
+**2. Updating:**
+
+- `shouldComponentUpdate()` — control over the necessity of a re-render.
+- `render()` — updating the Virtual DOM.
+- `componentDidUpdate(prevProps, prevState)` — called after the DOM update.
+
+**3. Unmounting:**
+
+- `componentWillUnmount()` — cleanup of timers, listeners, cancelling subscriptions.
+
+---
+
+### 🧩 Lifecycle in Functional Components (Hooks API)
+
+**Mounting + Updating:**
+
+- `useEffect(() => {...})` — called after rendering.
+- `useLayoutEffect(() => {...})` — called synchronously before the paint.
+
+**Unmounting:**
+
+- Returning a cleanup function in `useEffect`:
+
+```jsx
+useEffect(() => {
+  const id = setInterval(log, 1000);
+  return () => clearInterval(id); // cleanup
+}, []);
+
+    ```
+
+**Render Control:**
+- `React.memo` or dependency optimization in `useEffect`, `useMemo`, `useCallback`.
+
+---
+
+### 💡 Key Ideas
+
+- The lifecycle reflects the internal process of **creation → updating → deletion** of a component.
+- In modern projects, all lifecycle logic is implemented through **Hooks**.
+- Effects (`useEffect`) combine the behavior of `componentDidMount`, `componentDidUpdate`, and `componentWillUnmount`.
+- Proper use of hooks ensures **cleanliness of side effects and manageability of state**.

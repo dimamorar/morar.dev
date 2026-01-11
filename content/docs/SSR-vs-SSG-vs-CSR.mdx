@@ -1,0 +1,69 @@
+---
+title: "SSR vs. SSG vs. CSR"
+description: "SSR, SSG, and CSR are three rendering models that determine where and when a page's HTML is formed."
+---
+
+## **Difference between SSR, SSG, and CSR in a general web context**
+
+> SSR, SSG, and CSR are three rendering models that determine where and when a page's HTML is formed.  
+> They affect performance, SEO, and user interaction.  
+> The choice of mode depends on data dynamism and personalization requirements.
+
+---
+
+### Technical Explanation
+
+#### SSR (Server-Side Rendering)
+
+- HTML is generated **on the server during each request**.
+    
+- Suitable for:
+    
+    - personalized pages;
+        
+    - frequently changing data;
+        
+    - complex business rules with access to server resources.
+        
+- Slower TTFB, but good SEO.
+    
+
+Example behavior:
+
+- User → server renders the page → sends HTML → client hydrates JS.
+    
+
+---
+
+#### SSG (Static Site Generation)
+
+- HTML is generated **once during build**.
+    
+- Ideal for:
+    
+    - marketing landing pages, documentation;
+        
+    - blogs, pages with infrequent updates.
+        
+- Very fast TTFB, as a static file is served.
+    
+
+Disadvantage:
+
+- Data is "frozen" at the time of build; ISR or a rebuild is needed to update it.
+    
+
+---
+
+#### CSR (Client-Side Rendering)
+
+- The server returns minimal HTML + JS, and rendering is performed **entirely in the browser**.
+- Suitable for SPAs with active interaction and private dashboards.
+- SEO is limited if search engines do not execute JS.
+- UI does not appear until JS is loaded and executed.
+
+---
+### Essential Comparison
+- **SSR** → render on the server every time.
+- **SSG** → render once during build.
+- **CSR** → render in the browser based on JS.

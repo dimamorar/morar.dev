@@ -1,0 +1,141 @@
+---
+title: "How scheduling works in React (lanes, priorities)"
+description: "|> The React Scheduler determines _which updates should be performed first_, _which can wait_, and _when rendering should be suspended or restored_."
+---
+
+|> The React Scheduler determines _which updates should be performed first_, _which can wait_, and _when rendering should be suspended or restored_.  
+|> In modern React, this is implemented through a system of **lanes (priority bands)** built on top of Fiber.
+
+---
+
+### 🧩 Why React needs scheduling
+
+- The UI must remain responsive even under load.
+    
+- Some updates are critical (text input), others are secondary (list filtering).
+    
+- React must decide:
+    
+    - what to render immediately,
+        
+    - what to render in the background,
+        
+    - what can be canceled/recomputed.
+        
+
+Scheduling is the basis of **concurrent rendering**.
+
+---
+
+### 🧩 What are lanes
+
+**Lane** is a "priority band" that React assigns to each update.
+
+Examples (simplified):
+
+- **Sync Lane** — immediate updates (click, focus, text input).
+    
+- **Default Lane** — regular interface updates.
+    
+- **Transition Lane** — background updates (`startTransition`).
+    
+- **Idle Lane** — low-priority tasks.
+    
+
+Updates from different lanes can be performed separately, at different moments.
+
+---
+
+### 🧩 How prioritization works
+
+1. React receives an event or state change.
+    
+2. Assigns a lane to the update according to the type of work.
+    
+3. The scheduler chooses the lane with the **highest available priority**.
+    
+4. Starts the render phase for the corresponding Fiber nodes.
+    
+5. If an update with a higher priority arises →  
+    **current work is suspended and put in a queue**.
+    
+    
+---
+
+### 🧩 When React suspends work
+
+- when the time allocated for the frame (deadline) has passed,
+    
+- when a high-priority event arrives,
+    
+- when the browser signals that the thread needs to be released  
+    (via `MessageChannel` or `scheduler`).
+    
+
+React "yields" control to the browser:
+
+```txt
+render → yield → browser tasks → continue render
+```
+
+---
+
+### 🧩 The role of transitions
+
+Updates wrapped in `startTransition` receive **low priority**.
+
+Example:
+
+```jsx
+startTransition(() => {
+  setFilteredItems(expensiveFilter(query));
+});
+```
+
+- user input → high priority
+    
+- filtering → low priority
+    
+
+React guarantees UI smoothness.
+
+---
+
+### 🧩 Scheduler tools
+
+- **cooperative scheduling** — React divides work into small parts
+    
+- **interruption** — work can be interrupted
+    
+- **resume** — work can be continued
+    
+- **restart** — work can be restarted
+    
+- **lanes merging** — several lanes can be merged if it is optimal
+    
+    
+---
+
+### 💡 Key Ideas
+
+- lanes = mechanism of update priorities in React.
+    
+- React performs updates with the highest priority first.
+    
+- Work can be suspended or restarted.
+    
+- Scheduling makes possible:
+    
+    - concurrent rendering,
+        
+    - Suspense,
+        
+    - transitions,
+        
+    - optimal UX without freezes.
+        
+
+---
+
+Next card:  
+**“Why React can pause, resume, and restart rendering”**?

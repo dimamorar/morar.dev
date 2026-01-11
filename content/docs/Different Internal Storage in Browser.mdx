@@ -1,0 +1,75 @@
+---
+title: "Different Internal Storage in Browser"
+description: "Web browsers provide several mechanisms for storing data on the client side."
+---
+
+## Different Internal Storage in Browser
+
+> Web browsers provide several mechanisms for storing data on the client side.
+> 
+> 
+> The main types: **Cookies**, **LocalStorage**, **SessionStorage**, and **IndexedDB** — differ in volume, lifespan, access scope, and purpose.
+> 
+
+---
+
+### 🧩 1. Cookies
+
+- Store small **key-value** pairs automatically sent with every HTTP request.
+- Used for **authentication**, **sessions**, and **user tracking**.
+- Size is limited (~4 KB).
+- Lifespan is set via `expires` or `max-age`.
+- Accessible from the client (via `document.cookie`) and the server.
+- Not suitable for storing large or sensitive data — **automatically transmitted to the server**.
+
+---
+
+### 🧩 2. LocalStorage
+
+- **Persistent storage** on the client; data is saved between sessions.
+- Not sent to the server.
+- Stores data **as strings**, volume is usually **5–10 MB**.
+- Suitable for storing **settings, themes, tokens, data cache**.
+- API: `localStorage.setItem()`, `getItem()`, `removeItem()`.
+
+---
+
+### 🧩 3. SessionStorage
+
+- Similar to `LocalStorage`, but lives only **within one tab**.
+- Data is deleted when the tab is closed or the page is reloaded.
+- Isolated between tabs even of the same domain.
+- Used for **temporary data** — form states, filters, current actions.
+- API is identical to `LocalStorage`.
+
+---
+
+### 🧩 4. IndexedDB
+
+- **Asynchronous object-oriented database** in the browser.
+- Supports storing **structured data** (objects, arrays, binary files).
+- Works through **transactions and events**.
+- Allows searching by **keys and indexes**.
+- Used for **offline applications**, **caching**, and **large volumes of data** (up to hundreds of megabytes).
+- API is low-level, often used via wrappers (for example, `idb`).
+
+---
+
+### ⚖️ Comparison
+
+| Storage | Volume | Lifespan | Access | Sent to Server | Data Format | Main Use |
+| --- | --- | --- | --- | --- | --- | --- |
+| **Cookies** | ~4 KB | Configurable (`expires`) | Client + Server | ✅ Yes | Strings | Sessions, authorization |
+| **LocalStorage** | 5–10 MB | Permanent | Client only | ❌ No | Strings | Settings, cache, tokens |
+| **SessionStorage** | 5–10 MB | While tab is active | Client only | ❌ No | Strings | Temporary states |
+| **IndexedDB** | 100+ MB | Permanent | Client only | ❌ No | Objects | Offline, large data |
+
+---
+
+### 💡 Key Ideas
+
+- **Cookies** — for exchanging data with the server.
+- **LocalStorage** — for long-term client-side storage.
+- **SessionStorage** — for temporary data within a tab.
+- **IndexedDB** — for complex and large data structures.
+- All mechanisms are isolated **by domain (origin)** and have security restrictions (CORS, HTTPS).

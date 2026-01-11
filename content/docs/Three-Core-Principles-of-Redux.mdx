@@ -1,0 +1,50 @@
+---
+title: "Three Core Principles of Redux"
+description: "Redux is based on three fundamental principles that provide predictability and transparency of state management: single source of truth, state is read-only, and"
+---
+
+## Three Core Principles of Redux
+
+> Redux is based on three fundamental principles that provide predictability and transparency of state management: single source of truth, state is read-only, and changes are made via pure functions.  
+> These principles make Redux deterministic and easy to debug even in large applications.
+
+---
+
+### Technical Explanation
+
+#### **1. Single Source of Truth**
+
+- All global state is stored in a single object within a single Store.
+    
+- Components do not store their own copies of data and receive state from a centralized location.
+    
+- This simplifies interface synchronization and makes state consistent.
+    
+
+#### **2. State Is Read-Only**
+
+- You cannot change state directly: no mutation of objects or arrays bypassing Redux.
+    
+- The only way to initiate a change is to call `dispatch(action)`.
+    
+- This eliminates implicit side effects and guarantees a controlled data flow.
+    
+
+#### **3. Changes Are Made With Pure Functions**
+
+- Reducers are pure functions `(state, action) → newState`.
+    
+- They do not change the incoming state, do not perform side effects, and always return a new object.
+    
+- Thanks to this, Redux behaves deterministically: the same action always leads to the same result.
+    
+
+---
+
+### Important Notes
+
+- The second and third principles are closely related to immutability: only immutable data allows for correct change tracking.
+    
+- These principles form the basis for time-travel debugging, hot reload, and rendering optimizations in React.
+    
+- Middleware and Redux Toolkit extend Redux but do not violate these three rules.

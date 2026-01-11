@@ -1,0 +1,58 @@
+---
+title: "Reconciliation"
+description: "Reconciliation is the process by which React updates the real DOM by comparing the new and old Virtual DOM trees."
+---
+
+## The main principles of Reconciliation
+
+> Reconciliation is the process by which React updates the real DOM by comparing the new and old Virtual DOM trees.
+> 
+> Its goal is to determine the minimum set of changes and apply them as efficiently as possible.
+> 
+
+---
+
+### 🧩 Essence of Reconciliation
+
+- With every state change, a React component triggers a re-render.
+- The result of the render is a **new Virtual DOM tree**.
+- React compares the new and previous tree to determine which elements:
+    - can be reused,
+    - need to be updated,
+    - should be deleted or created anew.
+
+---
+
+### 🧩 Diffing Algorithm
+
+React uses **heuristic diffing** based on two key assumptions:
+
+1. **Elements with different types create a new subtree.**
+    - If `div` → `span` or `ComponentA` → `ComponentB`, the old tree is removed and a new one is created.
+2. **Lists are compared by key (`key`).**
+    - If an element has the same `key`, React considers it the same and updates only the content.
+    - In the absence of a `key`, React compares by position, which can lead to incorrect repaints.
+
+```jsx
+{items.map(item => (
+  <li key={item.id}>{item.name}</li>
+))}
+
+```
+
+---
+
+### 🧩 Optimization
+
+- **Keys** provide stable identification of list elements.
+- **PureComponent / React.memo / shouldComponentUpdate** prevent unnecessary diffs.
+- **Batching** combines several state updates into one Reconciliation cycle.
+
+---
+
+### 💡 Key Ideas
+
+- Reconciliation — the mechanism for comparing and updating the UI tree.
+- Based on diffing Virtual DOM and heuristics by type and keys.
+- Updates only the parts that have actually changed.
+- Guarantees **performance and interface consistency** during multiple state changes.

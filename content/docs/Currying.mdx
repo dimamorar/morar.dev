@@ -1,0 +1,76 @@
+---
+title: "Currying"
+description: "Currying is a functional programming technique where a function with multiple arguments"
+---
+
+## Currying
+
+> Currying is a functional programming technique where a function with multiple arguments
+> 
+> 
+> is transformed into a sequence of functions, each of which takes **one argument**.
+> 
+> It allows creating **partially applied functions** and increases **code reusability**.
+> 
+
+---
+
+### 🧩 Technical Explanation
+
+Currying transforms a function of the type:
+
+```
+f(a, b, c) → f(a)(b)(c)
+```
+
+Each call returns a **new function** that expects the next argument.
+
+When all parameters are passed, the original function body is executed.
+
+```jsx
+function multiply(a) {
+  return function (b) {
+    return a * b;
+  };
+}
+
+const double = multiply(2);
+console.log(double(5)); // 10
+
+```
+
+📘 `multiply(2)` returns an internal function that remembers the value `a = 2` and waits for `b`.
+
+This is achieved through a **closure** — the internal function maintains access to the variables of the external one.
+
+---
+
+### ⚙️ Currying Application
+
+- **Partial application**
+    
+    You can fix some of the arguments in advance and reuse the function:
+    
+    ```jsx
+    const add = a => b => a + b;
+    const add10 = add(10);
+    add10(5); // 15
+    
+    ```
+    
+- **Function Composition**
+    
+    Simplifies combining small pure functions into complex chains.
+    
+- **Logic Reuse**
+    
+    Allows creating specialized functions from universal templates.
+
+---
+
+### 💡 Key Ideas
+
+- Currying creates a **chain of functions**, each returning a new one until all arguments are applied.
+- Based on **closures**, which preserve the argument context.
+- Simplifies the **composition and reuse** of functions.
+- Often used in **functional programming** and libraries like Lodash, Ramda.

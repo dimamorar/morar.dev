@@ -1,0 +1,88 @@
+---
+title: "API Routes Route Handlers"
+description: "In App Router, API routes are implemented via Route Handlers — `route.js` files that return HTTP responses."
+---
+
+## **How API Routes work in App Router (`app/api/.../route.js`)**
+
+> In App Router, API routes are implemented via Route Handlers — `route.js` files that return HTTP responses.  
+> They allow creating backend endpoints without a separate server and run in a server environment.  
+> Route Handlers integrate with middleware, cache, and can be dynamic depending on the directory structure.
+
+---
+
+### Technical Explanation
+
+#### Route Handlers Basics
+
+- Located in `app/api/.../route.js`.
+    
+- Run **exclusively on the server** — secrets, databases, file system are available.
+    
+- Have separate HTTP methods as exported functions:
+    
+    - `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD`, `OPTIONS`.
+    
+
+**Minimal GET example:**
+
+```js
+export async function GET() {
+  return Response.json({ status: "ok" });
+}
+```
+
+---
+
+#### Routing
+
+- The directory defines the path:
+    
+    - `app/api/users/route.js` → `/api/users`
+        
+    - `app/api/products/[id]/route.js` → `/api/products/:id`
+        
+- Parameters are available via:
+    
+
+```js
+export function GET(request, { params }) {
+  return Response.json({ id: params.id });
+}
+```
+
+---
+
+#### Server Environment
+
+- Executes in **Node.js runtime or Edge runtime** (at your choice).
+    
+- You can use:
+    
+    - databases (Prisma, Mongo, Postgres),
+        
+    - cookies (`cookies()`),
+        
+    - headers (`headers()`),
+        
+    - streaming responses.
+    
+
+---
+
+#### Caching in Route Handlers
+
+- Edge runtime is cached by CDN (unless disabled).
+    
+- Node runtime — non-cached by default.
+    
+- Can be controlled via `Cache-Control` headers.
+    
+
+---
+
+#### Route Handler vs Server Actions
+
+- Route Handlers are the **HTTP API layer**.
+    
+- Server Actions are **direct functions** called from a component without HTTP.

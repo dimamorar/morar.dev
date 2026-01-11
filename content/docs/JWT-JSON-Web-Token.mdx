@@ -1,0 +1,84 @@
+---
+title: "JWT JSON Web Token"
+description: "A compact, secure token format used for transmitting authentication data between client and server."
+---
+
+## **JWT (JSON Web Token)**
+
+> A compact, secure token format used for transmitting authentication data between client and server.
+> JWT is signed with a secret or private key, allowing verification of authenticity and data integrity without database access.
+
+---
+
+### **Structure**
+
+JWT consists of **three parts**, separated by dots:
+
+`header.payload.signature`
+
+1. **Header** — metadata: token type and signature algorithm.
+    
+    ```json
+    { "alg": "HS256", "typ": "JWT" }
+    
+    ```
+    
+2. **Payload** — data payload (claims):
+    - standard fields:
+        
+        `iss` (issuer), `sub` (subject), `iat` (issued at), `exp` (expiration)
+        
+    - custom:
+        
+        `{ "userId": 42, "role": "admin" }`
+        
+3. **Signature** — result of `HMACSHA256(base64url(header) + "." + base64url(payload), secret)`
+    
+    The signature ensures protection against tampering.
+    
+
+---
+
+### **Encoding**
+
+- Header and Payload are encoded in **Base64URL** (a URL-safe variant of Base64).
+- Signature — a cryptographic signature confirming token integrity.
+- A full JWT looks like a single string:
+    
+    ```
+    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQyLCJyb2xlIjoiYWRtaW4ifQ.FpXx8...
+    
+    ```
+    
+
+---
+
+### **How Validation Works**
+
+1. Client sends the token in the `Authorization: Bearer <jwt>` header.
+2. Server decodes Header + Payload, calculates the signature, and compares it with the transmitted one.
+3. If the signature matches and the expiration time (`exp`) hasn't passed — the token is valid.
+4. Server gets user data from the Payload without a repeated database request.
+
+---
+
+### **Advantages**
+
+- **Stateless** — does not require session storage.
+- Compact (transmitted in the HTTP header).
+- Universal format (compatible with any platform).
+
+### **Disadvantages**
+
+- **Cannot be revoked** before expiration (without a separate blacklist).
+- Token size grows with large Payload.
+- Sensitive data cannot be stored — the token can be read (not encrypted).
+
+---
+
+### **Security Practices**
+
+- Transmit only over **HTTPS**.
+- Keep expiration time short (`exp ≈ 15 min`).
+- Store the token in a **HttpOnly cookie** or secure storage.
+- On logout or compromise — use a **revocation list** mechanism.

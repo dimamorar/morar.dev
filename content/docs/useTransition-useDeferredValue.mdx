@@ -1,0 +1,76 @@
+---
+title: "useTransition useDeferredValue"
+description: "`useTransition` and `useDeferredValue` are React 18 hooks that implement cooperative rendering in concurrent mode."
+---
+
+## useTransition / useDeferredValue — cooperative updates in concurrent mode
+
+> `useTransition` and `useDeferredValue` are React 18 hooks that implement cooperative rendering in concurrent mode.
+> 
+> 
+> They allow deferring less priority updates so the interface remains responsive during input or data filtering.
+> 
+
+---
+
+### 🧩 `useTransition`
+
+- Allows **splitting updates by priority**:
+    - urgent (input, clicks)
+    - and deferred (list render, data request).
+- Returns the array `[startTransition, isPending]`.
+- Anything wrapped in `startTransition`, React considers a **non-priority task** and may perform later.
+
+```jsx
+const [isPending, startTransition] = useTransition();
+
+function handleChange(e) {
+  const value = e.target.value;
+  setInput(value); // urgent update
+  startTransition(() => {
+    setFilteredItems(filterItems(value)); // low priority
+  });
+}
+
+```
+
+**Result:** the user sees an immediate reaction to input,
+while filtering is performed asynchronously without blocking the UI.
+
+---
+
+### 🧩 `useDeferredValue`
+
+- Defers the application of a rapidly changing value (e.g., text input) to optimize performance.
+- React "freezes" the old value until it finishes a heavy update.
+
+```jsx
+const deferredQuery = useDeferredValue(query);
+
+const results = useMemo(
+  () => filterLargeList(deferredQuery),
+  [deferredQuery]
+);
+
+```
+
+**Result:** with rapid input, the heavy list updates with a delay,
+but the input field remains responsive.
+
+---
+
+### 🧩 Difference between them
+
+| Hook | What it does | When to use |
+| --- | --- | --- |
+| **useTransition** | Makes part of the code low-priority | When you need to manually mark deferred updates |
+| **useDeferredValue** | Defers the use of a rapidly changing value | When a value changes frequently (input, slider, search) |
+
+---
+
+### 💡 Key Ideas
+
+- Both hooks use **Concurrent Rendering** for load balancing.
+- `useTransition` — manual priority management; `useDeferredValue` — automatic value delay.
+- They prevent interface "lag" during heavy updates.
+- The main goal is to **maintain smooth UX** without blocking user actions.

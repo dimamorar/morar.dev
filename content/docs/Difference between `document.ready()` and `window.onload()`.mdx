@@ -1,0 +1,82 @@
+---
+title: "Difference between `document.ready()` and `window.onload()`"
+description: "Both methods are used to execute code after the page has loaded,"
+---
+
+## Difference between `document.ready()` and `window.onload()`
+
+> Both methods are used to execute code after the page has loaded,
+> 
+> 
+> but they differ in the **timing of the event**.
+> 
+> `document.ready()` fires when the **DOM** is loaded,
+> 
+> while `window.onload()` fires when **all page resources** (images, styles, fonts, etc.) are loaded.
+> 
+
+---
+
+### 🧩 `document.ready()` / `DOMContentLoaded`
+
+- Fires when the browser has **built the DOM tree**,
+    
+    but external resources (images, styles) may still be loading.
+    
+- Used for initializing the interface and scripts
+    
+    that only require the ready DOM structure.
+    
+- Happens **earlier** than `window.onload()`,
+    
+    so the page becomes interactive faster.
+    
+
+Modern syntax (without jQuery):
+
+```jsx
+document.addEventListener("DOMContentLoaded", callback);
+
+```
+
+---
+
+### 🧩 `window.onload()`
+
+- Fires when **all page content has loaded**,
+    
+    including images, styles, fonts, iframes, and other resources.
+    
+- Used when work with elements
+    
+    depending on external data is required (for example, calculating image sizes).
+    
+- Happens **later** than `DOMContentLoaded`.
+
+Modern syntax:
+
+```jsx
+window.addEventListener("load", callback);
+
+```
+
+---
+
+### ⚖️ Key Differences
+
+| Feature | `document.ready()` / `DOMContentLoaded` | `window.onload()` |
+| --- | --- | --- |
+| **Trigger Timing** | After DOM construction | After all resources load |
+| **Wait for External Files** | ❌ No | ✅ Yes |
+| **Typical Scenarios** | UI initialization, DOM manipulations | Working with images, layout |
+| **Response Speed** | Faster | Slower |
+| **Modern Analogue** | `document.addEventListener('DOMContentLoaded', ...)` | `window.addEventListener('load', ...)` |
+
+---
+
+### 💡 Key Ideas
+
+- `DOMContentLoaded` makes the page interactive **earlier** than `load`.
+- For most UI tasks, `DOMContentLoaded` is used.
+- `window.onload` is useful if you need to wait for the **full content load**.
+- Both events can be used together if different parts of the logic require different stages of document readiness.

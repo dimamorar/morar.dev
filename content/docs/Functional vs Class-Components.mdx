@@ -1,0 +1,71 @@
+---
+title: "Functional vs. Class Components"
+description: "React supports two types of components: functional and class-based."
+---
+
+## Functional Components vs Class Components
+
+> React supports two types of components: functional and class-based.  
+> Both describe the UI but differ in how they manage state, lifecycle, and syntax.
+
+---
+
+### 🧩 Functional Components
+
+- Defined as **pure functions** taking `props` and returning JSX.
+- Do not have their own `this` or class context.
+- Manage state and side effects through **Hooks** (`useState`, `useEffect`, `useMemo`, etc.).
+- Simpler, easier to test, support logic composition through **Custom Hooks**.
+
+```jsx
+function Counter() {
+  const [count, setCount] = useState(0);
+  return (
+    <button onClick={() => setCount(count + 1)}>{count}</button>
+  );
+}
+
+```
+
+---
+
+### 🧩 Class Components
+
+- Created using **ES6 classes** extending `React.Component`.
+- Use lifecycle methods (`componentDidMount`, `shouldComponentUpdate`, `componentWillUnmount`, etc.).
+- Manage state through `this.state` and `this.setState()`.
+- Have a `this` context and more complex syntax when working with callbacks and binding.
+
+```jsx
+class Counter extends React.Component {
+  state = { count: 0 };
+  render() {
+    return (
+      <button onClick={() => this.setState({ count: this.state.count + 1 })}>
+        {this.state.count}
+      </button>
+    );
+  }
+}
+
+```
+
+---
+
+### 🧩 Comparison
+
+| Characteristic | Functional | Class |
+| --- | --- | --- |
+| State Management | Hooks | `this.state` / `setState()` |
+| Lifecycle | `useEffect`, `useLayoutEffect` | lifecycle methods |
+| `this` context | absent | binding required |
+| Performance | slightly higher (fewer wrappers) | slightly heavier |
+| Logic Reuse | via Custom Hooks | via HOC / Render Props |
+
+---
+
+### 💡 Key Ideas
+
+- **Hooks** made functional components a full replacement for class components.
+- Today it is recommended to use **only functional components**.
+- Classes remain in old codebases, but new React APIs are developed only for the functional approach.

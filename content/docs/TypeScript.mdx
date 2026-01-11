@@ -1,0 +1,1833 @@
+---
+title: "TypeScript"
+description: "TypeScript is a superset of JavaScript that adds static typing and support for modern ECMAScript features, compiling into clean JavaScript."
+---
+
+## What is TypeScript and how does it differ from JavaScript?
+
+> TypeScript is a superset of JavaScript that adds static typing and support for modern ECMAScript features, compiling into clean JavaScript.
+> 
+> The main idea is to help the developer avoid errors at the compilation stage and improve code scalability.
+
+---
+### 🧩 Essence of TypeScript
+
+- Developed by Microsoft as a **typed superset of JavaScript**.
+- Any valid JS is valid TS.
+- Adds **types**, **interfaces**, **classes**, **generics**, and other features.
+- Compiles into regular JavaScript for execution in the browser or Node.js.
+
+```tsx
+let username: string = "Alex";
+let age: number = 25;
+```
+
+---
+
+### 🧩 Differences from JavaScript
+
+- **Static typing**: errors are detected before the code is run.
+- **Support for OOP concepts** (classes, interfaces, access modifiers).
+- **IDE type checks** (autocompletion, IntelliSense).
+- **Compilation is mandatory** (`tsc` → `.js`).
+
+---
+
+### 💡 Key Ideas
+
+- TypeScript = JavaScript + types + safety.
+- Facilitates refactoring and team development.
+- Increases the stability of large projects but requires compiler configuration.
+
+## What are the benefits of using TypeScript?
+
+> TypeScript provides JavaScript with static typing, which allows detecting errors before code execution.
+> 
+> 
+> This increases reliability, readability, and scalability of the project — especially in large teams.
+> 
+
+---
+
+### 🧩 Main Advantages
+
+- **Static Typing**
+    
+    Detects compilation errors (type mismatch, missing properties, etc.) even before launching the code.
+    
+    ```tsx
+    let count: number = "5"; // ❌ Type error
+    ```
+    
+- **Improved Autocompletion**
+    
+    IDE (VS Code) understands types and offers hints for methods, properties, function parameters.
+    
+- **Better Refactoring and Code Navigation**
+    
+    Types provide checking of dependencies between modules — it's easy to change the structure without errors.
+    
+- **Compatibility with Modern JS**
+    
+    TS supports the latest ECMAScript features (async/await, decorators, modules) and compiles them into older standards.
+    
+- **Clear Documentation via Types**
+    
+    Code becomes self-documenting: types describe the expected data structure and API.
+    
+
+---
+
+### 💡 Key Ideas
+
+- TypeScript reduces the risk of runtime errors.
+- Allows building large, reliable projects with clear contracts between components.
+- Improves development experience through the type system and integration with IDE.
+
+## What are interfaces in TypeScript?
+
+> Interfaces in TypeScript define the structure of objects, describing what properties and methods they must have.
+> 
+> 
+> This is a way to establish a **type contract** that ensures consistency and verification during compilation.
+> 
+
+---
+
+### 🧩 Main Idea
+
+- An interface describes the shape of an object — property names, their types, and optionality.
+- Does not exist in generated JavaScript — used only at the typing stage.
+- Supports **extension (extends)** of other interfaces, allowing for a flexible type hierarchy.
+
+```tsx
+interface User {
+  name: string;
+  age: number;
+  email?: string; // optional property
+}
+
+const user: User = {
+  name: "Olha",
+  age: 28
+};
+```
+
+---
+
+### 🧩 Features
+
+- **Type Contract**: any object that implements an interface must have all its properties.
+- **Optional fields** (`?`) — not mandatory for implementation.
+- **Readonly fields** — prohibit change after initialization.
+- **Can describe functions, classes, arrays, objects with indices.**
+
+```tsx
+interface Point {
+  readonly x: number;
+  readonly y: number;
+}
+
+interface Add {
+  (a: number, b: number): number;
+}
+```
+
+---
+
+### 💡 Key Ideas
+
+- Interfaces are a **contract** between parts of code.
+- Allow for creating type-safe architectures and simplify autocompletion in IDEs.
+- Do not exist at runtime but guarantee correctness during compilation.
+
+## How do you create a new type using a subset of an interface?
+
+> In TypeScript, you can create a new type containing only part of the properties of an existing interface using built-in utility types such as Pick or Omit.
+> 
+> 
+> This allows reusing interfaces without code duplication.
+> 
+
+---
+
+### 🧩 `Pick<T, K>`
+
+- Creates a new type that includes **only selected keys** `K` from type or interface `T`.
+
+```tsx
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  isAdmin: boolean;
+}
+
+type PublicUser = Pick<User, "id" | "name">;
+
+const user: PublicUser = {
+  id: 1,
+  name: "Anna",
+};
+```
+
+---
+
+### 🧩 `Omit<T, K>`
+
+- Creates a type that **excludes specified keys** `K` from type or interface `T`.
+
+```tsx
+type UserWithoutEmail = Omit<User, "email">;
+
+const u: UserWithoutEmail = {
+  id: 1,
+  name: "Olha",
+  isAdmin: true,
+};
+```
+
+---
+
+### 🧩 Alternative via Own Types
+
+You can also create a subtype manually through **intersection or type indexing**, but `Pick` and `Omit` are the most convenient and common solutions.
+
+```tsx
+type CustomUser = { id: User["id"]; name: User["name"] };
+```
+
+---
+
+### 💡 Key Ideas
+
+- `Pick` → select needed properties.
+- `Omit` → exclude unnecessary properties.
+- Both help **reduce duplication** and increase type consistency in the project.
+
+## What are type assertions in TypeScript?
+
+> Type assertion is a mechanism that allows you to explicitly tell the compiler what type a value has.
+> 
+> 
+> It does not change the data itself during execution, but only helps **convince the compiler** of the correctness of the type.
+> 
+
+---
+
+### 🧩 Essence
+
+- Used when the developer **knows the type of value better** than TypeScript.
+- Allows **overriding or refining the type** determined by the compiler.
+- Does not perform any runtime checks — only affects the type system.
+
+```tsx
+let value: unknown = "Hello TS";
+let strLength = (value as string).length; // ✅ compiler knows this is a string
+```
+
+---
+
+### 🧩 Alternative Syntax
+
+TypeScript supports two forms of notation:
+
+```tsx
+const input = document.querySelector("input") as HTMLInputElement;
+```
+
+or (old syntax, not recommended in JSX files):
+
+```tsx
+const input = <HTMLInputElement>document.querySelector("input");
+```
+
+---
+
+### 🧩 Limitations
+
+- Type assertion **does not perform a check** — you can specify any type, even an incorrect one.
+- Misuse can lead to runtime errors.
+- It is safer to use **user-defined type guards** or type checks if in doubt.
+
+---
+
+### 💡 Key Ideas
+
+- Type assertion ≠ type casting (does not actually convert the type).
+- Applied when TypeScript cannot infer the exact type itself.
+- Use with caution, only when you are sure of the data type.
+
+## What is the difference between type inference and contextual typing?
+
+> TypeScript can determine types automatically — this is called type inference.
+> 
+> 
+> When a type is inferred based on the **context of use** (for example, when passing a function or callback), this is **contextual typing**.
+> 
+
+---
+
+### 🧩 Type Inference
+
+- The compiler **independently determines the type** of a variable or expression if it is not explicitly specified.
+- Inference is based on the assigned value or the result of the expression.
+
+```tsx
+let count = 5; // type: number
+const name = "Alex"; // type: string
+```
+
+- Type inference allows avoiding unnecessary type duplication in simple cases.
+- If the type cannot be determined, the compiler assigns `any` (if `noImplicitAny` is not enabled).
+
+---
+
+### 🧩 Contextual Typing
+
+- The type is determined **based on the context** in which the value is used (in particular, functions or callbacks).
+- Often applied for events, handlers, or function parameters.
+
+```tsx
+window.addEventListener("click", (event) => {
+  console.log(event.clientX); // event: MouseEvent (inferred from context)
+});
+```
+
+- In this example, the `MouseEvent` type is not explicitly declared — it is determined by the **context of the `addEventListener` method**.
+
+---
+
+### 💡 Key Ideas
+
+- **Type inference** — the type is determined **from assignment** or **expression**.
+- **Contextual typing** — the type is determined **from the context of use**.
+- Both mechanisms reduce the number of explicit annotations, making the code cleaner and more understandable.
+
+## What are generics and how to use them in TypeScript?
+
+> Generics are a mechanism that allows creating generalized types that work with different data types while maintaining type safety.
+> 
+> 
+> They enable writing flexible and reusable code without losing type information.
+> 
+
+---
+
+### 🧩 Essence of Generics
+
+- Generics add **type parameters** to functions, classes, or interfaces.
+- They act as "variables for types" — substituted during call or use.
+
+```tsx
+function identity<T>(value: T): T {
+  return value;
+}
+
+const num = identity<number>(10);   // T = number
+const str = identity("Hello");      // T = string (inferred automatically)
+```
+
+- The compiler checks type consistency:
+    
+    the returned value must always have the same type as the input parameter.
+    
+
+---
+
+### 🧩 Generics in Data Structures
+
+```tsx
+interface Box<T> {
+  content: T;
+}
+
+const stringBox: Box<string> = { content: "TypeScript" };
+const numberBox: Box<number> = { content: 42 };
+```
+
+- One definition can work with any type without losing type safety.
+
+---
+
+### 🧩 Type Constraints (`extends`)
+
+Generics can be constrained, allowing only certain types:
+
+```tsx
+function getLength<T extends { length: number }>(item: T): number {
+  return item.length;
+}
+
+getLength("text");   // ✅
+getLength([1, 2, 3]); // ✅
+getLength(123);       // ❌ number does not have length
+```
+
+---
+
+### 💡 Key Ideas
+
+- Generics = **type-safe flexibility**.
+- Reduce code duplication when working with different types.
+- Used in built-in types (`Array<T>`, `Promise<T>`, `Map<K, V>`).
+- Can have constraints (`extends`) or default values.
+
+## How do enums work in TypeScript?
+
+> enum is a special type in TypeScript that allows defining a set of named constants.
+> 
+> 
+> Used for convenient work with fixed sets of values — for example, statuses, roles, or directions.
+> 
+
+---
+
+### 🧩 Numeric Enums
+
+- By default, the enumeration values are **numeric**, starting from `0`.
+- Each subsequent element automatically gets an incremented value.
+
+```tsx
+enum Direction {
+  Up,       // 0
+  Down,     // 1
+  Left,     // 2
+  Right,    // 3
+}
+
+const move = Direction.Left; // 2
+```
+
+- You can explicitly set initial values:
+
+```tsx
+enum Status {
+  Pending = 1,
+  Success = 2,
+  Failed = 3,
+}
+```
+
+---
+
+### 🧩 String Enums
+
+- Each member of an `enum` can be a string — this increases readability and safety.
+
+```tsx
+enum Role {
+  Admin = "ADMIN",
+  User = "USER",
+  Guest = "GUEST",
+}
+
+const access = Role.Admin; // "ADMIN"
+```
+
+---
+
+### 🧩 Heterogeneous Enums
+
+- TypeScript allows combining string and numeric values, but this is **not recommended** due to unclear behavior.
+
+```tsx
+enum Mix {
+  No = 0,
+  Yes = "YES",
+}
+```
+
+---
+
+### 🧩 Reverse Mapping
+
+- For numeric `enums`, TypeScript creates a **reverse mapping** — you can get the name by value.
+
+```tsx
+enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+console.log(Color[0]); // "Red"
+```
+
+- There is no reverse mapping for string `enums`.
+
+---
+
+### 💡 Key Ideas
+
+- `enum` is a way to group related constants under one name.
+- There are **numeric**, **string**, and **heterogeneous** variations.
+- They increase code readability and simplify work with predefined sets of values.
+- During compilation, they are transformed into a JavaScript object with keys and values.
+
+## Explain how optional chaining works in TypeScript.
+
+> Optional chaining (?.) allows safe access to nested properties without the risk of a TypeError if one of the intermediate parts is null or undefined.
+> 
+> 
+> Instead of the program crashing, the result will be `undefined`.
+> 
+
+---
+
+### 🧩 Essence of the mechanism
+
+- The `?.` operator checks if the **object before it exists**, and only then accesses the property or method.
+- If the value is `null` or `undefined` — the expression stops and returns `undefined`.
+
+```tsx
+const user = {
+  profile: {
+    email: "test@mail.com",
+  },
+};
+
+console.log(user.profile?.email);   // "test@mail.com"
+console.log(user.account?.email);   // undefined (no error)
+```
+
+---
+
+### 🧩 Combination with Other Operators
+
+### Method Call:
+
+```tsx
+user.getInfo?.(); // called only if getInfo exists
+```
+
+### Access to Array Elements:
+
+```tsx
+const item = cart?.[0];
+```
+
+### Together with Nullish Coalescing (`??`):
+
+```tsx
+const email = user.profile?.email ?? "No email";
+```
+
+---
+
+### 🧩 Important Details
+
+- Works only for **`null` and `undefined`**, not for other "falsy" values (`0`, `false`, `""`).
+- Reduces the number of nested checks like `if (obj && obj.prop && obj.prop.sub)`.
+- Supported starting from **TypeScript 3.7**.
+
+---
+
+### 💡 Key Ideas
+
+- `?.` — a safe way to access nested data.
+- Stops evaluation if `null` or `undefined` is found.
+- Increases code cleanliness and eliminates the need for bulky check conditions.
+
+## What are conditional types in TypeScript?
+
+> Conditional types allow creating types that depend on conditions, similar to the ternary operator in JavaScript (A extends B ? X : Y).
+> 
+> 
+> This enables building flexible and adaptive type expressions based on the relationship between types.
+> 
+
+---
+
+### 🧩 Syntax
+
+```tsx
+T extends U ? X : Y
+```
+
+- If `T` **extends** type `U`, the result will be type `X`.
+- Otherwise — type `Y`.
+
+```tsx
+type IsString<T> = T extends string ? "yes" : "no";
+
+type A = IsString<string>; // "yes"
+type B = IsString<number>; // "no"
+```
+
+---
+
+### 🧩 Use in Type Utilities
+
+Conditional types are the foundation of many built-in TypeScript utility types (`Exclude`, `Extract`, `NonNullable`):
+
+```tsx
+type Exclude<T, U> = T extends U ? never : T;
+
+type Result = Exclude<"a" | "b" | "c", "a" | "c">;
+// "b"
+```
+
+- Here, each element `"a" | "b" | "c"` is checked separately — this is called a **distributive conditional type**.
+
+---
+
+### 🧩 Nested Conditional Types
+
+- Types can be nested for complex logic checks:
+
+```tsx
+type Check<T> = T extends string
+  ? "string"
+  : T extends number
+  ? "number"
+  : "other";
+
+type A = Check<42>;       // "number"
+type B = Check<"test">;   // "string"
+type C = Check<boolean>;  // "other"
+```
+
+---
+
+### 💡 Key Ideas
+
+- Conditional types = **"if–else" type logic** for checking relationships between types.
+- Heavily used in generic utilities and type libraries.
+- Enable creating **adaptive types** that change based on input.
+
+## What is the difference between union and intersection types?
+
+> Union types (|) allow a variable to take one of several types, while **intersection types (`&`)** combine several types into **one common type** that contains the properties of all components. They represent two opposite ways of combining types in TypeScript.
+> 
+
+---
+
+### 🧩 Union Types (`|`)
+
+- Means: **"either this type or another"**.
+- The value must match at least one of the listed types.
+- Used for values with several valid forms.
+
+```tsx
+let id: string | number;
+id = 123;
+id = "ABC123";
+```
+
+- You can check the type using **type narrowing**:
+
+```tsx
+function printId(id: string | number) {
+  if (typeof id === "string") {
+    console.log(id.toUpperCase());
+  } else {
+    console.log(id.toFixed(2));
+  }
+}
+```
+
+---
+
+### 🧩 Intersection Types (`&`)
+
+- Means: **"both this type and another at the same time"**.
+- Combines properties of several types into a new, extended type.
+
+```tsx
+interface Person {
+  name: string;
+}
+interface Employee {
+  id: number;
+}
+
+type Worker = Person & Employee;
+
+const user: Worker = {
+  name: "Olha",
+  id: 101,
+};
+```
+
+- The object must contain **all properties** from both types.
+
+---
+
+### 💡 Key Ideas
+
+- **Union (`|`)** → selection of one of several types.
+- **Intersection (`&`)** → combining several types into one.
+- Union is suitable for **alternatives**, intersection — for **object composition**.
+- Together they make the TypeScript type system extremely flexible.
+
+## When should you use the `unknown` type?
+
+> `unknown` is a safer alternative to `any` that denotes a value of an unknown type.
+> 
+> 
+> It should be used when the type is not yet defined, but you want to **maintain type safety** and not lose control over checks.
+> 
+
+---
+
+### 🧩 Main Idea
+
+- Any value can be assigned to a variable of type `unknown`.
+- But using it (accessing properties, calling methods) is **impossible without a type check**.
+- This forces the developer to **explicitly refine the type** before working with the data.
+
+```tsx
+let value: unknown = "Hello";
+
+value.toUpperCase(); // ❌ Error — type unknown
+
+if (typeof value === "string") {
+  console.log(value.toUpperCase()); // ✅ Safe
+}
+```
+
+---
+
+### 🧩 Comparison with `any`
+
+| Property | `any` | `unknown` |
+| --- | --- | --- |
+| Can assign anything | ✅ | ✅ |
+| Can call methods without check | ✅ | ❌ |
+| Checked by compiler | ❌ | ✅ |
+
+`unknown` requires additional type checks, preventing most runtime errors.
+
+---
+
+### 🧩 Typical Use Cases
+
+- Working with **dynamic data** (e.g., result of `JSON.parse`, data from an API).
+- Functions that can return **different types** depending on conditions.
+- In generic types when the argument type is not yet determined.
+
+```tsx
+function parseData(input: string): unknown {
+  return JSON.parse(input);
+}
+```
+
+---
+
+### 💡 Key Ideas
+
+- `unknown` preserves the flexibility of `any`, but **forces type checking**.
+- It is better to use `unknown` when you don't know the type yet but want to stay within the type system.
+- `any` is "TypeScript turned off," while `unknown` is **controlled chaos**.
+
+## What is `noImplicitAny` and what is its purpose?
+
+> `noImplicitAny` is a parameter in the `tsconfig.json` file that prohibits implicit assignment of the `any` type.
+> 
+> 
+> Its goal is to force the developer to **explicitly specify types** where TypeScript cannot determine them automatically.
+> 
+
+---
+
+### 🧩 Problem it Solves
+
+TypeScript tries to infer the type of a variable or parameter from context.
+
+If this is not possible — it assigns `any`, which **disables type checking** and can lead to errors in runtime.
+
+```tsx
+function sum(a, b) { // ❌ implicitly any
+  return a + b;
+}
+```
+
+Without `noImplicitAny`, both parameters have the `any` type, and the compiler does not check their compatibility.
+
+---
+
+### 🧩 How `noImplicitAny` Works
+
+With `noImplicitAny: true`, TypeScript **issues an error** if it cannot determine the type independently.
+
+```json
+{
+  "compilerOptions": {
+    "noImplicitAny": true
+  }
+}
+```
+
+```tsx
+function sum(a, b) { // ❌ Error: Parameter 'a' implicitly has an 'any' type.
+  return a + b;
+}
+
+function sumTyped(a: number, b: number) { // ✅
+  return a + b;
+}
+```
+
+---
+
+### 🧩 Where it Affects
+
+- Function parameters without a type.
+- Variables without initialization.
+- Generics without an explicitly specified type.
+- Type extensions where no specific type has been inferred.
+
+---
+
+### 💡 Key Ideas
+
+- `noImplicitAny` — the basis of **strict typing mode** in TypeScript.
+- Helps avoid hidden `any`, which can destroy type safety.
+- It is recommended to always enable it together with `strict: true`.
+
+## What is the purpose of the `keyof` operator?
+
+> `keyof` is a TypeScript operator that returns a union of all keys of an object or interface as string literals.
+> 
+> 
+> It is used for creating **type-safe operations on object properties**.
+> 
+
+---
+
+### 🧩 Main Idea
+
+- `keyof` extracts **type field names** as a set of values (string literals).
+- Useful when creating generic functions that work with dynamic keys.
+
+```tsx
+interface User {
+  id: number;
+  name: string;
+  age: number;
+}
+
+type UserKeys = keyof User;
+// "id" | "name" | "age"
+```
+
+---
+
+### 🧩 Usage in Functions
+
+You can constrain an argument so that it accepts **only real keys** of an object:
+
+```tsx
+function getValue<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+
+const user = { id: 1, name: "Olha" };
+
+const name = getValue(user, "name"); // ✅ string
+const invalid = getValue(user, "email"); // ❌ Error: "email" does not exist in type
+```
+
+- This ensures **full type safety when accessing properties**.
+
+---
+
+### 🧩 Combinations with Other Operators
+
+- `keyof` is often used with `typeof`, `in`, `extends` to build **dynamic types**:
+
+```tsx
+const user = { id: 1, name: "Olha" };
+type Keys = keyof typeof user; // "id" | "name"
+```
+
+---
+
+### 💡 Key Ideas
+
+- `keyof` creates a union from property names of a type.
+- Allows writing **generic functions** that work only with existing keys.
+- A primary tool for building **flexible types and utility constructs** (e.g., `Pick`, `Omit`).
+
+## How does the `typeof` operator work in TypeScript?
+
+> In TypeScript, `typeof` is used not to get the type during execution, but to extract the type of a variable or object at the compilation stage.
+> 
+> 
+> This allows reusing the type of an already existing value without duplicating definitions.
+> 
+
+---
+
+### 🧩 Main Idea
+
+- Unlike `typeof` in JavaScript, which returns a string (`"string"`, `"number"`, etc.),
+    
+    in TypeScript `typeof` returns the **type form** of a variable or object.
+    
+
+```tsx
+const user = {
+  id: 1,
+  name: "Anna",
+  active: true,
+};
+
+type User = typeof user;
+/*
+  type User = {
+    id: number;
+    name: string;
+    active: boolean;
+  }
+*/
+```
+
+---
+
+### 🧩 Application in Generic Functions
+
+- `typeof` is often combined with `keyof` to create **type-safe utilities**:
+
+```tsx
+const settings = {
+  theme: "dark",
+  version: 3,
+};
+
+type SettingsKeys = keyof typeof settings;
+// "theme" | "version"
+```
+
+- This allows typing values dynamically based on an already existing object.
+
+---
+
+### 🧩 Usage with Classes
+
+- In classes, `typeof` returns the **type of the constructor**, not the instance:
+
+```tsx
+class User {
+  name = "Olha";
+}
+
+type UserType = User;         // instance type
+type UserConstructor = typeof User; // constructor type
+```
+
+---
+
+### 💡 Key Ideas
+
+- `typeof` in TypeScript is a **type operator**, not a runtime function.
+- Allows creating types based on real variables or objects.
+- Combined with `keyof`, it ensures **maximum consistency between data and types**.
+
+## What are mapped types and how are they used?
+
+> Mapped types allow creating new types based on existing ones, iterating through all keys of a type or interface.
+> 
+> 
+> They are often used to build **utility types** (`Partial`, `Readonly`, `Pick`, `Record`).
+> 
+
+---
+
+### 🧩 Main Idea
+
+- Mapped type syntax is based on **iteration over keys** of a type using `keyof`.
+
+```tsx
+type User = {
+  id: number;
+  name: string;
+  email: string;
+};
+
+type OptionalUser = {
+  [K in keyof User]?: User[K];
+};
+/*
+  type OptionalUser = {
+    id?: number;
+    name?: string;
+    email?: string;
+  }
+*/
+```
+
+- `[K in keyof User]` goes through each key of the `User` type
+    
+    and creates a new type with needed modifications.
+    
+
+---
+
+### 🧩 Property Modification
+
+Mapped types allow changing properties:
+
+- making them **optional** `?`
+- making them **read-only** `readonly`
+- changing the value type
+
+```tsx
+type ReadonlyUser = {
+  readonly [K in keyof User]: User[K];
+};
+
+type StringifyUser = {
+  [K in keyof User]: string;
+};
+```
+
+---
+
+### 🧩 Combination with Generic Types
+
+- Mapped types often generalize a template and work for any type:
+
+```tsx
+type PartialType<T> = {
+  [K in keyof T]?: T[K];
+};
+
+type PartialUser = PartialType<User>;
+```
+
+---
+
+### 💡 Key Ideas
+
+- Mapped types = **mass transformation of types**.
+- Allows creating new types without code duplication.
+- Actively used in built-in TypeScript utilities (`Partial`, `Readonly`, `Pick`, `Record`, `Omit`).
+- Increases the **flexibility and scalability** of the type system.
+
+## What are utility types (`Partial`, `Pick`, `Omit`, `Readonly`, `Record`)?
+
+> Utility types are built-in generalized types in TypeScript that simplify working with objects,
+> 
+> 
+> allowing you to quickly create modified versions of existing types without repeated description.
+> 
+> They are based on **mapped types** and **conditional types** mechanisms.
+> 
+
+---
+
+### 🧩 `Partial<T>`
+
+- Makes all properties of type `T` **optional** (`?`).
+
+```tsx
+interface User {
+  id: number;
+  name: string;
+}
+
+type PartialUser = Partial<User>;
+/*
+  { id?: number; name?: string; }
+*/
+```
+
+---
+
+### 🧩 `Readonly<T>`
+
+- Makes all properties **read-only** (`readonly`).
+
+```tsx
+type ReadonlyUser = Readonly<User>;
+/*
+  { readonly id: number; readonly name: string; }
+*/
+```
+
+---
+
+### 🧩 `Pick<T, K>`
+
+- Creates a new type with **selected keys** `K` from type `T`.
+
+```tsx
+type UserPreview = Pick<User, "id" | "name">;
+/*
+  { id: number; name: string; }
+*/
+```
+
+---
+
+### 🧩 `Omit<T, K>`
+
+- Creates a type, **excluding certain keys** `K` from `T`.
+
+```tsx
+type UserWithoutId = Omit<User, "id">;
+/*
+  { name: string; }
+*/
+```
+
+---
+
+### 🧩 `Record<K, T>`
+
+- Creates an object type where **keys have type `K`**, and value has type `T`.
+
+```tsx
+type Roles = "admin" | "user" | "guest";
+type Permissions = Record<Roles, boolean>;
+/*
+  {
+    admin: boolean;
+    user: boolean;
+    guest: boolean;
+  }
+*/
+```
+
+---
+
+### 💡 Key Ideas
+
+- All utility types are templates built on the basis of mapped types.
+- They increase **flexibility, consistency, and reusability of types**.
+- Most often used in large codebases for transformations of objects without structure duplication.
+
+## What access modifiers does TypeScript support (`public`, `private`, `protected`)?
+
+> Access modifiers in TypeScript control the accessibility of class properties and methods.
+> 
+> 
+> They determine from which parts of the code a specific class member can be accessed,
+> 
+> helping to implement **encapsulation** — one of the key principles of OOP.
+> 
+
+---
+
+### 🧩 `public` (default)
+
+- Accessible **everywhere** — inside the class, in its descendants, and outside.
+- If no modifier is specified, the property or method is considered `public`.
+
+```tsx
+class User {
+  public name: string = "Olha";
+}
+
+const user = new User();
+console.log(user.name); // ✅ accessible
+```
+
+---
+
+### 🧩 `private`
+
+- Access only **inside the same class**.
+- Inaccessible from the outside or in descendant classes.
+
+```tsx
+class Account {
+  private balance: number = 1000;
+
+  private getBalance() {
+    return this.balance;
+  }
+}
+
+const acc = new Account();
+acc.balance;      // ❌ Error
+acc.getBalance(); // ❌ Error
+```
+
+---
+
+### 🧩 `protected`
+
+- Accessible **in the class and its descendants**, but **not from the outside**.
+- Used when a subclass should have access to certain properties of the parent class.
+
+```tsx
+class Base {
+  protected id: number = 1;
+}
+
+class Derived extends Base {
+  showId() {
+    console.log(this.id); // ✅ allowed
+  }
+}
+
+const d = new Derived();
+d.id; // ❌ Error
+```
+
+---
+
+### 💡 Key Ideas
+
+- `public` → full access.
+- `private` → only inside the class.
+- `protected` → in the class and its descendants.
+- Access modifiers are applied only at the compilation stage — **they do not exist in JavaScript**, but they ensure type safety and clear architecture.
+
+## What is the difference between `extends` and `implements`?
+
+> `extends` and `implements` are two TypeScript mechanisms that define inheritance and implementation of interfaces or classes.
+> 
+> 
+> `extends` is used for **inheriting implementation**, while `implements` is used for **complying with a type contract**.
+> 
+
+---
+
+### 🧩 `extends` — Inheritance
+
+- Used when a **class inherits from another class** or an **interface inherits from another interface**.
+- The child class receives **all properties and methods of the parent class**, and can override or extend them.
+
+```tsx
+class Animal {
+  move() {
+    console.log("Moving...");
+  }
+}
+
+class Dog extends Animal {
+  bark() {
+    console.log("Woof!");
+  }
+}
+
+const rex = new Dog();
+rex.move(); // ✅ inherited
+rex.bark(); // ✅ own method
+```
+
+- You can inherit only **one class**, but **multiple interfaces**.
+
+---
+
+### 🧩 `implements` — Contract Implementation
+
+- Used when a class **commits to implementing an interface**.
+- Ensures correspondence of form (structure), but **does not provide a ready-made implementation**.
+
+```tsx
+interface Flyable {
+  fly(): void;
+}
+
+class Bird implements Flyable {
+  fly() {
+    console.log("Flying...");
+  }
+}
+```
+
+- If a class does not implement all methods of the interface — the compiler issues an error.
+
+---
+
+### 🧩 Combination
+
+You can simultaneously **inherit a class** and **implement interfaces**:
+
+```tsx
+class Eagle extends Bird implements Flyable {
+  fly() {
+    console.log("Soaring high...");
+  }
+}
+```
+
+---
+
+### 💡 Key Ideas
+
+- `extends` → **inherits implementation** from another class or interface.
+- `implements` → **guarantees compliance with the contract**, but does not provide code.
+- `extends` = "get behavior",
+    
+    `implements` = "follow structure".
+    
+
+## What are abstract classes and when should you use them?
+
+> An abstract class is a class that cannot be created directly (via `new`),
+> 
+> 
+> it serves as a **base template** for other classes.
+> 
+> Used when you need to define **common behavior** or a **method contract** that must be implemented in descendants.
+> 
+
+---
+
+### 🧩 Main Idea
+
+- Marked with the `abstract` keyword.
+- Can contain:
+    - **implemented methods** (common logic);
+    - **abstract methods** (without implementation) — they must be overridden in subclasses.
+
+```tsx
+abstract class Shape {
+  abstract getArea(): number; // ❌ without implementation
+
+  printArea() {
+    console.log("Area:", this.getArea());
+  }
+}
+
+class Circle extends Shape {
+  constructor(private radius: number) {
+    super();
+  }
+
+  getArea() {
+    return Math.PI * this.radius ** 2;
+  }
+}
+
+const circle = new Circle(10);
+circle.printArea(); // ✅ "Area: 314.15"
+
+```
+
+---
+
+### 🧩 Features
+
+- Instances of an abstract class cannot be created:
+    
+    ```tsx
+    const s = new Shape(); // ❌ Error
+    ```
+    
+- Can implement interfaces.
+- Allows combining **common implementation** and a **contract** that is subject to overriding.
+- Useful for **class hierarchies** (e.g., `Animal → Dog`, `Bird`).
+
+---
+
+### 💡 Key Ideas
+
+- An abstract class is a **template for descendants**, not a finished object.
+- Defines the common structure and behavior that must be implemented in child classes.
+- Used when there is **common logic**, but part of the behavior depends on the specific implementation.
+
+## What is structural typing, and how does it differ from nominal typing?
+
+> TypeScript uses structural typing — type compatibility is determined by the shape of the object, not by its name or origin.
+> 
+> 
+> Unlike **nominal typing**, where the **type declaration** itself is important, in TypeScript, what matters is whether the structure matches.
+> 
+
+---
+
+### 🧩 Structural Typing
+
+- If two types have the **same shape** (same properties and types), they are considered **compatible**, even if they were declared independently.
+
+```tsx
+interface Point {
+  x: number;
+  y: number;
+}
+
+interface Coordinate {
+  x: number;
+  y: number;
+}
+
+const p: Point = { x: 10, y: 20 };
+const c: Coordinate = p; // ✅ compatible — same structure
+
+```
+
+- Used for **flexible type checking**, which simplifies integration with external objects (e.g., JSON or API responses).
+
+---
+
+### 🧩 Nominal Typing (for comparison)
+
+- Types are considered compatible **only if they have the same name or originate from a common type**.
+- This approach is used in languages like Java or C#.
+
+```java
+class User {}
+class Admin extends User {}
+
+Admin a = new User(); // ❌ not allowed without explicit inheritance
+
+```
+
+- In TypeScript, however, such a thing is possible if the structure matches, even without common inheritance.
+
+---
+
+### 🧩 Example of Difference in TS
+
+```tsx
+type User = { id: number };
+type Admin = { id: number; role: string };
+
+const user: User = { id: 1 };
+const admin: Admin = { id: 2, role: "admin" };
+
+const anotherUser: User = admin; // ✅ allowed (User structure is a subset of Admin)
+
+```
+
+---
+
+### 💡 Key Ideas
+
+- TypeScript = **structural typing** → types are compatible by shape, not by name.
+- Nominal typing = **nominal typing** → origin or specific declaration is important.
+- Structural typing provides **flexibility and simplicity**, but requires care to avoid unexpected structure matches.
+
+## How does TypeScript handle the `this` keyword in different contexts?
+
+> In TypeScript, `this` is typed explicitly, which helps avoid errors during method calls and passing functions as callbacks.
+> 
+> 
+> The compiler analyzes the context in which `this` is used and may require **explicit type annotation** to guarantee correct binding.
+> 
+
+---
+
+### 🧩 `this` in Classes
+
+- In class methods, `this` automatically points to the **instance of the class**.
+- The type of `this` corresponds to the class itself.
+
+```tsx
+class Counter {
+  count = 0;
+  increment() {
+    this.count++;
+  }
+}
+```
+
+- TypeScript guarantees that inside `increment()`, `this` will always have the `Counter` type.
+
+---
+
+### 🧩 `this` in Callbacks
+
+- If a method is passed as a callback, the `this` context can be **lost**, so TS helps detect this.
+
+```tsx
+class Button {
+  label = "Click";
+
+  handleClick() {
+    console.log(this.label);
+  }
+}
+
+const b = new Button();
+setTimeout(b.handleClick, 1000); // ❌ this = undefined in strict mode
+```
+
+- To avoid the error, you can use an arrow function or explicit binding:
+
+```tsx
+setTimeout(() => b.handleClick(), 1000); // ✅
+```
+
+---
+
+### 🧩 Explicit `this` Typing in Functions
+
+- In regular functions, you can **explicitly specify the type of `this`** in the first parameter — it is not part of the arguments list.
+
+```tsx
+function greet(this: { name: string }) {
+  console.log(`Hello, ${this.name}`);
+}
+
+const user = { name: "Anna", greet };
+user.greet(); // ✅ Hello, Anna
+```
+
+- If the function is called without context, the compiler will show a type error.
+
+---
+
+### 🧩 `this` in Generic Types
+
+- `this` can be used as a **return type** in methods that support fluent API (method chaining):
+
+```tsx
+class Builder {
+  set() { return this; }
+}
+
+class UserBuilder extends Builder {
+  build() { return this; }
+}
+```
+
+> Returning `this` allows methods to maintain the exact type of the subclass without losing information.
+
+---
+
+### 💡 Key Ideas
+
+- TypeScript **strictly types `this`** to prevent context loss.
+- You can explicitly annotate `this` in regular functions.
+- In classes, `this` always belongs to the instance, but in callbacks, the context must be fixed manually.
+- Using `this` in generic classes supports **method chaining** with correct typing.
+
+## What are ambient declarations (`.d.ts` files) used for?
+
+> Ambient declarations (.d.ts files) describe types for variables, functions, modules, or libraries
+> 
+> 
+> that **exist in the execution environment** but **do not have their own definitions in TypeScript code**.
+> 
+> They inform the compiler which entities are available without the need for implementation.
+> 
+
+---
+
+### 🧩 Main Idea
+
+- TypeScript does not execute code, so it needs to "know" the types of external objects.
+- Declaration files allow adding this information — the compiler uses them only for **type checking**, not including them in the `.js` result.
+
+```tsx
+// globals.d.ts
+declare const VERSION: string;
+declare function logMessage(msg: string): void;
+```
+
+```tsx
+// main.ts
+console.log(VERSION); // ✅ compiler knows it's a string
+logMessage("Hello!"); // ✅ type checked
+```
+
+---
+
+### 🧩 Declarations for External Libraries
+
+- If a JS library does not have types, you can either:
+    1. Install official types from DefinitelyTyped:
+        
+        ```bash
+        npm i --save-dev @types/lodash
+        ```
+        
+    2. Or create your own `.d.ts` file:
+        
+        ```tsx
+        // custom-lodash.d.ts
+        declare module "lodash" {
+          export function chunk<T>(arr: T[], size?: number): T[][];
+        }
+        ```
+        
+
+---
+
+### 🧩 `declare` Keyword
+
+- Used to describe **external entities** — without implementation.
+
+```tsx
+declare namespace MyApp {
+  const version: string;
+  function start(): void;
+}
+```
+
+- Without `declare`, TypeScript expects a real implementation (code), not just a declaration.
+
+---
+
+### 🧩 Usage in Large Projects
+
+- Used to describe:
+    - global variables or environment objects (e.g., `process`, `window`)
+    - API of external libraries
+    - modules without types
+    - type declarations in shared packages
+
+---
+
+### 💡 Key Ideas
+
+- `.d.ts` files = **"type contract without code"**.
+- Do not contain logic, only type signatures.
+- Allow TypeScript to "understand" the structure of third-party or global elements.
+- Actively used in libraries (`@types/...`) and large codebases for type consistency.
+
+## What is declaration merging?
+
+> Declaration merging is a TypeScript mechanism that allows combining several declarations with the same name into a single extended type.
+> 
+> 
+> The compiler "merges" them, combining properties, methods, or function signatures into a single definition.
+> 
+
+---
+
+### 🧩 Main Idea
+
+- If **several declarations with the same identifier** exist in the code, TypeScript automatically merges them.
+- This applies to:
+    - **interfaces**
+    - **namespaces**
+    - **functions and classes**, if they are declared compatibly with a namespace.
+
+---
+
+### 🧩 Example: Merging Interfaces
+
+```tsx
+interface User {
+  id: number;
+}
+
+interface User {
+  name: string;
+}
+
+const person: User = {
+  id: 1,
+  name: "Anna",
+};
+```
+
+- Both definitions are combined:
+    
+    ```tsx
+    interface User {
+      id: number;
+      name: string;
+    }
+    ```
+    
+
+> This is convenient for extending library types without directly editing them.
+
+---
+
+### 🧩 Example: Namespace + Function/Class
+
+- You can add properties to functions or classes via a namespace.
+
+```tsx
+function greet(name: string) {
+  return `Hello, ${name}`;
+}
+
+namespace greet {
+  export const version = "1.0";
+}
+
+console.log(greet.version); // ✅ "1.0"
+```
+
+- The namespace "merges" with the function, creating a **hybrid entity**.
+
+---
+
+### 🧩 Example: Extending Types from Libraries
+
+```tsx
+interface Window {
+  myCustomVar: string;
+}
+
+window.myCustomVar = "Hello!"; // ✅ now TypeScript "knows" about the new property
+```
+
+> Declaration merging allows adding own types to global objects or library APIs (via .d.ts files).
+
+---
+
+### 💡 Key Ideas
+
+- Declaration merging = **combining several definitions into one**.
+- Most commonly used for:
+    - extending existing types or APIs,
+    - adding types to libraries without typings,
+    - creating hybrid types (function + namespace).
+- A powerful mechanism that allows extending code **without losing compatibility or overrides**.
+
+## How do you type React components and hooks with TypeScript (e.g., props, `useState`, `useRef`)?
+
+> In React with TypeScript, typing components and hooks ensures data control between components and predictable state behavior.
+> 
+> 
+> The main idea is to define types for `props`, `state`, `ref`, as well as the results of hooks (`useState`, `useRef`, `useEffect`, etc.).
+> 
+
+---
+
+### 🧩 Typing Props
+
+- For **functional components**, a separate interface or type is created:
+
+```tsx
+type ButtonProps = {
+  label: string;
+  onClick?: () => void;
+};
+
+const Button: React.FC<ButtonProps> = ({ label, onClick }) => (
+  <button onClick={onClick}>{label}</button>
+);
+```
+
+- `React.FC` automatically adds a type for `children`, but it can be omitted for more flexibility:
+
+```tsx
+const Button = ({ label, onClick }: ButtonProps) => (
+  <button onClick={onClick}>{label}</button>
+);
+```
+
+---
+
+### 🧩 Typing `useState`
+
+- Use a generic parameter if the initial value does not define the type clearly:
+
+```tsx
+const [count, setCount] = React.useState<number>(0);
+setCount(10);   // ✅
+setCount("10"); // ❌ Error
+```
+
+- For complex structures:
+
+```tsx
+type User = { name: string; age: number };
+const [user, setUser] = React.useState<User | null>(null);
+```
+
+---
+
+### 🧩 Typing `useRef`
+
+- If `ref` stores a DOM element:
+
+```tsx
+const inputRef = React.useRef<HTMLInputElement>(null);
+
+<input ref={inputRef} />;
+inputRef.current?.focus();
+```
+
+- If `ref` stores an arbitrary value:
+
+```tsx
+const timer = React.useRef<number | null>(null);
+```
+
+---
+
+### 🧩 Typing Custom Hooks
+
+- Custom hooks are typed through generics or their own interfaces:
+
+```tsx
+function useFetch<T>(url: string): [T | null, boolean] {
+  const [data, setData] = React.useState<T | null>(null);
+  const [loading, setLoading] = React.useState(true);
+  // ...
+  return [data, loading];
+}
+
+const [user, loading] = useFetch<User>("/api/user");
+```
+
+---
+
+### 💡 Key Ideas
+
+- Props are typed through interfaces or generics (`React.FC<P>` or `({}: P) => JSX.Element`).
+- `useState<T>` and `useRef<T>` are always better typed explicitly if the initial value is ambiguous.
+- For DOM references, element types are used (`HTMLDivElement`, `HTMLInputElement`).
+- TypeScript makes React code **predictable, safe, and self-documenting**.
+
+![image.png](image.png)
+
+![image.png](image%201.png)
+
+`(n: string) ⇒ void` - void when it's not important what value the function outputs. even if in runtime it returns something.
+
+`enum` 
+
+### Unions
+
+```jsx
+number | string
+
+true | false
+
+1 | 2 | 3 | 4 | 5
+
+'' | 'cat' | 'ca' | 'c'
+```
+
+### Intersection
+
+&
+
+### any unknow never
+
+![image.png](image%202.png)
+
+### How to read errors
+
+![image.png](image%203.png)
+
+![image.png](image%204.png)
+
+## Types as a set
+
+### Nesting
+
+```jsx
+string[]
+boolean[]
+[string, number]
+Array<{size: number}>
+```
+
+![image.png](image%205.png)
+
+![image.png](image%206.png)
+
+![image.png](image%207.png)
+
+## Type management
+
+![image.png](image%208.png)
+
+### TypeGuard
+
+## Generics
+
+```jsx
+Record<string, number>
+```
+
+![image.png](image%209.png)
+
+![image.png](image%2010.png)

@@ -1,0 +1,67 @@
+---
+title: "Abstract classes"
+description: "An abstract class is a class that cannot be created directly (via `new`),"
+---
+
+> An abstract class is a class that cannot be created directly (via `new`),
+> 
+> 
+> it serves as a **base template** for other classes.
+> 
+> Used when you need to define **common behavior** or a **method contract** that must be implemented in descendants.
+> 
+
+---
+
+### 🧩 Main Idea
+
+- Marked with the `abstract` keyword.
+- Can contain:
+    - **implemented methods** (common logic);
+    - **abstract methods** (without implementation) — they must be overridden in subclasses.
+
+```tsx
+abstract class Shape {
+  abstract getArea(): number; // ❌ no implementation
+
+  printArea() {
+    console.log("Area:", this.getArea());
+  }
+}
+
+class Circle extends Shape {
+  constructor(private radius: number) {
+    super();
+  }
+
+  getArea() {
+    return Math.PI * this.radius ** 2;
+  }
+}
+
+const circle = new Circle(10);
+circle.printArea(); // ✅ "Area: 314.15"
+
+```
+
+---
+
+### 🧩 Features
+
+- Instances of an abstract class cannot be created:
+    
+    ```tsx
+    const s = new Shape(); // ❌ Error
+    ```
+    
+- Can implement interfaces.
+- Allows combining **common implementation** and a **contract** that is subject to overriding.
+- Useful for **class hierarchies** (e.g., `Animal → Dog`, `Bird`).
+
+---
+
+### 💡 Key Ideas
+
+- An abstract class is a **template for descendants**, not a finished object.
+- Defines the common structure and behavior that must be implemented in child classes.
+- Used when there is **common logic**, but part of the behavior depends on the specific implementation.

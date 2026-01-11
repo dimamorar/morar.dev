@@ -1,0 +1,79 @@
+---
+title: "Dynamic routes catch all optional catch all"
+description: "Dynamic routes allow creating pages with parameters that Next.js receives from the URL."
+---
+
+## **How dynamic routes, catch-all, and optional catch-all work in App Router**
+
+> Dynamic routes allow creating pages with parameters that Next.js receives from the URL.  
+> Catch-all routes intercept multiple path levels, and optional catch-all works even when the path is empty.  
+> All parameters are passed to the page component or Route Handler through `params`.
+
+---
+
+### Technical Explanation
+
+#### Dynamic Routes
+
+- Declared through **square brackets** in the directory structure:
+    
+    - `app/blog/[slug]/page.js` → `/blog/:slug`
+        
+    - `app/user/[id]/page.js` → `/user/:id`
+        
+- Parameter value is available in:
+    
+    - `page.js`: `{ params: { slug } }`
+        
+    - `route.js`: `context.params.slug`
+    
+
+**Example:**
+
+```jsx
+export default function Page({ params }) {
+  return <h1>{params.slug}</h1>;
+}
+```
+
+---
+
+#### Catch-All Routes
+
+- Declared like this: `app/docs/[...slug]/page.js`
+    
+- Match **any nesting depth**:
+    
+
+```
+/docs/a  
+/docs/a/b  
+/docs/a/b/c/d
+```
+
+- `params.slug` is an **array of strings**: `["a", "b", "c"]`.
+
+---
+
+#### Optional Catch-All
+
+- Declaration: `app/docs/[[...slug]]/page.js`
+    
+- Allows the route to work even without a specific path:
+    
+
+```
+/docs
+/docs/a
+/docs/a/b
+```
+
+- If there are no path parts, `params.slug` will be `undefined`.
+
+---
+
+#### Behavior with Layouts
+
+- Layout in the parent directory works for all child segments, including catch-all.
+    
+- When parameters change, Next.js keeps the layout, remounting only `page.js`.

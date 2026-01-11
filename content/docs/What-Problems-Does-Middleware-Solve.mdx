@@ -1,0 +1,109 @@
+---
+title: "What Problems Does Middleware Solve"
+description: "Middleware solves tasks that are impossible or incorrect to perform inside a reducer: asynchrony, side effects, logging, action control, and extending Redux beh"
+---
+
+## What Problems Does Middleware Solve
+
+> Middleware solves tasks that are impossible or incorrect to perform inside a reducer: asynchrony, side effects, logging, action control, and extending Redux behavior.  
+> It makes Redux flexible while maintaining the purity and predictability of reducers.
+
+---
+
+### Technical Explanation
+
+#### **1. Asynchronous Logic**
+
+Redux itself is strictly synchronous.  
+Middleware allows:
+
+- performing API requests,
+    
+- waiting for a response,
+    
+- dispatching "success/error" actions,
+    
+- coordinating chains of asynchronous operations.
+    
+
+Without middleware, there is no asynchrony in Redux.
+
+#### **2. Side Effects**
+
+The reducer must be a pure function.  
+Middleware handles effects:
+
+- timers,
+    
+- accessing localStorage,
+    
+- logging,
+    
+- authentication,
+    
+- working with tokens.
+    
+
+This separates business change logic from side effects.
+
+#### **3. Logging and Diagnostics**
+
+Typical middleware:
+
+- logger,
+    
+- crash reporting,
+    
+- analytics,
+    
+- action monitoring.
+    
+
+They allow tracking the behavior of the application without changing reducers.
+
+#### **4. Filtering and Modifying Actions**
+
+Middleware can:
+
+- reject certain actions,
+    
+- transform the payload,
+    
+- add metadata.
+    
+
+This is useful for validation, normalization, and security.
+
+#### **5. Creating New Actions**
+
+Means like Thunk and Saga can send additional actions:
+
+- start → success → error
+    
+- optimistic updates
+    
+- background refresh
+    
+
+This is impossible to do inside a reducer (it must be pure).
+
+#### **6. Encapsulation of Complex Logic**
+
+Middleware hides complexity:
+
+- retry mechanisms,
+    
+- debounce/throttle of actions,
+    
+- request queue control.
+    
+
+---
+
+### Important Notes
+
+- The primary goal of middleware is to extend Redux without violating its three principles.
+    
+- Every action passes through ALL connected middleware.
+    
+- Redux Toolkit includes useful middleware by default (thunk + checks).

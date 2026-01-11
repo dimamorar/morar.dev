@@ -1,0 +1,169 @@
+---
+title: "Merge commit vs. Squash merge vs. Rebase merge"
+description: "Merge commit preserves the full branch history, creating a separate merge commit."
+---
+
+
+
+> Merge commit preserves the full branch history, creating a separate merge commit.  
+> Squash merge combines all PR commits into one clean commit.  
+> Rebase merge rewrites feature commits on top of the main branch, forming a linear history without merge commits.
+
+---
+
+### 🧩 Merge Commit
+
+#### Essence
+
+- Creates an **additional merge commit**.
+    
+- Preserves a **non-linear, but accurate history**.
+    
+- Does not rewrite existing commits → safe for the team.
+    
+
+#### What the history looks like
+
+```
+A---B---C---------G
+     \           /
+      D---E-----F
+```
+
+#### Pros
+
+- Full transparency of history.
+    
+- Convenient to track the origin of changes.
+    
+- Safe for shared branches.
+    
+
+#### Cons
+
+- More "noisy", branched history.
+    
+
+---
+
+### 🧩 Squash Merge
+
+#### Essence
+
+- Turns all PR commits into **one final commit**.
+    
+- Internal commits of the feature are not saved.
+    
+
+#### What the history looks like
+
+```
+A---B---C---X
+```
+
+#### Pros
+
+- Clean, concise history.
+    
+- One commit is easy to revert.
+    
+- Less “trash” in `git log`.
+    
+
+#### Cons
+
+- The internal structure of development is lost.
+    
+- No information on how the feature evolved.
+    
+
+---
+
+### 🧩 Rebase Merge
+
+#### Essence
+
+- Rewrites feature commits, “transferring” them to the new branch base.
+    
+- History becomes **linear**, no merge commit is created.
+    
+
+#### What the history looks like
+
+Before:
+
+```
+main:     A---B---C
+feature:      \ D---E
+```
+
+After:
+
+```
+A---B---C---D'---E'
+```
+
+#### Pros
+
+- Clean linear history.
+    
+- All feature commits are preserved.
+    
+- Easy to read `git log`.
+    
+
+#### Cons
+
+- Rewrites history → dangerous for shared branches.
+    
+- Possible conflicts on each commit.
+    
+
+---
+
+### 🧩 When should I use which strategy?
+
+#### ✔️ Use **Merge Commit** if:
+
+- Transparent history of branching is needed.
+    
+- There are many collaborators on the project.
+    
+- PRs are large and long-lived.
+    
+- History should not be rewritten.
+    
+
+#### ✔️ Use **Squash Merge** if:
+
+- Need to keep `main` as clean as possible.
+    
+- Feature commits are “WIP”, small and unimportant.
+    
+- Functionality is often reverted.
+    
+- Team wants one commit per feature.
+    
+
+#### ✔️ Use **Rebase Merge** if:
+
+- Want a linear history without merge commits.
+    
+- Feature is local, not shared.
+    
+- Important to preserve detailed commits.
+    
+- Team is not afraid of history rewriting.
+    
+
+---
+
+### 💡 Key Ideas
+
+- **Merge Commit** → safe, preserves history, but makes it non-linear.
+    
+- **Squash Merge** → cleanest history, but without details.
+    
+- **Rebase Merge** → linearity + full detailing, but dangerous for shared branches.
+    
+- The right strategy depends on the team culture and history requirements.

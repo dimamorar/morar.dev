@@ -1,0 +1,67 @@
+---
+title: "Generics in TS"
+description: "Generics are a mechanism that allows creating generalized types that work with different data types while maintaining type safety. They enable writing flexible "
+---
+
+> Generics are a mechanism that allows creating generalized types that work with different data types while maintaining type safety. They enable writing flexible and reusable code without losing type information.
+
+---
+
+### 🧩 Essence of Generics
+
+- Generics add **type parameters** to functions, classes, or interfaces.
+- They act as "variables for types" — substituted during call or use.
+
+```tsx
+function identity<T>(value: T): T {
+  return value;
+}
+
+const num = identity<number>(10);   // T = number
+const str = identity("Hello");      // T = string (inferred automatically)
+```
+
+- The compiler checks type consistency:
+    
+    the returned value must always have the same type as the input parameter.
+    
+
+---
+
+### 🧩 Generics in data structures
+
+```tsx
+interface Box<T> {
+  content: T;
+}
+
+const stringBox: Box<string> = { content: "TypeScript" };
+const numberBox: Box<number> = { content: 42 };
+```
+
+- One definition can work with any type without losing type safety.
+
+---
+
+### 🧩 Type Constraints (`extends`)
+
+Generics can be constrained, allowing only certain types:
+
+```tsx
+function getLength<T extends { length: number }>(item: T): number {
+  return item.length;
+}
+
+getLength("text");   // ✅
+getLength([1, 2, 3]); // ✅
+getLength(123);       // ❌ number does not have length
+```
+
+---
+
+### 💡 Key Ideas
+
+- Generics = **type-safe flexibility**.
+- Reduce code duplication when working with different types.
+- Used in built-in types (`Array<T>`, `Promise<T>`, `Map<K, V>`).
+- Can have constraints (`extends`) or default values.

@@ -1,0 +1,75 @@
+---
+title: "Networking"
+description: "**HTTP (HyperText Transfer Protocol)** is a protocol that enables data exchange between a client (browser) and a server. Every time you open a webpage or send a"
+---
+
+## 1. Definition and Role of HTTP
+
+**HTTP (HyperText Transfer Protocol)** is a protocol that enables data exchange between a client (browser) and a server. Every time you open a webpage or send a request to an API, HTTP is used.
+
+### Essential Parts of HTTP:
+
+- **Request**: contains the method, URL, headers, and optionally a body.
+- **Response**: contains the status code, headers, and the body with the data.
+
+---
+
+## 2. HTTP Methods
+
+HTTP methods define what action the client wants to perform on the server.
+
+**Common Methods:**
+
+- `GET` — retrieve data. Used to load pages or fetch API data.
+- `POST` — create or send data to the server. Used when submitting forms or creating resources.
+- `PUT` — fully replace an existing resource.
+- `PATCH` — partially update a resource.
+- `DELETE` — remove a resource.
+- `OPTIONS` — check which methods and headers the server supports (often used in CORS preflight).
+
+---
+
+## 3. HTTP Status Codes
+
+Status codes inform the client about the result of the request.
+
+- **1xx** — informational (e.g., `100 Continue`)
+- **2xx** — success (`200 OK`, `201 Created`)
+- **3xx** — redirection (`301 Moved Permanently`, `302 Found`)
+- **4xx** — client errors (`400 Bad Request`, `401 Unauthorized`, `404 Not Found`)
+- **5xx** — server errors (`500 Internal Server Error`)
+
+---
+
+## 4. HTTP Headers
+
+Headers are metadata sent along with a request or response.
+
+**Request Headers:**
+
+- `Content-Type` — type of data sent by the client.
+- `Accept` — type of data the client can handle.
+- `Authorization` — tokens or credentials.
+- `Cache-Control` — caching rules.
+
+**Response Headers:**
+
+- `Content-Type` — type of data returned.
+- `Set-Cookie` — stores session information.
+- `Cache-Control` — caching rules for the client.
+
+---
+
+## 5. CORS (Cross-Origin Resource Sharing)
+
+**What is CORS:** a browser security mechanism that controls access to resources from different origins.
+
+**Why frontend developers face issues:**
+
+- Browsers block requests to another domain unless the server explicitly allows it via the `Access-Control-Allow-Origin` header.
+- Before the main request, the browser may send a **preflight request** with the `OPTIONS` method.
+
+**Tips:**
+
+- Configure the server or proxy to allow CORS for trusted domains.
+- Use proper caching headers (`Cache-Control`) to improve performance.

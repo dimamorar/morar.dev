@@ -1,0 +1,56 @@
+---
+title: "Interfaces in TS"
+description: "Interfaces in TypeScript define the structure of objects, describing what properties and methods they must have."
+---
+
+> Interfaces in TypeScript define the structure of objects, describing what properties and methods they must have.
+> It's a way to establish a **type contract** that ensures consistency and verification during compilation.
+
+---
+
+### 🧩 Core Idea
+
+- An interface describes the shape of an object — property names, their types, and optionality.
+- Does not exist in generated JavaScript — used only at the typing stage.
+- Supports **extension (extends)** of other interfaces, allowing for a flexible type hierarchy.
+
+```tsx
+interface User {
+  name: string;
+  age: number;
+  email?: string; // optional property
+}
+
+const user: User = {
+  name: "Olha",
+  age: 28
+};
+```
+
+---
+
+### 🧩 Features
+
+- **Type Contract**: any object that implements an interface must have all its properties.
+- **Optional fields** (`?`) — not mandatory for implementation.
+- **Readonly fields** — forbid modification after initialization.
+- **Can describe functions, classes, arrays, objects with indices.**
+
+```tsx
+interface Point {
+  readonly x: number;
+  readonly y: number;
+}
+
+interface Add {
+  (a: number, b: number): number;
+}
+```
+
+---
+
+### 💡 Key Ideas
+
+- Interfaces are a **contract** between parts of code.
+- Allow for creating type-safe architectures and simplify autocompletion in IDEs.
+- Do not exist at runtime but guarantee correctness during compilation.

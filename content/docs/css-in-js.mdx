@@ -1,0 +1,74 @@
+---
+title: "css in js"
+description: "CSS-in-JS is an approach where styles are described and managed via JavaScript/TypeScript code instead of separate `.css` files."
+---
+
+## CSS-in-JS
+
+> CSS-in-JS is an approach where styles are described and managed via JavaScript/TypeScript code instead of separate `.css` files.  
+> The library generates unique CSS classes and injects them into the DOM (often via `<style>`), providing isolation and dynamic styling.
+
+### Concept of CSS-in-JS
+
+- Styles live in the same module as the component (co-location).
+    
+- Styles are described as:
+    
+    - JS objects,
+        
+    - template literals,
+        
+    - functions that accept props / theme.
+        
+- Under the hood, unique class names are generated and added to the DOM during rendering.
+    
+
+### Advantages
+
+- **Style isolation**: no global class conflicts.
+    
+- **Dynamic styles**: values depend on props, state, theme, breakpoints.
+    
+- **Better modularity**: component styles and logic are located together.
+    
+- **Typing** (in TypeScript) for theme and style-related props.
+    
+
+### Disadvantages and Costs
+
+- **Runtime overhead**: style generation in the browser (or on the server during SSR).
+    
+- Possible **performance** issues in large applications with many styles.
+    
+- Dependency on a specific library (Emotion, Styled-components, JSS, etc.).
+    
+- Not always obvious integration with existing CSS pipelines (PostCSS, Tailwind, BEM).
+    
+
+### Common Use Scenarios
+
+- Apps with highly dynamic UIs (themes, modifications via props).
+    
+- Design systems where components have many style variants.
+    
+- Projects where strict encapsulation and component-level style control are important.
+    
+
+### Minimal Example
+
+```jsx
+const buttonStyle = (primary) => ({
+  padding: '8px 12px',
+  borderRadius: '4px',
+  backgroundColor: primary ? 'blue' : 'gray',
+  color: 'white',
+});
+
+// The library then converts the object into a CSS class and applies it to the element
+```
+
+### Important Notes
+
+- In modern frameworks (React + Next.js), you should prefer solutions that **compile styles at build-time** rather than generating them at runtime.
+    
+- In interviews, people often ask: _"What are the trade-offs of CSS-in-JS compared to CSS Modules / Tailwind?"_ — you should be able to mention performance and runtime complexity.

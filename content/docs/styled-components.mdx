@@ -1,0 +1,60 @@
+---
+title: "styled components"
+description: "Styled-components is a CSS-in-JS library for React that allows describing styles through template literals and creating "styled components.""
+---
+
+> Styled-components is a CSS-in-JS library for React that allows describing styles through template literals and creating "styled components."  
+> It generates unique classes under the hood and provides full style encapsulation and dynamic styling via props.
+
+### Core Concept
+
+- Styles are described as `styled.element` or `styled(Component)`.
+    
+- A unique CSS class is generated for each styled component.
+    
+- Dynamic styles are formed based on props or the theme.
+    
+- Supports SSR but requires additional configuration.
+    
+
+### Advantages
+
+- Familiar CSS syntax without the need to write JS objects.
+    
+- Full isolation: styles do not "leak" between components.
+    
+- Powerful theming support via `<ThemeProvider>`.
+    
+- Easy to create component variants (`styled(Button)`).
+    
+
+### Disadvantages
+
+- **Runtime style generation** → potential performance issues.
+    
+- SSR requires special configuration (e.g., in Next.js).
+    
+- Not suitable for very large projects where maximum render speed is critical.
+    
+
+### Examples of Use
+
+#### Minimal Example
+
+```jsx
+const Button = styled.button`
+  padding: 8px 12px;
+  border-radius: 4px;
+  background: ${(p) => (p.primary ? 'blue' : 'gray')};
+  color: white;
+`;
+```
+
+### Typical Use Cases
+- Projects with active theming and variable UI components.
+- Design systems where components are logically combined with their styles.
+- Components whose style significantly depends on props.
+
+### Important Notes
+- For Next.js (especially App Router), CSS Modules or solutions with build-time compilation (e.g., Vanilla Extract) are often recommended.
+- Styled-components is popular, but in interviews, an understanding of its **trade-offs**, especially performance, is expected.

@@ -1,0 +1,416 @@
+---
+title: "Promise"
+description: "A Promise is an object representing the result of an asynchronous operation that may be received now, later, or never. It allows writing asynchronous code witho"
+---
+
+> A Promise is an object representing the result of an asynchronous operation that may be received now, later, or never. It allows writing asynchronous code without "callback hell" and managing the sequence of execution.
+
+---
+
+### 🎭 Analogy for Understanding
+
+Imagine you are a famous singer, and fans ask day and night about your new song.
+To not worry constantly, you **promise** to send it when it's ready. You give fans a list where they can leave their email. When the song becomes available, all subscribers immediately receive it. And even if something goes wrong (for example, a fire in the studio), they will still receive a notification.
+
+This is an analogy for what we have in programming:
+
+1. **"Producing code"** — does something and takes time. For example, code that loads data over the network. This is the "singer".
+2. **"Consuming code"** — wants to get the result when it's ready. Many functions may need this result. These are the "fans".
+3. **Promise** — a special JavaScript object that links "producing code" and "consuming code". In our analogy, this is the "subscription list".
+
+---
+
+### 🧩 Main Idea
+
+`Promise` is a special ECMAScript object that encapsulates the **state of an asynchronous operation**.
+
+It can be in one of three states:
+
+- **pending** — the operation is being performed, the result is unknown;
+- **fulfilled** — the operation completed successfully;
+- **rejected** — the operation ended with an error.
+
+After moving from `pending` to a final state (`fulfilled` or `rejected`), the Promise becomes **immutable** — its state no longer changes.
+
+---
+
+### ⚙️ Creation and Operation
+
+A Promise is created via the `new Promise(executor)` constructor, where `executor` is a function with two arguments: `resolve` and `reject`.
+
+```jsx
+const promise = new Promise((resolve, reject) => {
+  // executor runs automatically and immediately upon Promise creation
+  if (success) resolve(value);
+  else reject(error);
+});
+```
+
+**Important details about executor:**
+
+- The `executor` function is called **automatically and immediately** when creating a Promise (via `new Promise`).
+- Arguments `resolve` and `reject` are callbacks provided by the JavaScript engine. We don't need to create them.
+- When the executor receives a result (whether quickly or late), it must call one of these callbacks:
+  - `resolve(value)` — if the work is completed successfully, with result `value`.
+  - `reject(error)` — if an error occurred, `error` is the error object.
+- **Only the first call to `resolve` or `reject` matters.** All subsequent calls are ignored:
+
+```jsx
+let promise = new Promise((resolve, reject) => {
+  resolve("done");
+  reject(new Error("…")); // ignored
+  setTimeout(() => resolve("…")); // ignored
+});
+```
+
+- `resolve`/`reject` expect only one argument (or none) and ignore additional arguments.
+- `resolve`/`reject` can be called **immediately**, not necessarily after an asynchronous operation:
+
+```jsx
+let promise = new Promise((resolve, reject) => {
+  resolve(123); // immediately give result: 123
+});
+```
+
+---
+
+### 🔒 Internal Promise Properties
+
+The Promise object returned by the `new Promise` constructor has internal properties:
+
+- **`state`** — initially `"pending"`, then changes to `"fulfilled"` when `resolve` is called, or `"rejected"` when `reject` is called.
+- **`result`** — initially `undefined`, then changes to `value` when `resolve(value)` is called, or `error` when `reject(error)` is called.
+
+**Important:** The `state` and `result` properties are **internal**. We cannot access them directly. For this, methods `.then`/`.catch`/`.finally`, described below, are used.
+
+---
+
+### 📥 Result Handling: then, catch, finally
+
+#### `.then()`
+
+The most important and fundamental method is `.then()`.
+
+```jsx
+promise.then(
+  function (result) {
+    /* successful result handling */
+  },
+  function (error) {
+    /* error handling */
+  }
+);
+```
+
+The first argument of `.then()` is a function that runs when the promise is fulfilled and receives the result.
+The second argument of `.then()` is a function that runs when the promise is rejected and receives the error.
+
+**Example of successful fulfillment:**
+
+```jsx
+let promise = new Promise((resolve, reject) => {
+  setTimeout(() => resolve("done!"), 1000);
+});
+
+promise.then(
+  (result) => alert(result), // shows "done!" after 1 second
+  (error) => alert(error) // not executed
+);
+```
+
+**Example of rejection:**
+
+```jsx
+let promise = new Promise((resolve, reject) => {
+  setTimeout(() => reject(new Error("Whoops!")), 1000);
+});
+
+promise.then(
+  (result) => alert(result), // not executed
+  (error) => alert(error) // shows "Error: Whoops!" after 1 second
+);
+```
+
+If we are only interested in successful completion, we can provide only one functional argument to `.then()`:
+
+```jsx
+let promise = new Promise((resolve) => {
+  setTimeout(() => resolve("done!"), 1000);
+});
+
+promise.then(alert); // shows "done!" after 1 second
+```
+
+#### `.catch()`
+
+If we are only interested in errors, we can use `null` as the first argument: `.then(null, errorHandlingFunction)`. Or we can use `.catch(errorHandlingFunction)`, which is exactly the same:
+
+```jsx
+let promise = new Promise((resolve, reject) => {
+  setTimeout(() => reject(new Error("Whoops!")), 1000);
+});
+
+// .catch(f) is the same as .then(null, f)
+promise.catch(alert); // shows "Error: Whoops!" after 1 second
+```
+
+#### `.finally()`
+
+The `.finally()` handler is **always** executed when the promise settles — regardless of whether it's successful or with an error.
+
+```jsx
+new Promise((resolve, reject) => {
+  // perform something and call resolve or reject
+})
+  .finally(() => stopLoadingIndicator) // always stops the loading indicator
+  .then(
+    (result) => showResult,
+    (err) => showError
+  );
+```
+
+**Important features of `.finally()`:**
+
+1. **The `finally` handler has no arguments.** In `finally` we don't know if the promise was successful or not. This is fine because our task is to perform "general" finalizing procedures.
+2. **The `finally` handler "passes through" the result or error to the next appropriate handler.**
+
+Example of passing a result through `finally` to `then`:
+
+```jsx
+new Promise((resolve, reject) => {
+  setTimeout(() => resolve("value"), 2000);
+})
+  .finally(() => alert("Promise ready")) // triggers first
+  .then((result) => alert(result)); // <-- .then shows "value"
+```
+
+Example of passing an error through `finally` to `catch`:
+
+```jsx
+new Promise((resolve, reject) => {
+  throw new Error("error");
+})
+  .finally(() => alert("Promise ready")) // triggers first
+  .catch((err) => alert(err)); // <-- .catch shows error
+```
+
+3. **The `finally` handler also should not return anything.** If it returns a value, it is silently ignored.
+
+   The only exception: if the `finally` handler throws an error, then this error goes to the next handler instead of any previous result.
+
+**Summary about `finally`:**
+
+- The `finally` handler does not receive the result of the previous handler (has no arguments). This result is passed further to the next appropriate handler.
+- If the `finally` handler returns something, it is ignored.
+- When `finally` throws an error, execution moves to the nearest error handler.
+
+---
+
+### ⏱️ Adding handlers to already settled promises
+
+If a promise is in the `pending` state, `.then/catch/finally` handlers wait for its result. Sometimes it may happen that the promise is already settled when we add a handler to it. In such a case, these handlers simply execute **instantly**:
+
+```jsx
+// promise becomes fulfilled instantly after creation
+let promise = new Promise((resolve) => resolve("done!"));
+
+promise.then(alert); // done! (appears right now)
+```
+
+This makes promises more flexible. We can add handlers at any time: if the result is already there, they simply execute.
+
+---
+
+### 🔗 Promise Chains
+
+Each call to `.then()` returns a **new Promise**, which allows building **chains of asynchronous actions**:
+
+```jsx
+fetchData().then(parseJSON).then(render).catch(handleError);
+```
+
+Errors that occur at any stage of the chain are **automatically passed** to the nearest `.catch()`.
+
+---
+
+### 🧠 Microtasks and Event Loop
+
+When a Promise moves to the `fulfilled` or `rejected` state, its handlers (`then`, `catch`, `finally`) go into the **microtask queue**. This means they execute **after the current macrotask**, but **before the next frame render**.
+
+---
+
+### 💼 Practical Example: loadScript
+
+Here is an example of rewriting the `loadScript` function from callbacks to Promise:
+
+**Variant with callbacks:**
+
+```jsx
+function loadScript(src, callback) {
+  let script = document.createElement("script");
+  script.src = src;
+
+  script.onload = () => callback(null, script);
+  script.onerror = () => callback(new Error(`Script load error for ${src}`));
+
+  document.head.append(script);
+}
+```
+
+**Variant with Promise:**
+
+```jsx
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    let script = document.createElement("script");
+    script.src = src;
+
+    script.onload = () => resolve(script);
+    script.onerror = () => reject(new Error(`Script load error for ${src}`));
+
+    document.head.append(script);
+  });
+}
+```
+
+**Usage:**
+
+```jsx
+let promise = loadScript(
+  "https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.js"
+);
+
+promise.then(
+  (script) => alert(`${script.src} is loaded!`),
+  (error) => alert(`Error: ${error.message}`)
+);
+
+promise.then((script) => alert("Another handler..."));
+```
+
+**Advantages of Promise over callbacks:**
+
+| Promise                                                                                                                                                      | Callbacks                                                                                                                                                                      |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Promise allows doing things in a natural order. First we call `loadScript(script)`, and then with `.then()` we write what to do with the result.           | We must have a callback function at hand when calling `loadScript(script, callback)`. In other words, we must know what to do with the result **before** calling `loadScript`. |
+| We can call `.then()` on a Promise as many times as we want. Each time we add a new "fan", a new subscription function to the "subscription list". | There can be only one callback.                                                                                                                                                |
+
+---
+
+### ⚙️ Static Promise Methods
+
+- `Promise.resolve(value)` — returns an already **fulfilled** Promise.
+- `Promise.reject(reason)` — returns a **rejected** Promise.
+
+#### `Promise.all(iterable)`
+
+Executes all promises from an iterable object **in parallel** and returns a new Promise that:
+
+- **Resolves** when **all** promises are successfully fulfilled — returns an array of results in the same order as the input promises.
+- **Rejects** if **at least one** promise is rejected — returns the error of the first rejected promise.
+
+**Important:** If an empty array is passed, `Promise.all` immediately resolves with an empty array.
+
+**Example:**
+
+```jsx
+const p = new Promise((res, rej) => {
+  setTimeout(() => res("1"), 1000);
+});
+
+const p2 = new Promise((res, rej) => {
+  setTimeout(() => res("2"), 2000);
+});
+
+const p3 = new Promise((res, rej) => {
+  setTimeout(() => res("3"), 3000);
+});
+
+const cat = Promise.all([p, p2, p3]);
+
+cat.then((val) => {
+  console.log(val); // [1, 2, 3]
+});
+```
+
+#### `Promise.race(iterable)`
+
+Returns a new Promise that resolves or rejects with the result of the **first settled** promise (regardless of success or error). All other promises continue to execute, but their results are ignored.
+
+**Useful for:** implementing timeouts, choosing the fastest data source.
+
+**Example:**
+
+```jsx
+const p1 = new Promise(function (resolve, reject) {
+  setTimeout(resolve, 500, "one");
+});
+const p2 = new Promise(function (resolve, reject) {
+  setTimeout(resolve, 100, "two");
+});
+
+Promise.race([p1, p2]).then(function (value) {
+  console.log(value); // "two"
+  // Both returned resolve, but p2 was first
+});
+```
+
+#### `Promise.allSettled(iterable)`
+
+Waits for completion of **all** promises (regardless of success or error) and returns an array of objects with results. Each object has the structure:
+
+- `{ status: 'fulfilled', value: ... }` — for successful promises
+- `{ status: 'rejected', reason: ... }` — for rejected promises
+
+**Difference from `Promise.all`:** `allSettled` never rejects — it always resolves with an array of results.
+
+**Example:**
+
+```jsx
+Promise.allSettled([
+  Promise.resolve("Success 1"),
+  Promise.reject("Error 1"),
+  Promise.resolve("Success 2"),
+  Promise.reject("Error 2"),
+]).then((results) => {
+  results.forEach((result, index) => {
+    if (result.status === "fulfilled") {
+      console.log(`Promise ${index}:`, result.value);
+    } else {
+      console.log(`Promise ${index} failed:`, result.reason);
+    }
+  });
+});
+// Will output all results, including errors
+```
+
+#### `Promise.any(iterable)`
+
+Returns a new Promise that resolves with the value of the **first successful** promise. If **all** promises are rejected, it returns an `AggregateError` with an array of all errors.
+
+**Difference from `Promise.race`:** `race` returns the first settled (even if it's an error), while `any` waits for the first successful one.
+
+**Example:**
+
+```jsx
+Promise.any([
+  Promise.resolve("Success 1"),
+  Promise.reject("Error 1"),
+  Promise.resolve("Success 2"),
+  Promise.reject("Error 2"),
+]).then((result) => {
+  console.log(result); // Success 1
+});
+```
+
+---
+
+### 💡 Key Ideas
+
+- Promise is a **result container** for an asynchronous operation.
+- Works on the principle of **states** and **handlers**.
+- Provides **clean and manageable asynchrony**.
+- Handlers execute in **microtasks** of the Event Loop, making behavior predictable.
+- Promise chains allow writing **logic sequentially**, like synchronous code.
+- Handlers can be added to already settled promises — they will execute instantly.
+- `.finally()` is used for general finalizing procedures and passes the result further.

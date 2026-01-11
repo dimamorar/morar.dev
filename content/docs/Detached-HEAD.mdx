@@ -1,0 +1,22 @@
+---
+title: "Detached HEAD"
+description: "Detached HEAD is a state when the HEAD pointer refers not to a branch, but to a specific commit."
+---
+
+> Detached HEAD is a state when the HEAD pointer refers not to a branch, but to a specific commit.
+
+### Explanation
+
+Occurs when switching to a commit directly:
+
+```bash
+git checkout <commit-hash>
+```
+
+HEAD is "detached" from the branch — new commits will not belong to any branch.
+
+To save changes, create a branch:
+
+```bash
+git switch -c new-branch
+```

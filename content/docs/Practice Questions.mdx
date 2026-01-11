@@ -1,0 +1,70 @@
+---
+title: "Practice Questions"
+description: "Questions related to flatten array"
+---
+
+Questions related to flatten array
+
+> "Flattening" an array means converting nested arrays into a single flat array containing all elements without nesting.
+
+---
+
+### What does it mean to "flatten" an array?
+
+It's the process of converting a multi-dimensional array (`[1, [2, [3]]]`) into a one-dimensional one (`[1, 2, 3]`).
+
+---
+
+### 2. How to implement flatten without built-in methods?
+
+With recursion:
+
+```jsx
+function flatten(arr) {
+  return arr.reduce(
+    (acc, val) => acc.concat(Array.isArray(val) ? flatten(val) : val),
+    []
+  );
+}
+```
+
+Here `reduce` combines elements, recursively flattening nested arrays.
+
+---
+
+### 3. How to use the built-in `flat()` method?
+
+```jsx
+[1, [2, [3, [4]]]].flat(2); // [1, 2, 3, [4]]
+[1, [2, [3, [4]]]].flat(Infinity); // completely flattens
+```
+
+The `depth` parameter determines the flattening depth.
+
+---
+
+### 4. Can you flatten without recursion?
+
+Yes, using a stack (iterative way):
+
+```jsx
+function flattenIterative(arr) {
+  const stack = [...arr];
+  const res = [];
+  while (stack.length) {
+    const next = stack.pop();
+    Array.isArray(next) ? stack.push(...next) : res.push(next);
+  }
+  return res.reverse();
+}
+```
+
+---
+
+### 5. What are typical mistakes?
+
+- Skipping the `Infinity` parameter in `flat()` if the depth is unknown.
+- Using `concat` without considering nested levels.
+- Mutating the original array during iteration.
+
+https://devtools.tech/questions/s/how-to-implement-event-emitter-in-javascript-or-facebook-interview-question---qid---J4fNqXImp6QIdGMc7SPF

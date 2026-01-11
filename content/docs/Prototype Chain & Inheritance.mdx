@@ -1,0 +1,84 @@
+---
+title: "Prototype Chain & Inheritance"
+description: "Prototypal inheritance is a mechanism by which objects in JavaScript inherit properties and methods from each other through a chain of `[[Prototype]]` links."
+---
+
+## Prototype Chain & Inheritance
+
+> Prototypal inheritance is a mechanism by which objects in JavaScript inherit properties and methods from each other through a chain of `[[Prototype]]` links.  
+> It is at the core of the object model and the implementation of classes (`class`).
+
+---
+
+### 🧩 Prototype Chain
+
+- Every object has an internal `[[Prototype]]` link pointing to another object or `null`.
+- When an object's property is accessed, the engine looks for it first **in the object itself**, then **along the prototype chain** until it reaches `Object.prototype` or `null`.
+- This mechanism is called **property delegation**.
+
+```jsx
+const animal = { eats: true };
+const dog = Object.create(animal);
+console.log(dog.eats); // true — found in the prototype
+```
+
+📘 If a property is not found, `undefined` is returned, and the search continues up the chain.
+
+---
+
+### 🧩 `Function.prototype` and Objects created via `new`
+
+- Every function in JS has a `prototype` property — an object used as a prototype for instances created via `new`.
+- When `new` is called, a new object is created, and its `[[Prototype]]` is linked to `Constructor.prototype`.
+
+```jsx
+function User(name) {
+  this.name = name;
+}
+User.prototype.sayHi = function() {
+  return `Hi, ${this.name}`;
+};
+
+const user = new User('Alex');
+user.sayHi(); // 'Hi, Alex'
+```
+
+📘 `user.__proto__ === User.prototype` → `true`.
+
+---
+
+### 🧩 Inheritance in Classes
+
+- The `extends` keyword establishes a link between class prototypes.
+- The `super` method allows calling the constructor and methods of the parent class.
+
+```jsx
+class Animal {
+  speak() { return 'Sound'; }
+}
+class Dog extends Animal {
+  speak() { return super.speak() + ' Woof'; }
+}
+new Dog().speak(); // 'Sound Woof'
+```
+
+📘 Classes are **syntactic sugar** over prototypal inheritance.
+
+---
+
+### ⚙️ Useful methods for working with prototypes
+
+- `Object.create(proto)` — creates an object with the specified prototype.
+- `Object.getPrototypeOf(obj)` — returns the current prototype of the object.
+- `Object.setPrototypeOf(obj, proto)` — changes the prototype of an object.
+- `obj.hasOwnProperty(key)` — checks if the property belongs to the object itself, not the prototype.
+
+---
+
+### 💡 Key Ideas
+
+- **Prototype** — the base object from which other objects are inherited.
+- **Prototype chain** provides the search for properties up the chain.
+- **Classes (`class`)** — a wrapper over prototypes that adds syntactic clarity.
+- **Object.prototype** — the root of the entire chain; followed by `null`.
+- Changes in the prototype are reflected in all objects inherited from it.

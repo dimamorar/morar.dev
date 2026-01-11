@@ -1,0 +1,91 @@
+---
+title: "How to Iterate Array of Promises"
+description: "Iterating through an array of promises can be done in parallel or sequentially, depending on the application logic."
+---
+
+## How to Iterate Array of Promises
+
+> Iterating through an array of promises can be done in parallel or sequentially, depending on the application logic.
+> The loop determines the order of calls, but **does not guarantee the order of completion**.
+
+---
+
+### 🧩 1. Parallel Execution
+
+All promises start **simultaneously**, and the result is awaited through `Promise.all()`.
+The most efficient way if operations are **independent** of each other.
+
+```jsx
+const urls = ["a.json", "b.json", "c.json"];
+const promises = urls.map(url => fetch(url));
+const results = await Promise.all(promises);
+console.log(results);
+
+```
+
+📘 All `fetch()` calls start in parallel, and `Promise.all()` waits for all to complete.
+If one promise fails — the entire chain is rejected.
+
+---
+
+### 🧩 2. Sequential Execution
+
+If it's necessary for operations to be performed **strictly in order**, `for...of` in combination with `await` is used.
+
+```jsx
+const urls = ["a.json", "b.json", "c.json"];
+
+for (const url of urls) {
+  const res = await fetch(url);
+  console.log("Fetched:", url);
+}
+
+```
+
+📘 Each `fetch()` starts **only after** the previous one completes.
+Useful when the result of the next operation depends on the previous one.
+
+---
+
+### ⚠️ 3. Error when using `forEach`
+
+The `forEach()` method **does not handle `await` correctly**, as it doesn't return a promise and doesn't wait for async operations to complete.
+
+```jsx
+urls.forEach(async (url) => {
+  const res = await fetch(url); // executed in parallel, but not awaited
+  console.log(url);
+});
+
+```
+
+📘 Despite `await`, execution is not synchronized.
+For order control, use `for...of` or `for await...of`.
+
+---
+
+### 🧠 4. Combined Approach (Batch processing)
+
+You can combine approaches — run **parts of tasks in parallel**, while groups are performed **sequentially**.
+
+```jsx
+const chunks = [[1, 2, 3], [4, 5, 6]];
+
+for (const group of chunks) {
+  const results = await Promise.all(group.map(processItem));
+  console.log("Batch done:", results);
+}
+
+```
+
+📘 Promises within a group are executed in parallel, while groups are executed sequentially. This is the **optimal balance** between speed and control.
+
+---
+
+### 💡 Key Ideas
+
+- `Promise.all()` — best option for **independent async operations**.
+- `for...of` with `await` — for **strictly sequential** execution.
+- `forEach()` does not manage asynchrony and **is not suitable for `await`**.
+- Combined approach (batching) allows controlling the **degree of parallelism**.
+- All promise handlers (`then`, `catch`) go into the **microtask queue** of the Event Loop.

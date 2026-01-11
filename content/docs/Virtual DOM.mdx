@@ -1,0 +1,75 @@
+---
+title: "Virtual DOM"
+description: "Virtual DOM is React's internal model representing the structure of the real DOM as a tree of JavaScript objects. It allows React to calculate the difference be"
+---
+
+> Virtual DOM is React's internal model representing the structure of the real DOM as a tree of JavaScript objects. It allows React to calculate the difference between UI states in memory and update the real DOM with a minimum number of operations.
+
+---
+
+### 🧩 What is Virtual DOM
+
+- **Virtual DOM (VDOM)** is a tree of **React Elements** created when calling `React.createElement()` (or when using JSX).
+- Each element is an **ordinary object** describing what DOM node or component should be displayed.
+- Virtual DOM is not linked to the real browser DOM — it exists **only in memory** and serves as an intermediate layer for optimization.
+
+```jsx
+const element = <h1 className="greeting">Hello, world!</h1>;
+```
+
+After transpilation, JSX turns into:
+
+```jsx
+const element = React.createElement(
+  "h1",
+  { className: "greeting" },
+  "Hello, world!"
+);
+```
+
+Result — React Element object:
+
+```jsx
+{
+  $$typeof: Symbol(react.element),
+  type: 'h1',
+  key: null,
+  ref: null,
+  props: {
+    className: 'greeting',
+    children: 'Hello, world!'
+  },
+  _owner: null,
+  _store: {}
+}
+```
+
+---
+
+### 🧩 Diffing and Reconciliation
+
+- When state changes, React creates a **new Virtual DOM tree** and compares it with the old one.
+- Comparison is performed by the **diffing** algorithm, which analyzes differences by:
+  - element type (`div`, `Component`, `TextNode`);
+  - positions of child elements;
+  - keys (`key`) for identification.
+- After analysis, React passes the differences to the **reconciliation** mechanism, which updates only the changed areas of the real DOM.
+
+---
+
+### 🧩 Performance
+
+- DOM operations are expensive, operations with objects in memory are cheap.
+- Virtual DOM allows:
+  - performing updates in **batches (batching)**;
+  - minimizing DOM access;
+  - making rendering **predictable and deterministic**.
+
+---
+
+### 💡 Key Ideas
+
+- Virtual DOM = **abstract tree of React Elements** existing in memory.
+- React creates a new tree with each update and compares it with the old one.
+- Only changed nodes are passed for updating in the real DOM.
+- Such a mechanism ensures **high performance and clean UI architecture**.

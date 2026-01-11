@@ -1,0 +1,104 @@
+---
+title: "Error boundaries"
+description: "Error Boundaries are special React components that catch errors occurring during rendering, in lifecycle methods, or in child components."
+---
+
+## Error boundaries — how they catch render errors
+
+> Error Boundaries are special React components that catch errors occurring during rendering, in lifecycle methods, or in child components.
+> 
+> They prevent the entire application from "falling," isolating the error inside a local section of the UI.
+
+---
+
+### 🧩 What is an Error Boundary
+
+- Error Boundary is a **React container component** implementing error handling methods.
+- It catches errors **only in child components**, but not in itself.
+- Works for errors:
+    - during rendering,
+    - in lifecycle methods,
+    - in constructors of descendants.
+
+---
+
+### 🧩 Implementation in Class Components
+
+Error Boundary must implement at least one of two methods:
+
+1. **`static getDerivedStateFromError(error)`** — updates state upon an error.
+2. **`componentDidCatch(error, info)`** — logs the error or sends it to the server.
+
+```jsx
+class ErrorBoundary extends React.Component {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, info) {
+    console.error('Caught by boundary:', error, info);
+  }
+
+  render() {
+    if (this.state.hasError) return <h2>Something went wrong.</h2>;
+    return this.props.children;
+  }
+}
+
+```
+
+Usage:
+
+```jsx
+<ErrorBoundary>
+  <Profile />
+</ErrorBoundary>
+
+```
+
+---
+
+### 🧩 Error Boundaries in Functional Components
+
+Currently, Hooks **do not provide a direct analogue** of Error Boundary.
+
+However, you can use:
+
+- **built-in `<ErrorBoundary>`** from React 18+ (experimental),
+- or a wrapper based on `react-error-boundary` (library by Kent C. Dodds).
+
+```jsx
+import { ErrorBoundary } from 'react-error-boundary';
+
+<ErrorBoundary FallbackComponent={ErrorFallback}>
+  <UserList />
+</ErrorBoundary>
+
+```
+
+---
+
+### 🧩 Limitations
+
+Error Boundaries **do not catch errors**:
+
+- inside event handlers (`onClick`, `onSubmit`);
+- in asynchronous callbacks (setTimeout, Promises);
+- in server-side rendering (SSR);
+- for errors inside the Error Boundaries themselves.
+
+For these cases, use:
+
+- `try...catch` inside the logic,
+- global listeners (`window.onerror`, `unhandledrejection`).
+
+---
+
+### 💡 Key Ideas
+
+- Error Boundaries protect the UI from critical errors in child components.
+- Implemented through `getDerivedStateFromError` and `componentDidCatch` methods.
+- Do not catch errors in asynchronous or event contexts.
+- Serve as an **"emergency buffer"**, increasing application stability.

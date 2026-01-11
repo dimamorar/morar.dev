@@ -1,0 +1,61 @@
+---
+title: "Single Source of Truth"
+description: "Single Source of Truth is a principle according to which the application state is stored in a **single, centralized repository**, rather than distributed across"
+---
+
+## Single Source of Truth
+
+> Single Source of Truth is a principle according to which the application state is stored in a **single, centralized repository**, rather than distributed across various components.  
+> It ensures data consistency, simplifies UI synchronization, and guarantees predictable application behavior.
+
+---
+
+### Technical Explanation
+
+#### **The Essence of the Principle**
+
+- All data managed by the application is in one place.
+    
+- Components do not store their own versions of the global state and do not argue among themselves about "which data is correct."
+    
+- The UI always reflects the current state of the Store.
+    
+
+#### **Single Source of Truth in Flux**
+
+- Each domain area has its own Store.
+    
+- The Store owns the single true version of data for its part of the state.
+    
+- All Views subscribe to the corresponding Stores and receive up-to-date data.
+    
+
+#### **Single Source of Truth in Redux**
+
+- One global state inside a single Store.
+    
+- Reducers define the state structure but do not own their own copies of data.
+    
+- All components receive data from a single state object → this eliminates discrepancies.
+    
+
+#### **Why This is Important**
+
+- Eliminates state duplication.
+    
+- Simplifies debugging: you can always see the current state.
+    
+- Makes application behavior deterministic: `UI = f(state)`.
+    
+- Allows using tools like Redux DevTools and time-travel debugging.
+    
+
+---
+
+### Important Notes
+
+- "Single" does not mean a "simple structure" — the state can be multi-layered and complex, but it is stored **globally and centrally**.
+    
+- The principle is directly related to unidirectional data flow: one store → multiple UI representations.
+    
+- Redux Toolkit supports this principle, even if the logic is broken into several slices.

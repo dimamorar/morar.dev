@@ -1,0 +1,16 @@
+---
+title: "What happens when you run git add and git commit"
+description: "`git add` indexes changes, and `git commit` saves a snapshot of the state in the repository history."
+---
+
+> `git add` indexes changes, and `git commit` saves a snapshot of the state in the repository history.
+
+### Explanation
+
+- `git add` places selected files in the staging area, calculating hashes of blob objects and writing them to the index.
+- `git commit` creates a new **commit** object containing:
+    - a link to the **tree** (file structure),
+    - a link to the previous commit (parent),
+    - metadata (author, date, message).
+
+Each commit records the complete state of the project, not just the delta.

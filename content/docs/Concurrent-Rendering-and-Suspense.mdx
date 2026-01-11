@@ -1,0 +1,88 @@
+---
+title: "Concurrent Rendering and Suspense"
+description: "Concurrent Rendering is a new rendering model in React 18 based on the Fiber architecture."
+---
+
+## Concurrent Rendering and Suspense
+
+> Concurrent Rendering is a new rendering model in React 18 based on the Fiber architecture.
+> 
+> 
+> It allows React to suspend, resume, and cancel updates, making the interface responsive even during heavy computations or data loading.
+> 
+
+---
+
+### 🧩 Concurrent Rendering
+
+- **Old model (legacy)** — synchronous: updates block the main thread until completion.
+- **Concurrent Rendering** — asynchronous and cooperative:
+    - React can **break rendering into parts**,
+    - **suspend** execution to respond to user actions,
+    - **resume** or **cancel** work when more priority tasks appear.
+
+Example:
+
+```jsx
+// Long rendering does not block the interface
+startTransition(() => {
+  setSearchQuery(inputValue);
+});
+
+```
+
+React defers a low-priority state update to maintain responsiveness during text input.
+
+---
+
+### 🧩 Suspense
+
+- **Suspense** is a React mechanism that allows **deferring the render** of a component until data or resources are ready.
+- Works together with Concurrent Rendering so as not to block the rest of the UI.
+
+```jsx
+const UserProfile = React.lazy(() => import('./UserProfile'));
+
+<Suspense fallback={<Spinner />}>
+  <UserProfile />
+</Suspense>
+
+```
+
+- `fallback` is displayed until the component or data is loaded.
+- You can nest multiple Suspense boundaries to isolate waiting zones.
+
+---
+
+### 🧩 Integration with Data
+
+React 18 supports **data-fetching Suspense** through libraries (React Query, Relay, SWR).
+
+Example (with experimental API):
+
+```jsx
+<Suspense fallback={<Loading />}>
+  <UserData id="42" />
+</Suspense>
+
+```
+
+`UserData` "suspends" render until data is received, but other parts of the UI remain interactive.
+
+---
+
+### 🧩 Priorities and Smoothness
+
+- React itself distributes task priorities:
+    - critical updates (input, clicks) — performed immediately,
+    - secondary (loading, filtering) — can be suspended.
+- This ensures **smooth interface operation without UI "freezing"**.
+
+---
+
+### 💡 Key Ideas
+
+- **Concurrent Rendering** = React's ability to perform work in parts.
+- **Suspense** = declarative management of the waiting state.
+- Both mechanisms are based on Fiber and support prioritization of updates.
+- React remains responsive even during heavy renders or network delays.

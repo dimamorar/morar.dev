@@ -1,0 +1,71 @@
+---
+title: "Structural vs. nominal typing"
+description: "TypeScript uses structural typing — type compatibility is determined by the shape of the object, not by its name or origin."
+---
+
+> TypeScript uses structural typing — type compatibility is determined by the shape of the object, not by its name or origin.
+> Unlike **nominal typing**, where the **type declaration** itself is important, in TypeScript, what matters is whether the structure matches.
+
+---
+
+### 🧩 Structural Typing
+
+- If two types have the **same shape** (same properties and types), they are considered **compatible**, even if they were declared independently.
+
+```tsx
+interface Point {
+  x: number;
+  y: number;
+}
+
+interface Coordinate {
+  x: number;
+  y: number;
+}
+
+const p: Point = { x: 10, y: 20 };
+const c: Coordinate = p; // ✅ compatible — same structure
+
+```
+
+- Used for **flexible type checking**, which simplifies integration with external objects (e.g., JSON or API responses).
+
+---
+
+### 🧩 Nominal Typing (for comparison)
+
+- Types are considered compatible **only if they have the same name or originate from a common type**.
+- This approach is used in languages like Java or C#.
+
+```java
+class User {}
+class Admin extends User {}
+
+Admin a = new User(); // ❌ not allowed without explicit inheritance
+
+```
+
+- In TypeScript, however, such a thing is possible if the structure matches, even without common inheritance.
+
+---
+
+### 🧩 Example of Difference in TS
+
+```tsx
+type User = { id: number };
+type Admin = { id: number; role: string };
+
+const user: User = { id: 1 };
+const admin: Admin = { id: 2, role: "admin" };
+
+const anotherUser: User = admin; // ✅ allowed (User structure is a subset of Admin)
+
+```
+
+---
+
+### 💡 Key Ideas
+
+- TypeScript = **structural typing** → types are compatible by shape, not by name.
+- Nominal typing = **nominal typing** → origin or specific declaration is important.
+- Structural typing provides **flexibility and simplicity**, but requires care to avoid unexpected structure matches.

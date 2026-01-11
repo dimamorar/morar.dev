@@ -1,0 +1,84 @@
+---
+title: "forwardRef and useImperativeHandle"
+description: "forwardRef and useImperativeHandle are React tools for managing references (ref) between components."
+---
+
+## forwardRef and useImperativeHandle
+
+> forwardRef and useImperativeHandle are React tools for managing references (ref) between components.
+> 
+> 
+> They allow a parent component to gain access to DOM elements or methods of a child component without breaking encapsulation.
+
+---
+
+### 🧩 `forwardRef`
+
+- Used for **passing a ref from parent to child element**.
+- By default, functional components do not accept `ref`.
+- `forwardRef` wraps the component, adding the ability to pass the reference further.
+
+```jsx
+import { forwardRef } from 'react';
+
+const Input = forwardRef((props, ref) => (
+  <input ref={ref} {...props} />
+));
+
+// Parent component
+const Parent = () => {
+  const inputRef = useRef();
+  return (
+    <>
+      <Input ref={inputRef} placeholder="Type here" />
+      <button onClick={() => inputRef.current.focus()}>Focus</button>
+    </>
+  );
+};
+
+```
+
+**What happens:**
+
+`ref` in `Parent` points not to `Input`, but to the **real DOM element** inside it.
+
+---
+
+### 🧩 `useImperativeHandle`
+
+- Allows **controlling which properties and methods are available to the parent** when using `ref`.
+- Used **inside a component wrapped in `forwardRef`**.
+- Returns an object with methods that will be visible from the outside.
+
+```jsx
+const CustomInput = forwardRef((props, ref) => {
+  const inputRef = useRef();
+
+  useImperativeHandle(ref, () => ({
+    focus: () => inputRef.current.focus(),
+    clear: () => (inputRef.current.value = '')
+  }));
+
+  return <input ref={inputRef} {...props} />;
+});
+
+```
+
+Now the parent can call `ref.current.focus()` or `ref.current.clear()`.
+
+---
+
+### 🧩 When to use
+
+- For managing **focus**, **scroll**, **animation**.
+- For providing an **imperative API** to a component (e.g., forms).
+- When you need to limit parent access only to certain methods, and not the entire DOM node.
+
+---
+
+### 💡 Key Ideas
+
+- `forwardRef` allows passing a ref through component levels.
+- `useImperativeHandle` defines an **explicit access interface** from the parent.
+- Together they make safe interaction between components possible on an imperative level.
+- Using them is worth **only in special cases** when a declarative approach is impossible.

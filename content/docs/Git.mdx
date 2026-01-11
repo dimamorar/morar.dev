@@ -1,0 +1,238 @@
+---
+title: "Git"
+description: "Git divides changes into three zones: working directory, staging area, and local repository."
+---
+
+
+## Working directory, staging area, repository
+
+> Git divides changes into three zones: working directory, staging area, and local repository.
+
+### Explanation
+- **Working directory** — real project files on disk. Here you edit the code.
+- **Staging area (index)** — a temporary area where changes are placed via `git add`.
+- **Repository (.git)** — Git's internal database where commits, branches, and history are stored.
+
+The sequence looks like this: changes → `git add` → staging → `git commit` → repository.
+
+---
+
+## What happens internally when you run `git add` and `git commit`?
+
+> `git add` indexes changes, and `git commit` saves a snapshot of the state in the repository history.
+> 
+
+### Explanation
+
+- `git add` places selected files into the staging area, calculating hashes of blob objects and writing them to the index.
+- `git commit` creates a new **commit** object containing:
+    - a link to the **tree** (file structure),
+    - a link to the previous commit (parent),
+    - metadata (author, date, message).
+
+Each commit fixes the complete state of the project, not just the delta.
+
+---
+
+## How does Git store data — snapshots or differences?
+
+> Git stores not deltas, but full snapshots of file states at the moment of each commit.
+
+### Explanation
+
+Each commit is a **snapshot** of all files, represented as hashes (`blob`).
+
+If a file has not changed, Git simply points to the previous blob.
+
+In this way, high storage efficiency and instant rollbacks to any state are achieved.
+
+---
+
+## What is git-flow and what problem does it address?
+
+> Git-flow defines a branching structure that organizes releases, features, and hotfixes.
+
+### Explanation
+
+Main branches:
+
+- `master/main` — stable production version
+- `develop` — active development
+- `feature/*`, `release/*`, `hotfix/*` — temporary branches for tasks
+
+The model solves the problem of chaos during parallel development and makes the release process predictable.
+
+---
+
+## What is the difference between `git checkout` and `git switch`?
+
+> `git switch` is a modern alternative to some of the functions of `git checkout`, designed for clarity.
+> 
+> 
+### Explanation
+
+- `git checkout` — universal command: can switch branches **and** restore files.
+- `git switch` — only for switching branches (`git switch feature/login`).
+- `git restore` — for restoring files (`git restore index.js`).
+
+Thus, Git divided the `checkout` behavior to increase readability and safety.
+
+---
+
+## How does `git merge` differ from `git rebase`? When would you use each?
+
+> Both combine changes, but in different ways — merge preserves history, rebase rewrites it.
+> 
+> 
+### Explanation
+
+- **Merge** — creates an additional merge commit, showing branching and merging of history.
+- **Rebase** — moves commits of the current branch “on top” of another, making the history linear.
+
+Use `merge` for history transparency in team projects,
+`rebase` — for the cleanliness of a personal branch before push.
+
+---
+
+## What is a “fast-forward merge”?
+
+> A fast-forward merge occurs when the current branch does not have its own commits and simply moves forward along the history of another branch.
+> 
+> 
+### Explanation
+
+If the `feature` branch was created from `main` and `main` has not changed,
+`git merge feature` simply shifts the `main` pointer to the last commit of `feature` — without a merge commit.
+
+The history remains linear.
+
+---
+
+## How do you resolve merge conflicts manually?
+
+> A conflict occurs when Git cannot automatically merge changes in the same section of code.
+> 
+> 
+### Explanation
+
+1. Git marks conflicting areas in the file (`<<<<<<<`, = , >>>>>>>).
+2. The developer manually selects the necessary changes and removes the markers.
+3. After correction:
+```bash
+git add <file>
+git commit
+```
+Tools: IDE merge-tool, `git mergetool`, VS Code Merge Editor.
+
+---
+
+## What is a detached HEAD and when does it happen?
+
+> Detached HEAD — a state when the HEAD pointer refers not to a branch, but to a specific commit.
+> 
+> 
+### Explanation
+
+Occurs when switching to a commit directly:
+
+```bash
+git checkout <commit-hash>
+```
+
+HEAD is “detached” from the branch — new commits will not belong to any branch.
+
+To save changes, create a branch:
+
+```bash
+git switch -c new-branch
+```
+
+---
+
+## What’s the difference between merge commit, squash merge, and rebase merge in pull requests?
+
+> Different types of merge affect how the commit history gets into the main branch.
+> 
+> 
+### Explanation
+
+- **Merge commit** — preserves the entire history of the branch and adds a merge commit.
+- **Squash merge** — combines all commits of the branch into one.
+- **Rebase merge** — “rewrites” commits on top of the main branch, making the history linear.
+
+The choice depends on the project policy: transparent history (merge) or clean (squash/rebase).
+
+---
+
+## What does `git cherry-pick` do and when is it useful?
+
+> git cherry-pick transfers a specific commit from one branch to another without full merge.
+
+### Explanation
+
+```bash
+git cherry-pick <commit-hash>
+```
+
+Git applies the changes of the specified commit to the current branch.
+
+Used for point fixes (for example, to transfer a bugfix from `develop` to `release`).
+
+---
+
+## What are Conventional Commits and why are they important?
+
+> This is a standard for commit message format that improves readability and history automation.
+> 
+> 
+### Explanation
+
+Format:
+
+```
+<type>(<scope>): <description>
+```
+
+Examples:
+
+- `feat(auth): add login API`
+- `fix(ui): button color corrected`
+
+Allows:
+
+- generating a changelog automatically,
+- understanding the context of changes through history,
+- maintaining uniformity in the team.
+
+---
+
+## How to undo a merge commit that was already pushed to remote
+
+> To roll back an already sent merge commit, you cannot do a reset — you need a revert.
+> 
+> 
+### Explanation
+
+```bash
+git revert -m 1 <merge-commit-hash>
+git push
+```
+
+- `m 1` indicates which branch to consider “main”.
+
+Git will create a new commit that cancels the changes of the merge commit, preserving the integrity of history.
+
+---
+
+## What is `git stash` and how do you use it effectively?
+
+> git stash temporarily saves uncommitted changes, clearing the working directory.
+> 
+> 
+### Explanation
+
+- `git stash` — saves changes and rolls back files;
+- `git stash list` — list of saved stashes;
+- `git stash apply` or `pop` — return changes.
+
+Useful when switching branches without losing current work.

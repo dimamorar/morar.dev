@@ -1,0 +1,60 @@
+---
+title: "useEffect vs. useLayoutEffect"
+description: "`useEffect` and `useLayoutEffect` differ in **execution timing**, not purpose. `useLayoutEffect` is executed **synchronously before paint** and can block visual"
+---
+
+> `useEffect` and `useLayoutEffect` differ in **execution timing**, not purpose. `useLayoutEffect` is executed **synchronously before paint** and can block visual updates. `useEffect` is executed **after paint** and never blocks what the user sees.
+
+---
+### useEffect
+* Executed **after render**
+* Executed **after commit and paint**
+* **Does not block render**
+* **Does not block paint**
+* Used for:
+  * data fetching
+  * subscriptions
+  * logging
+  * non-visual side effects
+
+Even with heavy synchronous code, the UI is already displayed.
+
+---
+
+### useLayoutEffect
+
+* Executed **after render**
+* Executed **after DOM mutations**
+* Executed **before paint**
+* **Does not block render**
+* **Blocks paint** while executing
+* Intended for:
+  * DOM measurements
+  * synchronous layout reads (`getBoundingClientRect`)
+  * DOM correction before the first display
+
+Heavy logic here causes jank.
+
+---
+
+### Phase Order
+
+1. Render phase
+2. Commit phase
+   * DOM mutations
+   * `useLayoutEffect`
+3. Paint
+4. `useEffect`
+
+---
+
+### Practical Rule
+
+* Default → `useEffect`
+* `useLayoutEffect` — **only when necessary**
+* If there is no work with layout — `useLayoutEffect` is an error
+
+---
+
+### Short Answer for Interview
+`useLayoutEffect` is executed synchronously before paint and can block visual updates, while `useEffect` is executed after paint and does not affect what the user sees.

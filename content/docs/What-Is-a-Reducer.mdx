@@ -1,0 +1,77 @@
+---
+title: "What Is a Reducer"
+description: "A reducer is a pure function that takes the current state and an action and returns a new state."
+---
+
+## What Is a Reducer
+
+> A reducer is a pure function that takes the current state and an action and returns a new state.  
+> It defines **how** the state should change in response to an action, while not performing side effects and not mutating the incoming data.
+
+---
+
+### Technical Explanation
+
+#### **Reducer's Role**
+
+- Core of the Redux business logic.
+    
+- Defines the reaction to each action.
+    
+- Guarantees determinism: same input → same output.
+    
+
+#### **Requirements for a Reducer**
+
+1. **Must be a pure function**
+    
+    - No side effects (network requests, timers).
+        
+    - No mutation of arguments.
+        
+    - Does not depend on external mutable state.
+        
+2. **Must return a new object**
+    
+    - Immutability is a critical condition for correct UI updates.
+        
+    - In the Redux Toolkit, "mutation" inside a reducer is actually safe thanks to Immer.
+        
+3. **Must have a predictable result**
+    
+    - If the action is not recognized, the original state is returned.
+        
+    - A reducer cannot return `undefined`.
+    
+
+#### **Reducer Structure**
+
+Minimal form:
+
+```js
+function reducer(state, action) {
+  switch (action.type) {
+    case 'increment':
+      return { ...state, count: state.count + 1 }
+    default:
+      return state
+  }
+}
+```
+
+#### **Reducer Composition**
+
+- Redux allows splitting logic into many reducers.
+    
+- `combineReducers` collects them into a single root reducer.
+    
+- Each slice reducer is responsible for its own fragment of state.
+    
+
+---
+
+### Important Notes
+
+- The reducer is the only place where the logic for changing state is defined.
+- Any mutation inside a reducer breaks the Redux flow and optimizations.
+- In RTK, the reducer is described inside `createSlice`, but the concept remains the same.

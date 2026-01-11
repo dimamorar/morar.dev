@@ -1,0 +1,43 @@
+---
+title: "css modules"
+description: "CSS Modules is an approach where styles are stored in separate `.module.css` files, and classes are automatically hashed for uniqueness."
+---
+
+## CSS Modules
+
+> CSS Modules is an approach where styles are stored in separate `.module.css` files, and classes are automatically hashed for uniqueness.  
+> This provides traditional CSS syntax with guaranteed style isolation and no runtime cost.
+
+### Core Concept
+- Each `.module.css` file is compiled into a JS object.
+- Class names are automatically converted to unique ones (e.g., `button_primary__a1b2c`).
+- Isolation is provided at the build-time level — styles do not conflict between components.
+- Fully compatible with Next.js, Webpack, Vite.
+
+### Advantages
+- **Zero runtime cost** — all styles are gathered during the build.
+- Familiar CSS syntax with full support for all features (media queries, pseudo-classes).
+- Simple integration into Next.js App Router and better performance compared to CSS-in-JS.
+- Support for composition (`composes:`) and local/global scope.
+
+### Disadvantages
+- Limited dynamism: conditional styles are made by changing classes, not through CSS-in-JS logic.
+- Style code is not located inside the component → less co-location.
+- Discipline in structuring is required (e.g., `Component.module.css`).
+
+### Minimal Example
+
+```jsx
+import styles from './button.module.css';
+
+<button className={styles.primary}>OK</button>
+```
+
+### Typical Use Cases
+- Component styling in Next.js (especially App Router).
+- Large applications where performance and a predictable CSS pipeline are important.
+- Components with fixed or static styles.
+
+### Important Notes
+- Recommended as the **default solution** for Next.js App Router due to performance and simplicity.
+- Avoids runtime generation of styles, so it works better on weak client devices.

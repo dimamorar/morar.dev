@@ -1,0 +1,83 @@
+---
+title: "Throttling vs. Debouncing"
+description: "Throttling and Debouncing are techniques for optimizing function call frequency, used to manage frequent events (`scroll`, `resize`, `input`)."
+---
+
+## Throttling vs Debouncing
+
+> Throttling and Debouncing are techniques for optimizing function call frequency, used to manage frequent events (`scroll`, `resize`, `input`).
+> 
+> They prevent an excessive number of triggers and reduce the load on the browser.
+
+---
+
+### 🧩 Debouncing
+
+- **Debounce** delays function execution until a specified time has passed **after the last call**.
+- If the event occurs again before the timer expires, the wait is reset.
+- Suitable when you need to wait for the **end of a series of events** (e.g., the user has finished typing).
+
+```jsx
+function debounce(fn, delay) {
+  let timer;
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn.apply(this, args), delay);
+  };
+}
+
+window.addEventListener('resize', debounce(() => {
+  console.log('Resize finished');
+}, 300));
+
+```
+
+📘 Called **once after a pause** in activity.
+
+---
+
+### 🧩 Throttling
+
+- **Throttle** limits the frequency of function execution: it is called **no more often** than once in a specified interval.
+- Even if the event triggers more often, the function runs **at a fixed interval**.
+- Suitable for **smooth, even updates**, for example during `scroll` or `mousemove`.
+
+```jsx
+function throttle(fn, interval) {
+  let lastCall = 0;
+  return function (...args) {
+    const now = Date.now();
+    if (now - lastCall >= interval) {
+      lastCall = now;
+      fn.apply(this, args);
+    }
+  };
+}
+
+window.addEventListener('scroll', throttle(() => {
+  console.log('Scroll event (throttled)');
+}, 200));
+
+```
+
+📘 Called **regularly**, but no more often than the set interval.
+
+---
+
+### ⚖️ Comparison
+
+| Criterion | **Debounce** | **Throttle** |
+| --- | --- | --- |
+| **When called** | After the last event | At regular intervals |
+| **Behavior during frequent calls** | Resets timer | Ignores extra calls |
+| **Suitable for** | `resize`, `search input`, `autocomplete` | `scroll`, `mousemove`, `resize` |
+| **Goal** | Execute once after a pause | Execute periodically with frequency limitation |
+
+---
+
+### 💡 Key Ideas
+
+- **Debouncing** eliminates "noise" from frequent events by performing an action only after activity has ceased.
+- **Throttling** controls execution frequency, maintaining interface responsiveness.
+- Both techniques are based on **timers** (`setTimeout`, `Date.now()`) and are often used in **frontend performance optimization**.
+- Libraries like Lodash provide ready-made implementations: `_.debounce()` and `_.throttle()`.

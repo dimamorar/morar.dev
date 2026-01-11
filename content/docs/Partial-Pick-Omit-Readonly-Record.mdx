@@ -1,0 +1,95 @@
+---
+title: "Partial Pick Omit Readonly Record"
+description: "Utility types are built-in generalized types in TypeScript that simplify working with objects,"
+---
+
+> Utility types are built-in generalized types in TypeScript that simplify working with objects,
+> 
+> 
+> allowing you to quickly create modified versions of existing types without repeated description.
+> 
+> They are based on **mapped types** and **conditional types** mechanisms.
+> 
+
+---
+
+### 🧩 `Partial<T>`
+
+- Makes all properties of type `T` **optional** (`?`).
+
+```tsx
+interface User {
+  id: number;
+  name: string;
+}
+
+type PartialUser = Partial<User>;
+/*
+  { id?: number; name?: string; }
+*/
+```
+
+---
+
+### 🧩 `Readonly<T>`
+
+- Makes all properties **read-only** (`readonly`).
+
+```tsx
+type ReadonlyUser = Readonly<User>;
+/*
+  { readonly id: number; readonly name: string; }
+*/
+```
+
+---
+
+### 🧩 `Pick<T, K>`
+
+- Creates a new type with **selected keys** `K` from type `T`.
+
+```tsx
+type UserPreview = Pick<User, "id" | "name">;
+/*
+  { id: number; name: string; }
+*/
+```
+
+---
+
+### 🧩 `Omit<T, K>`
+
+- Creates a type, **excluding certain keys** `K` from `T`.
+
+```tsx
+type UserWithoutId = Omit<User, "id">;
+/*
+  { name: string; }
+*/
+```
+
+---
+
+### 🧩 `Record<K, T>`
+
+- Creates an object type where **keys have type `K`**, and value has type `T`.
+
+```tsx
+type Roles = "admin" | "user" | "guest";
+type Permissions = Record<Roles, boolean>;
+/*
+  {
+    admin: boolean;
+    user: boolean;
+    guest: boolean;
+  }
+*/
+```
+
+---
+
+### 💡 Key Ideas
+
+- All utility types are templates built on the basis of mapped types.
+- They increase **flexibility, consistency, and reusability of types**.
+- Most often used in large codebases for transformations of objects without structure duplication.

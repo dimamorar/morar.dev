@@ -1,0 +1,80 @@
+---
+title: "Why classic reconciliation needed to be replaced"
+description: "Before Fiber, React used a synchronous recursive reconciliation algorithm built on stack calls."
+---
+
+> Before Fiber, React used a synchronous recursive reconciliation algorithm built on stack calls.  
+> It worked fast for small trees but had critical limitations that made smooth UX and interruption of long updates impossible.
+
+---
+
+### 🧩 How old reconciliation worked
+
+- React recursively traversed the element tree **from top to bottom**.
+    
+- Each component was rendered synchronously until all work was completed.
+    
+- While rendering was in progress → the **JavaScript-browser thread was blocked**.
+    
+- The UI could not update or accept user interaction.
+
+---
+
+### 🧩 Core limitations of the stack-based approach
+
+#### **1. Blocking rendering**
+
+- A large component or a large tree blocked the UI for the duration of the calculations.
+    
+- The page could "freeze" for tens of milliseconds.
+
+#### **2. No update priorities**
+
+- Updating a list of 10,000 elements and an `onInput` event had the same priority.
+    
+- React couldn't say: "wait, I'll process the user input first."
+
+#### **3. Impossible to pause or resume work**
+
+- Each render had to be completed fully.
+    
+- Once a component started rendering → React _could not stop_ until it finished the entire branch of the tree.
+
+#### **4. Impossible to cancel work**
+
+- If props changed during render —  
+    React continued working on the old version of the tree.
+
+#### **5. Impossible to distribute work between frames**
+
+- Updates were executed in one "cycle," regardless of load.
+    
+- The browser could not insert animation or interaction between them.
+
+---
+
+### 🧩 Consequences
+
+- "laggy" interface on complex pages;
+    
+- freezing during large list updates;
+    
+- impossibility of making Concurrent Rendering;
+    
+- impossibility of making Suspense for data;
+    
+- impossibility of implementing priorities (high/low priority work).
+
+These limitations made React **unsuitable** for complex UIs with many simultaneous events and updates.
+
+---
+
+### 💡 Key Ideas
+
+- The old algorithm was **synchronous, recursive, and non-interruptible**.
+    
+- It did not allow updates to be queued by priority.
+    
+- Rendering could not be paused, resumed, or canceled.
+    
+- This was the main reason for creating **React Fiber** — the new rendering engine.

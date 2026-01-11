@@ -1,0 +1,77 @@
+---
+title: "Rendering behavior and batching in React 18"
+description: "In React 18, the principle of how the render works and how state updates are combined (batching) has changed."
+---
+
+## Rendering behavior and batching in React 18
+
+> In React 18, the principle of how the render works and how state updates are combined (batching) has changed.
+> 
+> 
+> The new architecture makes updates asynchronous and optimized, maintaining interface responsiveness even with a large number of events.
+> 
+
+---
+
+### 🧩 What is batching
+
+- **Batching** is the grouping of multiple `setState` calls into a single render pass.
+- React groups updates to **minimize the number of re-renders**.
+- Before React 18, batching worked **only inside React events** (e.g., `onClick`).
+
+```jsx
+// React 17
+setCount(c => c + 1);
+setVisible(v => !v);
+// two separate renders
+
+```
+
+---
+
+### 🧩 Automatic batching in React 18
+
+- With React 18, batching is applied **everywhere**:
+    - inside promises,
+    - timers (`setTimeout`),
+    - `fetch` callbacks,
+    - any asynchronous operations.
+
+```jsx
+// React 18
+setTimeout(() => {
+  setCount(c => c + 1);
+  setVisible(v => !v);
+  // one common render
+});
+
+```
+
+**Result:** both updates are combined into one commit → fewer repaints, higher performance.
+
+---
+
+### 🧩 Rendering and Priorities
+
+- React 18 introduces **asynchronous (concurrent) rendering**.
+- Now updates can:
+    - **be suspended and resumed** (cooperative rendering),
+    - have **different priority** depending on the type of event.
+- React decides exactly when to apply updates so the interface doesn't block.
+
+---
+
+### 🧩 Synchronous and Asynchronous Updates
+
+- **Synchronous** — important user actions (text input, clicks).
+- **Asynchronous** — background updates, such as data preloading.
+- React performs them **in different "lane" threads** (within Fiber).
+
+---
+
+### 💡 Key Ideas
+
+- React 18 combines all updates into a single render cycle — **automatic batching**.
+- Rendering has become **asynchronous and prioritized**, reducing interface lags.
+- The concept of batching is directly related to **Fiber** and **Concurrent Rendering**.
+- This is a step towards the smoothest and most adaptive UI rendering under load.

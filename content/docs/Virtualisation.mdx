@@ -1,0 +1,84 @@
+---
+title: "Virtualisation"
+description: "**Virtualization (windowing)** is a technique in the Frontend where only the **visible part** of a large list or UI structure is present in the DOM at any given"
+---
+
+> **Virtualization (windowing)** is a technique in the Frontend where only the **visible part** of a large list or UI structure is present in the DOM at any given time. Elements outside the viewport are not created or are removed and dynamically replaced during scrolling.
+> The goal is to reduce the load on the DOM, memory, and the browser's main thread.
+
+## What exactly is virtualized
+
+### DOM elements
+* Only **elements in the viewport** (+ a small buffer) are rendered.
+* Elements outside the screen are **absent from the DOM**.
+
+### Layout / Paint
+* Fewer layout calculations and repaints.
+* The browser works with a limited number of DOM nodes.
+
+## Why virtualization is needed
+
+### Problem without virtualization
+* Lists with **thousands of elements** → heavy DOM.
+* Slow initial render.
+* Jank during scrolling (layout thrashing, GC pressure).
+
+### Solution
+* Maintain a **constant number of DOM nodes** regardless of the data size.
+
+## How it works (mechanics)
+
+### Basic steps
+1. The viewport size (height / width) is measured.
+2. The indices of the first and last visible elements are calculated.
+3. Only elements from this range are rendered.
+4. A **spacer / padding** is used to simulate the full height of the list.
+
+### Key calculations
+* `scrollTop`
+* `itemHeight` (fixed or dynamic)
+* `startIndex = Math.floor(scrollTop / itemHeight)`
+* `endIndex = startIndex + visibleCount`
+
+## Types of virtualization
+
+### Fixed-size virtualization
+* All elements have the same height.
+* Simple and fast mathematics.
+* The most performant option.
+
+### Variable-size virtualization
+* Elements have different heights.
+* Requires caching measurements.
+* More complex logic, reflows possible during recalculations.
+
+### Windowing
+* A specific case of virtualization.
+* Emphasis on a **sliding window** of elements.
+
+## Where it is used
+* Large lists (tables, logs, chats).
+* Infinite scroll.
+* Dropdown / autocomplete with thousands of options.
+* Timeline / feeds.
+
+## Virtualization ≠ Virtual DOM
+* **Virtual DOM** — UI tree comparison algorithm (e.g., in React).
+* **Virtualization** — optimization of the **real DOM**.
+* These are different tasks that can be used together.
+
+## Side effects and limitations
+### UX / Accessibility
+* DOM search is impossible (elements are absent).
+* Additional settings are needed for screen readers.
+
+### SEO
+* Not suitable for content that must be fully in the DOM during SSR.
+
+### Logic
+* More difficult to work with `scrollTo`, focus, and anchors.
+
+## When virtualization is NOT needed
+* Small lists (dozens of elements).
+* Static content.
+* Premature optimization.

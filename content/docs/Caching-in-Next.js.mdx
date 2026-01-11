@@ -1,0 +1,84 @@
+---
+title: "Caching in Next.js"
+description: "App Router uses multi-level caching that covers routes, RSC payloads, and `fetch` results."
+---
+
+## **How caching works in Next.js (full-route cache, RSC cache, fetch cache)**
+
+> App Router uses multi-level caching that covers routes, RSC payloads, and `fetch` results.  
+> The cache determines whether a page will be static, dynamic, or revalidatable (ISR).  
+> This allows Next.js to minimize server-side rendering and speed up responses.
+
+---
+
+### Technical Explanation
+
+#### Full-Route Cache
+
+- Caches the **full result of the route**: HTML + RSC payload.
+    
+- Created automatically if the page does not contain dynamic parameters or is marked as static.
+    
+- Controlled via:
+    
+    - `export const dynamic = "force-static"`
+        
+    - `export const revalidate = N`
+    
+
+Usage:
+
+- marketing pages, blogs, documentation.
+    
+
+---
+
+#### RSC Cache
+
+- Caches the **results of server components**: RSC trees.
+    
+- Enabled automatically for stable components without dynamic requests.
+    
+- Updates occur according to `revalidate` policies.
+    
+
+Examples that are not cached:
+
+- dependency on cookies or headers;
+    
+- use of dynamic fetch configuration (`no-store`);
+    
+- imperative user data.
+    
+
+---
+
+#### Fetch Cache
+
+- Every `fetch()` call in an RSC can have its own cache policy.
+    
+- Parameters:
+    
+    - `cache: "force-cache"` — cached request (default in RSC).
+        
+    - `cache: "no-store"` — never cache → forces SSR.
+        
+    - `next: { revalidate: N }` — ISR at the request level.
+    
+
+Example:
+
+```js
+fetch("https://api.example.com", {
+  next: { revalidate: 60 }
+});
+```
+
+---
+
+#### How levels interact
+- **Fetch cache** forms data →
+- **RSC cache** forms the server component tree →
+- **Full-route cache** forms static HTML for the delivery service.
+
+Any dynamic element "punches through" the static layer and shifts the route to SSR.

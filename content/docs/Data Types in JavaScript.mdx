@@ -1,0 +1,70 @@
+---
+title: "Data Types in JavaScript"
+description: "In JavaScript, there are two main data types: primitive and reference. Primitives store the value itself, while reference types store a **reference to the memor"
+---
+
+> In JavaScript, there are two main data types: primitive and reference. Primitives store the value itself, while reference types store a **reference to the memory area** where the value is located.
+
+---
+
+### 🧩 Primitive Types (Primitive Types)
+
+Store the **actual value**, not a reference.
+Passed **by value**.
+
+| Type | Description |
+| ------------- | ----------------------------------------------------------- |
+| **Number** | Numeric values: `10`, `3.14`, `-5` |
+| **String** | Text strings: `"Hello"`, `'JS'` |
+| **Boolean** | Logical values: `true`, `false` |
+| **Null** | Intentional absence of a value |
+| **Undefined** | Variable declared but without a value |
+| **Symbol** | Unique and immutable identifier |
+| **BigInt** | Very large integers, larger than `Number.MAX_SAFE_INTEGER` |
+
+```jsx
+typeof 42;        // 'number'
+typeof 'Hello';   // 'string'
+typeof null;      // 'object' (historical bug)
+typeof Symbol();  // 'symbol'
+
+```
+
+📘 Primitives are **immutable** — their values cannot be changed without creating a new one.
+
+---
+
+### 🧩 Reference Types (Reference Types)
+
+Store a **reference (address)** to an object in memory.
+Passed **by reference**.
+
+| Type | Description |
+| --- | --- |
+| **Object** | Collection of key–value pairs |
+| **Array** | Ordered list of values (a special type of object) |
+| **Function** | Object that can be called (has an internal `[[Call]]` method) |
+
+```jsx
+typeof {};             // 'object'
+typeof [];             // 'object'
+typeof function() {};  // 'function'
+```
+
+📘 Arrays and functions are **subtypes of objects**, so `typeof []` returns `'object'`.
+
+---
+
+### 💡 Key Ideas
+
+- **Primitives** store values directly → immutable, compared by value.
+- **Reference types** store references → mutable, compared by memory address.
+- `typeof null === 'object'` — a **historical bug** in the language.
+- Functions have their own `function` type, although they are a subtype of object.
+- For accurate type determination of complex structures, use:
+
+```jsx
+Array.isArray([]);         // true
+obj.constructor === Object // true
+
+```

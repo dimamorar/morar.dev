@@ -1,0 +1,45 @@
+---
+title: "Scope & Hoisting"
+description: "Scope determines where variables and functions are accessible in the code."
+---
+
+## Scope & Hoisting
+
+> Scope determines where variables and functions are accessible in the code.
+> 
+> 
+> **Hoisting** is a mechanism where declarations are registered in memory before program execution.
+> 
+
+---
+
+### 🧩 Scope
+
+- **Function Scope** — variables declared with `var` are visible only inside the function.
+- **Block Scope** — variables declared with `let` and `const` are accessible only within the `{ ... }` block.
+
+When creating a scope, the engine forms a **Lexical Environment** — an internal structure where links to identifiers and their values are stored.
+
+Each environment is linked to an external one, forming a **Scope Chain**.
+
+---
+
+### ⚙️ Hoisting
+
+- During the **compilation phase**, variable and function declarations are registered in memory before code execution.
+- For `var`, the declaration is hoisted and initialized as `undefined`.
+- For `let` and `const`, declarations are hoisted but remain in the **Temporal Dead Zone (TDZ)** until initialization.
+- **Function declarations** are hoisted completely (both name and function body), so they can be called before declaration.
+
+---
+
+### 💡 Key Idea
+
+- Scope defines **boundaries of variable accessibility**.
+- Hoisting explains **why access is possible before declaration**.
+- Lexical Environment forms the basis for the **scope chain and closures**.
+- `TDZ` prevents the use of `let` and `const` before their initialization.
+
+---
+
+> The Lexical Environment lies at the core of the Closures mechanism — functions in JavaScript remember their environment and can access variables from the outer scope even after it has completed.

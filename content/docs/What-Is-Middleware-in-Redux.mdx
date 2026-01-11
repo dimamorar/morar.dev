@@ -1,0 +1,70 @@
+---
+title: "What Is Middleware in Redux"
+description: "Middleware is a layer between `dispatch(action)` and the reducer, allowing you to intercept actions and extend Redux behavior without changing its core."
+---
+
+## What Is Middleware in Redux
+
+> Middleware is a layer between `dispatch(action)` and the reducer, allowing you to intercept actions and extend Redux behavior without changing its core.  
+> It adds the ability to perform side effects, asynchronous operations, logging, as well as to modify or cancel actions.
+
+---
+
+### Technical Explanation
+
+#### **Role of Middleware**
+
+- Intercepts every action before it reaches the reducer.
+    
+- Can:
+    
+    - pass the action further,
+        
+    - change it,
+        
+    - cancel it,
+        
+    - send new actions,
+        
+    - perform a side effect (e.g., an API request).
+    
+
+#### **Middleware in the Redux Chain**
+
+The action processing cycle looks like this:
+
+**Action → dispatch → Middleware Chain → Reducer → New State**
+
+- `dispatch()` starts the middleware chain.
+    
+- Each middleware decides what to do next.
+    
+- At the end of the chain, the action reaches the reducer.
+    
+
+#### **What Middleware is Used For**
+
+- Asynchronous logic (e.g., Thunk, Saga).
+- Logging of actions and states.
+- Tracing and analytics.
+- Validation and filtering of actions.
+- Error handling.
+- Working with tokens, authorization, refresh flows.
+    
+
+#### **Why Middleware is Important**
+
+- Redux itself is synchronous.
+    
+- Middleware makes it flexible, extensible, and suitable for complex scenarios.
+    
+
+---
+
+### Important Notes
+
+- Middleware never changes the state — only the reducer does.
+    
+- The order of connecting middleware affects the behavior of the chain.
+    
+- Redux Toolkit automatically includes useful middleware (thunk, immutability checks, serializability checks).

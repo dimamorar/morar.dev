@@ -1,0 +1,759 @@
+---
+title: "JS practice"
+description: "- [x] `Array.prototype.map` - Implement from scratch ✅ 2025-11-25"
+---
+
+## JS
+
+#### Array Methods
+
+- [x] `Array.prototype.map` - Implement from scratch ✅ 2025-11-25
+
+```js
+Array.prototype.map = function (cb, thisArg) {
+  const arr = [...this];
+  const result = [];
+
+  for (let i = 0; i < arr.length; i++) {
+    if (i in arr) {
+      result.push(cb.call(thisArg, arr[i], i, arr));
+    }
+  }
+
+  return result;
+};
+
+const mapped = [1, 2, 3].map((e) => e * 2);
+
+console.log(mapped);
+```
+
+- [x] `Array.prototype.filter` - Implement from scratch ✅ 2025-11-25
+
+```js
+Array.prototype.filter = function (cb, thisArg) {
+  const arr = [...this];
+  const result = [];
+
+  for (let i = 0; i < arr.length; i++) {
+    if (i in arr && !!cb.call(thisArg, arr[i], i, arr)) {
+      result.push(arr[i]);
+    }
+  }
+
+  return result;
+};
+
+const cat = [1, 2, 3].filter((e) => e > 1);
+
+console.log(cat);
+```
+
+- [x] `Array.prototype.reduce` - Implement from scratch ✅ 2025-11-25
+
+```js
+Array.prototype.reduce = function (cb, initialVal) {
+  const arr = [...this];
+
+  if (arr.length === 0 && !initialVal) {
+    throw new Error("Reduce of empty array with no initial value");
+  }
+
+  let acc = initialVal ?? arr[0];
+  let startIndex = initialVal ? 0 : 1;
+
+  for (let i = startIndex; i < arr.length; i++) {
+    if (i in arr) {
+      acc = cb(acc, arr[i], i, arr);
+    }
+  }
+
+  return acc;
+};
+
+const sum = [1, 2, 3, 4, 5].reduce((acc, curr) => acc + curr);
+
+console.log(sum);
+```
+
+- [x] `Array.prototype.flat` / `flatten` ✅ 2025-11-26
+
+```js
+Array.prototype.flat = function () {
+  function flatten(val) {
+    if (!Array.isArray(val)) return [val];
+
+    const res = [];
+
+    for (const item of val) {
+      const part = flatten(item);
+      res.push(...part);
+    }
+
+    return res;
+  }
+
+  return flatten(this);
+};
+
+const flatArray = [1, [2, [3]]].flat();
+
+console.log(flatArray);
+```
+
+> https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#iterative_methods
+
+#### Promises
+
+https://youtu.be/Xs1EMmBLpn4?si=boEXKupY9eTpKUZ0
+[[Promise]]
+
+```js
+class MyPromise {
+  constructor(executor) {
+    this.PromiseState = "pending";
+    this.PromiseResult = undefined;
+    this.PromiseFullfillReactions = [];
+    this.PromiseRejectReactions = [];
+    this.PromiseIsHandled = false;
+
+    // Bind resolve and reject to maintain 'this' context
+    this.resolve = this.resolve.bind(this);
+    this.reject = this.reject.bind(this);
+
+    try {
+      executor(this.resolve, this.reject);
+    } catch (error) {
+      this.reject(error);
+    }
+  }
+
+  resolve(value) {
+    // State is immutable once settled
+    if (this.PromiseState !== "pending") return;
+
+    // Handle thenable values (promise-like objects)
+    if (
+      value &&
+      typeof value === "object" &&
+      typeof value.then === "function"
+    ) {
+      try {
+        value.then(
+          (val) => this.resolve(val),
+          (err) => this.reject(err)
+        );
+        return;
+      } catch (error) {
+        this.reject(error);
+        return;
+      }
+    }
+
+    this.PromiseState = "fulfilled";
+    this.PromiseResult = value;
+
+    // Execute all fulfillment handlers asynchronously
+    this.PromiseFullfillReactions.forEach((handler) => {
+      if (handler) {
+        queueMicrotask(() => {
+          try {
+            handler(value);
+          } catch (error) {
+            // Handler errors should be caught but don't affect this promise
+            console.error("Handler error:", error);
+          }
+        });
+      }
+    });
+
+    // Clear handlers
+    this.PromiseFullfillReactions = [];
+    this.PromiseRejectReactions = [];
+  }
+
+  reject(reason) {
+    // State is immutable once settled
+    if (this.PromiseState !== "pending") return;
+
+    this.PromiseState = "rejected";
+    this.PromiseResult = reason;
+    this.PromiseIsHandled = this.PromiseRejectReactions.length > 0;
+
+    // Execute all rejection handlers asynchronously
+    this.PromiseRejectReactions.forEach((handler) => {
+      if (handler) {
+        queueMicrotask(() => {
+          try {
+            handler(reason);
+          } catch (error) {
+            // Handler errors should be caught but don't affect this promise
+            console.error("Handler error:", error);
+          }
+        });
+      }
+    });
+
+    // Clear handlers
+    this.PromiseFullfillReactions = [];
+    this.PromiseRejectReactions = [];
+  }
+
+  then(onFulfilled, onRejected) {
+    // Return a new promise for chaining
+    return new MyPromise((resolve, reject) => {
+      const handleFulfilled = (value) => {
+        if (typeof onFulfilled === "function") {
+          try {
+            const result = onFulfilled(value);
+            resolve(result);
+          } catch (error) {
+            reject(error);
+          }
+        } else {
+          resolve(value);
+        }
+      };
+
+      const handleRejected = (reason) => {
+        if (typeof onRejected === "function") {
+          try {
+            const result = onRejected(reason);
+            resolve(result);
+          } catch (error) {
+            reject(error);
+          }
+        } else {
+          reject(reason);
+        }
+      };
+
+      if (this.PromiseState === "fulfilled") {
+        queueMicrotask(() => handleFulfilled(this.PromiseResult));
+      } else if (this.PromiseState === "rejected") {
+        queueMicrotask(() => handleRejected(this.PromiseResult));
+      } else {
+        // Promise is still pending, store handlers
+        this.PromiseFullfillReactions.push(handleFulfilled);
+        this.PromiseRejectReactions.push(handleRejected);
+      }
+    });
+  }
+
+  catch(onRejected) {
+    // Delegate to then with undefined onFulfilled
+    return this.then(undefined, onRejected);
+  }
+
+  finally(onFinally) {
+    // Finally always executes and passes through the original value/reason
+    return this.then(
+      (value) => {
+        if (typeof onFinally === "function") {
+          const result = onFinally();
+          // If finally returns a thenable, wait for it
+          if (result && typeof result.then === "function") {
+            return result.then(() => value);
+          }
+        }
+        return value;
+      },
+      (reason) => {
+        if (typeof onFinally === "function") {
+          const result = onFinally();
+          // If finally returns a thenable, wait for it
+          if (result && typeof result.then === "function") {
+            return result.then(() => {
+              throw reason;
+            });
+          }
+        }
+        throw reason;
+      }
+    );
+  }
+
+  static resolve(value) {
+    // If value is already a MyPromise, return it
+    if (value instanceof MyPromise) {
+      return value;
+    }
+
+    // If value is a thenable, return a promise that follows it
+    if (
+      value &&
+      typeof value === "object" &&
+      typeof value.then === "function"
+    ) {
+      return new MyPromise((resolve, reject) => {
+        value.then(resolve, reject);
+      });
+    }
+
+    // Otherwise, return a fulfilled promise with the value
+    return new MyPromise((resolve) => resolve(value));
+  }
+
+  static reject(reason) {
+    return new MyPromise((_, reject) => reject(reason));
+  }
+}
+```
+
+- [x] `Promise.all` - Implement from scratch
+
+```js
+function all(iter) {
+  return new Promise((resolve, reject) => {
+    const results = [];
+    let completed = 0;
+    const total = iter.length;
+
+    if (total === 0) return resolve([]);
+
+    for (let index = 0; index < total; index++) {
+      const p = Promise.resolve(iter[index]);
+
+      p.then((value) => {
+        results[index] = value;
+        completed++;
+        if (completed === total) resolve(results);
+      }).catch((err) => reject(err));
+    }
+  });
+}
+```
+
+- [x] `Promise.allSettled` - Implement from scratch
+- [x] `Promise.race` - Implement from scratch
+- [x] `Promise.any` - Implement from scratch
+
+```js
+Promise.myAny = function (iterable) {
+  return new Promise((resolve, reject) => {
+    if (!iterable && typeof iterable[Symbol.iterator] !== "function") {
+      reject(new Error("arg not iterable"));
+    }
+
+    if (iterable.length === 0) {
+      reject(new AggregateError("arg not iterable"));
+    }
+
+    let rejectedCount = 0;
+
+    for (const item of iterable) {
+      const p = Promise.resolve(item);
+
+      p.then(resolve).catch((error) => {
+        rejectedCount++;
+
+        if (rejectedCount === iterable.length) {
+          reject(new AggregateError("arg not iterable"));
+        }
+      });
+    }
+  });
+};
+```
+
+#### Performance Patterns
+
+- [x] `Debounce` - Implement debounce function
+
+```js
+function debounce(func, delay) {
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), delay);
+  };
+}
+```
+
+- [x] `Throttle` - Implement throttle function
+
+```js
+function throttle(func, delay) {
+  let lastTime = 0;
+  return function (...args) {
+    const now = Date.now();
+    if (now - lastTime >= delay) {
+      func.apply(this, args);
+      lastTime = now;
+    }
+  };
+}
+```
+
+#### Objects & Utilities
+[[Deep vs Shallow Copy]]
+
+- [x] `Deep Clone` - Deep clone objects/arrays (handle circular refs) ✅ 2025-12-10
+```js
+function isPrimitive(value) {
+  if (value === null || (typeof value !== 'object' && typeof value !== 'function')) {
+  return true;
+ }
+return false;
+}
+
+function deepClone(value, visited = new Map()) {
+  if (isPrimitive(value)) return value;
+  let result = null;
+
+  if (visited.has(value)) {
+    return visited.get(value);
+  }
+  
+
+  if (Array.isArray(value)) {
+    result = [];
+    visited.set(value, result);
+    const copiedArr = [...value];
+
+    for (let i = 0; i < copiedArr.length; i++) {
+      if (isPrimitive(copiedArr[i])) {
+        result[i] = copiedArr[i]        
+      } else {
+        result[i] = deepClone(copiedArr[i], visited)
+      }
+    }
+  }
+
+  if (typeof value === 'object' && !Array.isArray(value)) {
+    result = {};
+    visited.set(value, result);
+    const copiedObj = {...value};
+
+    for (const key of Object.keys(copiedObj)) {
+      if (isPrimitive(copiedObj[key])) {
+        result[key] = copiedObj[key]
+      } else {
+        result[key] = deepClone(copiedObj[key], visited)
+      }
+    }
+  }
+
+  return result;
+}
+
+const obj = {name: "test", pets: ['cat', 'dog', 'elephant']};
+obj.itself = obj;
+
+
+const cloned = deepClone(obj);
+
+obj.pets.push('crocodile')
+
+console.log(obj)
+console.log(cloned)
+```
+
+- [x] `Deep Equal` - Compare nested objects/arrays ✅ 2025-12-10
+```js
+function isPrimitive(value) {
+  return (
+    value === null ||
+    (typeof value !== 'object' && typeof value !== 'function')
+  );
+}
+
+function deepEqual(a, b, visited = new Map()) {
+  if (a === b) return true;
+
+  if (isPrimitive(a) || isPrimitive(b)) {
+    return a === b;
+  }
+
+  if (visited.has(a)) {
+    return visited.get(a) === b;
+  }
+
+  visited.set(a, b);
+
+  if (Array.isArray(a) && Array.isArray(b)) {
+    if (a.length !== b.length) return false;
+
+    for (let i = 0; i < a.length; i++) {
+      if (!deepEqual(a[i], b[i], visited)) return false;
+    }
+
+    return true;
+  }
+
+  if (Array.isArray(a) !== Array.isArray(b)) return false;
+
+  const keysA = Object.keys(a);
+  const keysB = Object.keys(b);
+
+  if (keysA.length !== keysB.length) return false;
+
+  for (const key of keysA) {
+    if (!Object.prototype.hasOwnProperty.call(b, key)) return false;
+
+    if (!deepEqual(a[key], b[key], visited)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+```
+
+
+#### Event Handling
+
+- [x] `Event Emitter` - Implement EventEmitter class (on/off/emit) ✅ 2025-12-16
+```js
+export default class EventEmitter {
+  constructor() {
+    this.events = new Map();
+  }
+
+  on(eventName, listener) {
+    if (this.events.has(eventName)) {
+      const listeners = this.events.get(eventName)
+      listeners.push(listener)
+
+      return this;
+    } else {
+
+      this.events.set(eventName, [listener]);
+
+      return this;
+    }
+  }
+
+  off(eventName, listener) {
+    if (this.events.has(eventName)) {
+      const listeners = this.events.get(eventName);
+
+      const index = listeners.indexOf(listener);
+      listeners.splice(index, 1);
+
+      if (listeners.length === 0) {
+        this.events.delete(eventName);
+      }
+
+      return this;
+    } else {
+      return this;
+    }
+  }
+
+  emit(eventName, ...args) {
+    if (this.events.has(eventName)) {
+      const listeners = this.events.get(eventName);
+
+      listeners.forEach(listnr => {
+        listnr(...args)
+      })
+
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+```
+
+---
+
+#### Function Methods
+
+- [x] `Function.prototype.call` - Implement call ✅ 2025-12-14
+```js
+Function.prototype.myCall = function (thisArg, ...argArray) {
+  if (!thisArg) {
+    thisArg = window;
+  };
+
+  const ss = Symbol();
+  thisArg[ss] = this;
+  return thisArg[ss](...argArray);
+};
+```
+
+- [x] `Function.prototype.apply` - Implement apply ✅ 2025-12-14
+```js
+Function.prototype.myApply = function (thisArg, argArray) {
+  if (!thisArg) {
+    thisArg = window;
+  }
+  const ss = Symbol();
+  thisArg[ss] = this;
+
+  const res = argArray ? thisArg[ss](...argArray) : thisArg[ss]()
+
+  return res;
+};
+```
+
+- [x] `Function.prototype.bind` - Implement bind ✅ 2025-12-16
+```js
+Function.prototype.myBind = function (thisArg, ...argArray) {
+  const self = this;
+
+  return function (...callTimeArgs) {
+    const ss = Symbol();
+    thisArg[ss] = self;
+
+    const res = thisArg[ss](...argArray, ...callTimeArgs);
+
+    delete thisArg[ss];
+
+    return res
+  }
+};
+```
+
+#### Functional Programming
+
+- [x] `Compose` - Function composition (pipe/compose) ✅ 2025-12-16
+```js
+export default function compose(...fns) {
+  return function (x) {
+    return fns.reduceRight((acc, fn) => fn(acc), x);
+  };
+}
+
+
+// PIPE
+export default function compose(...fns) {
+  return function (x) {
+    return fns.reduce((acc, fn) => fn(acc), x);
+  };
+}
+
+```
+- [x] `Curry` - Currying function ✅ 2025-12-18
+```js
+export default function curry(func) {
+  return function curried(...args) {
+    if (args.length >= func.length) {
+      return func(...args);
+    }
+
+    return function (...nextArgs) {
+      return curried(...args, ...nextArgs);
+    };
+  };
+}
+```
+
+
+```js
+export default function curry(func) {
+  if (func.length === 0) {
+    return function(this) {
+      return func.call(this);
+    };
+  }
+
+  function build(collected, context) {
+    return function (...args) {
+      if (args.length === 0) {
+        return build(collected, context);
+      }
+
+      const nextCollected = collected.concat(args);
+
+      if (nextCollected.length >= func.length) {
+        return func.apply(context, nextCollected);
+      }
+
+      return build(nextCollected, context);
+    };
+  }
+
+  return function curried(this, ...args) {
+    if (args.length === 0) {
+      return build([], this);
+    }
+
+    if (args.length >= func.length) {
+      return func.apply(this, args);
+    }
+
+    return build(args, this);
+  };
+}
+```
+
+#### Async Utilities
+
+- [x] `Sleep` - Delay function (promise-based) ✅ 2025-12-22
+```js
+export default async function sleep(duration) {
+  return new Promise ((resolve, reject) => {
+    setTimeout(() => {
+      resolve()
+    }, duration)
+  })
+}
+```
+
+- [x] `Cancellable Timeout` - setTimeout with cancellation ✅ 2025-12-22
+```js
+export default function setCancellableTimeout(callback, delay, ...args) {
+  let timerID;
+
+  timerID = setTimeout(() => {
+    callback(...args)
+  }, delay)
+
+  return function() {
+    return clearTimeout(timerID);
+  }
+}
+```
+
+- [x] `Cancellable Interval` - setInterval with cancellation ✅ 2025-12-22
+```js
+export default function setCancellableInterval(callback, delay, ...args) {
+   let timerID;
+
+  timerID = setInterval(() => {
+    callback(...args)
+  }, delay)
+
+  return function() {
+    return clearTimeout(timerID);
+  }
+}
+```
+
+- [ ] `Promise Timeout` - Promise with timeout wrapper
+
+- [ ] `Promisify` - Convert callback to promise
+
+#### Design Patterns
+
+- [x] `Singleton` - Singleton pattern implementation ✅ 2025-12-18
+```js
+export default {
+  instance: undefined,
+  hasInstance: false,
+
+  getInstance() {
+    if (this.hasInstance) {
+      return this.instance;
+    } else {
+      this.instance = new Map();
+      this.hasInstance = true;
+
+      return this.instance;
+    }
+  },
+};
+```
+
+
+#### Utilities
+- [ ] `Classnames` - Conditional class name utility
+
+#### Promise Utilities
+
+- [ ] `Promise Merge` - Merge multiple promises with custom logic
+- [ ] `Promise.resolve` - Understanding Promise.resolve behavior
+- [ ] `Promise.reject` - Understanding Promise.reject behavior

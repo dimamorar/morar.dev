@@ -1,0 +1,1254 @@
+---
+title: "StateManagment"
+description: "Unidirectional data flow is a model where data moves strictly in one direction: from state to UI and back through a controlled update chain."
+---
+
+## Unidirectional Data Flow
+
+> Unidirectional data flow is a model where data moves strictly in one direction: from state to UI and back through a controlled update chain.  
+> It makes application behavior predictable, eliminates hidden dependencies, and simplifies debugging.
+
+---
+
+### Technical Explanation
+
+#### **The Essence of Unidirectional Flow**
+
+- State changes always follow a fixed route.
+    
+- The UI does not modify the state directly — it initiates an **action**, which is processed by the system.
+    
+- Every change has a clear source and a clear sequence of steps.
+    
+
+#### **The Problem of Two-way Connections**
+
+- In classical patterns (MVC/MVVM), View and Model can update each other directly.
+    
+- This leads to implicit dependencies, event races, and difficulty in determining the cause of an update.
+    
+
+#### **Unidirectional Flow in Flux**
+
+- The flow is organized as:  
+    **View → Action → Dispatcher → Store → View**
+    
+- Every change passes through the Dispatcher, which guarantees the order and delivery of the action to all Stores.
+    
+
+#### **Unidirectional Flow in Redux**
+
+- Redux simplifies the Flux model, **but the Action remains a mandatory part**.
+    
+- The flow looks like this:  
+    **dispatch(Action) → reducer → new state → UI**
+    
+- The reducer calculates the new state based on the current state and action.
+    
+- The Store manages the state but does not contain the business logic of mutations.
+    
+
+#### **Why It's Important**
+
+- No hidden mutations: everything starts with an action.
+    
+- The flow is transparent → easy to log and reproduce errors.
+    
+- Supports time-travel debugging, hot reload, and deterministic rendering.
+    
+
+---
+
+### Important Notes
+
+- Unidirectional flow does not work without immutability — the new state must be a new object.
+    
+- The Redux flow does not contain a Dispatcher, but the **action remains a fundamental entity**.
+    
+- This is one of the key principles of React/Redux architecture for large SPAs.
+
+
+## Immutability in State Management
+
+> Immutability means that the state is not changed directly — any update creates a new object.  
+> This guarantees the predictability of changes, correct operation of comparison by reference, and stable behavior of the unidirectional data flow.
+
+---
+
+### Technical Explanation
+
+#### **Why Immutability is Critical**
+
+- Updates become deterministic: one action → one new state.
+    
+- It's easy to understand when data has changed using comparison by reference (`===`).
+    
+- Hidden mutations are prevented, which can break rendering logic or make the state inconsistent.
+    
+
+#### **Immutability in Redux**
+
+- The reducer cannot mutate the state directly.
+    
+- It is obliged to return a **new object**, even if only one part changes.
+    
+- Violation of immutability breaks middleware, time-travel, and render optimization.
+    
+
+Example:  
+`state.user.name = 'Alex'` — **forbidden**, because it mutates the object.  
+`{ ...state, user: { ...state.user, name: 'Alex' } }` — correct.
+
+#### **Connection with Unidirectional Flow**
+
+- New state is created at the end of each dispatch → reducer cycle.
+    
+- Thanks to immutability, the UI receives a clear signal: "data has changed."
+    
+
+#### **Immutability in Redux Toolkit**
+
+- RTK uses **Immer**, which allows writing "as if mutation," but under the hood creates a new object.
+    
+- This makes the code shorter and safer.
+    
+
+---
+
+### Minimal Example
+
+```js
+// correct (immutable update)
+return { ...state, count: state.count + 1 }
+
+// incorrect (mutation)
+state.count++
+```
+
+---
+
+### Important Notes
+
+- Immutability is a condition for structural sharing, selectors, and memoization.
+    
+- This is a direct requirement of reducer purity: a pure function cannot mutate an external object.
+
+
+## Flux Pattern
+
+> Flux is an architectural pattern based on a **strictly unidirectional data flow** and separation of responsibility between Action, Dispatcher, Store, and View.  
+> It was created as a response to the chaos of two-way connections in MVC and provides predictable state updates in complex UI applications.
+
+---
+
+### Technical Explanation
+
+#### **Main Idea**
+
+- All state changes pass through one controlled chain.
+    
+- No direct UI → state or state → UI updates.
+    
+- Each part of the pattern is responsible for only one role.
+    
+
+#### **Flux Components**
+
+##### **Action**
+
+- A formalized description of the intent to change the state.
+    
+- Contains `type` and `payload`.
+    
+- Initiated by the View or a system event.
+    
+
+##### **Dispatcher**
+
+- Central router for all actions.
+    
+- Passes the action to every registered Store.
+    
+- Guarantees the sequence of processing.
+    
+
+##### **Store**
+
+- Stores the state of a specific domain area.
+    
+- Contains the business logic for updating the state upon receiving an action.
+    
+- Notifies the View after the state changes.
+    
+
+##### **View**
+
+- The UI layer of the application.
+    
+- Subscribes to the Store, receives the state, and displays it.
+    
+- Initiates Actions in response to user events.
+    
+
+#### **Why Flux Emerged**
+
+- Two-way connections in MVC created unpredictable updates.
+    
+- It was hard to understand what caused the change.
+    
+- Flux introduces a transparent, deterministic update path.
+    
+
+---
+
+### Important Notes
+
+- Flux is not a framework, but an architectural idea.
+    
+- Redux is a simplified implementation of the same principles, but **without a Dispatcher**.
+    
+- The Store in Flux contains business logic, while in Redux this role is performed by the Reducer.
+
+
+## Single Source of Truth
+
+> Single Source of Truth is a principle according to which the application state is stored in a **single, centralized repository**, rather than distributed across various components.  
+> It ensures data consistency, simplifies UI synchronization, and guarantees predictable application behavior.
+
+---
+
+### Technical Explanation
+
+#### **The Essence of the Principle**
+
+- All data managed by the application is in one place.
+    
+- Components do not store their own versions of the global state and do not argue among themselves about "which data is correct."
+    
+- The UI always reflects the current state of the Store.
+    
+
+#### **Single Source of Truth in Flux**
+
+- Each domain area has its own Store.
+    
+- The Store owns the single true version of data for its part of the state.
+    
+- All Views subscribe to the corresponding Stores and receive up-to-date data.
+    
+
+#### **Single Source of Truth in Redux**
+
+- One global state inside a single Store.
+    
+- Reducers define the state structure but do not own their own copies of data.
+    
+- All components receive data from a single state object → this eliminates discrepancies.
+    
+
+#### **Why This is Important**
+
+- Eliminates state duplication.
+    
+- Simplifies debugging: you can always see the current state.
+    
+- Makes application behavior deterministic: `UI = f(state)`.
+    
+- Allows using tools like Redux DevTools and time-travel debugging.
+    
+
+---
+
+### Important Notes
+
+- "Single" does not mean a "simple structure" — the state can be multi-layered and complex, but it is stored **globally and centrally**.
+    
+- The principle is directly related to unidirectional data flow: one store → multiple UI representations.
+    
+- Redux Toolkit supports this principle, even if the logic is broken into several slices.
+
+
+## What Is Redux
+
+> Redux is a predictable state container for JavaScript applications, based on a unidirectional data flow and pure reducer functions.  
+> It centralizes the state, makes changes deterministic, and provides transparent control over how the UI is updated.
+
+---
+
+### Technical Explanation
+
+#### **The Main Role of Redux**
+
+- Manage the global state of the application.
+    
+- Guarantee that updates pass through a controlled process.
+    
+- Simplify debugging and reproducibility of UI behavior.
+    
+
+#### **Key Features**
+
+- Centralized state: one Store holds the entire global state.
+    
+- Changes are possible only through `dispatch(action)`.
+- Reducers handle actions and purely calculate the new state.
+- DevTools support: time-travel, action logging, state inspection.
+
+#### **Where Redux is Used**
+
+- In large SPAs where local state or the Context API are insufficient.
+- In applications with a lot of business logic and complex interrelationships.
+
+#### **Why Redux Became a Standard**
+
+- Predictability due to immutability and pure functions.
+    
+- Objectively transparent data flow: easy to understand what happened and why.
+    
+- Rich ecosystem: middleware, Redux Toolkit, RTK Query.
+    
+
+---
+
+### Important Notes
+
+- Redux is not exclusively linked to React — it can work with any UI library.
+    
+- Redux itself is minimalistic; all the power comes through middleware and the Redux Toolkit.
+    
+- Redux lacks a Dispatcher (unlike Flux) — dispatch is built into the store.
+
+
+## Three Core Principles of Redux
+
+> Redux is based on three fundamental principles that ensure predictability and transparency of state management: single source of truth, state is read-only, and changes are made with pure functions.  
+> These principles make Redux deterministic and easily debuggable even in large applications.
+
+---
+
+### Technical Explanation
+
+#### **1. Single Source of Truth**
+
+- All global state is stored in a single object inside a single Store.
+    
+- Components do not store their own copies of data and receive the state from a centralized place.
+    
+- This simplifies interface synchronization and makes the state consistent.
+    
+
+#### **2. State Is Read-Only**
+
+- You cannot change the state directly: no mutation of objects or arrays bypassing Redux.
+    
+- The only way to initiate a change is to call `dispatch(action)`.
+    
+- This eliminates implicit side effects and guarantees a controlled data flow.
+    
+
+#### **3. Changes Are Made With Pure Functions**
+
+- Reducers are pure functions `(state, action) → newState`.
+    
+- They do not change the incoming state, do not perform side effects, and always return a new object.
+    
+- Thanks to this, Redux behaves deterministically: the same action always leads to the same result.
+    
+
+---
+
+### Important Notes
+
+- The second and third principles are closely linked to immutability: only immutable data allows correctly tracking changes.
+    
+- These principles create the base for time-travel debugging, hot reload, and rendering optimizations in React.
+    
+- Middleware and Redux Toolkit extend Redux but do not violate these three rules.
+
+
+## How the Redux Data Flow Works
+
+> Redux uses a strictly unidirectional data flow: an action initiates a change, a reducer calculates the new state, and the Store updates the UI.  
+> This fixed path makes application behavior deterministic and simplifies debugging.
+
+---
+
+### Technical Explanation
+
+#### **The Main Flow: from Action to UI**
+
+1. **UI initiates an event**  
+    A component calls `dispatch(action)` in response to a user action or system event.
+    
+2. **Store receives the action**  
+    The Store passes the action to the root reducer (or a set of combined reducers).
+    
+3. **Reducer calculates the new state**  
+    A Reducer is a pure function that:
+    
+    - receives `previousState` and `action`
+        
+    - creates a **new state** without mutations
+        
+    - returns it to the Store
+        
+4. **Store saves the new state**  
+    The Store updates the internal state and calls subscribers (`listeners`).
+    
+5. **UI updates**  
+    Subscribed components receive the new state and re-render.
+    
+
+---
+
+### Redux Flow Formula
+
+**dispatch(Action) → Reducer → New State → UI Render**
+
+---
+
+### Flow Characteristics
+
+#### **No Dispatcher as in Flux**
+
+- Redux uses a single Store, and `dispatch` is a Store method.
+    
+- There is no separate routing layer.
+    
+
+#### **Reducer never performs side effects**
+
+- Only pure logic → predictable result.
+    
+
+#### **State is immutable**
+
+- Creating a new object on every update is key to correct UI updates and DevTools operation.
+    
+
+---
+
+### Important Notes
+
+- The order is always the same — it's impossible to "skip" a reducer or change the state directly.
+    
+- The entire flow is synchronous until middleware (like Thunk) is connected.
+    
+- Redux DevTools shows this flow step by step — action → diff → state.
+
+
+## What Is an Action
+
+> An action is an object describing the intent to change the state.  
+> It tells Redux **what happened**, but does not define **exactly how to update the state** — the reducer does that.
+
+---
+
+### Technical Explanation
+
+#### **Action's Role in Redux**
+
+- An action is the only way to initiate a state change.
+    
+- It formalizes an event: a user click, a server response, a system update, etc.
+    
+- The reducer reads the action and decides how to react to it.
+    
+
+#### **Action Structure**
+
+An action is a simple object with properties:
+
+- **type** — a mandatory string value identifying the event.
+    
+- **payload** — data associated with the event (optional).
+    
+- Additional metadata (if needed): `error`, `meta`.
+    
+
+Conceptual form example:
+
+```js
+{
+  type: 'todos/add',
+  payload: 'Buy milk'
+}
+```
+
+#### **Why type is Critically Important**
+
+- The reducer uses `type` to select a logic branch.
+    
+- The type should be stable, readable, and unique.
+    
+
+#### **Why an Action Should Not Contain Logic**
+
+- It only describes the fact of an event.
+    
+- The logic for changing the state is in the reducer.
+    
+- Asynchronous or side logic is handled by middleware (e.g., Thunk).
+    
+
+---
+
+### Important Notes
+
+- An action is a synchronous object. Asynchrony is implemented through middleware.
+    
+- In the Redux Toolkit, actions are generated automatically via `createSlice`.
+    
+- The action remains the central entity of the Redux flow: **without an action, there is no dispatch**.
+
+
+## What Is a Dispatcher (Flux Context)
+
+> A Dispatcher is the central router of the Flux architecture, responsible for delivering each action to all registered Stores.  
+> It ensures sequential processing of actions and guarantees that state updates pass through a single controlled path.
+
+---
+
+### Technical Explanation
+
+#### **Role of the Dispatcher in Flux**
+
+- Receives actions from the View or other sources.
+    
+- Passes the action to _every_ Store that is subscribed to events.
+    
+- Manages the order of action processing, preventing races and unpredictable updates.
+    
+- Eliminates the chaos of two-way connections characteristic of MVC.
+    
+
+#### **Why It's Important in Flux**
+
+- Makes the data flow centralized and deterministic.
+    
+- Stores cannot communicate with each other directly → only through the Dispatcher.
+    
+- Eliminates circular dependencies between stores.
+    
+
+#### **Dispatcher is Absent in Redux**
+
+Redux simplified the Flux model:
+
+- **There is no Dispatcher in Redux.**
+    
+- Its role is replaced by:
+    
+    - a single Store,
+        
+    - the `dispatch()` mechanism built into the Store,
+        
+    - the reducer function, which defines state updates.
+    
+
+The path in Redux looks like this:
+
+**dispatch(Action) → reducer → new state → UI**
+
+And the routing role is not needed because:
+
+- there is only one Store,
+    
+- reducers are combined into one composition,
+    
+- actions are not sent out to multiple Stores.
+    
+
+---
+
+### Important Notes
+
+- The Dispatcher is a key component of Flux, but **not a part of Redux**.
+    
+- Questions about the Dispatcher are often used to test understanding of the difference between Flux and Redux.
+    
+- Redux removed the Dispatcher for architectural simplicity and predictability.
+
+
+## What Is a Reducer
+
+> A reducer is a pure function that takes the current state and an action and returns a new state.  
+> It defines **how** the state should change in response to an action, while not performing side effects and not mutating the incoming data.
+
+---
+
+### Technical Explanation
+
+#### **Reducer's Role**
+
+- Core of the Redux business logic.
+    
+- Defines the reaction to each action.
+    
+- Guarantees determinism: same input → same output.
+    
+
+#### **Requirements for a Reducer**
+
+1. **Must be a pure function**
+    
+    - No side effects (network requests, timers).
+        
+    - No mutation of arguments.
+        
+    - Does not depend on external mutable state.
+        
+2. **Must return a new object**
+    
+    - Immutability is a critical condition for correct UI updates.
+        
+    - In the Redux Toolkit, "mutation" inside a reducer is actually safe thanks to Immer.
+        
+3. **Must have a predictable result**
+    
+    - If the action is not recognized, the original state is returned.
+        
+    - A reducer cannot return `undefined`.
+    
+
+#### **Reducer Structure**
+
+Minimal form:
+
+```js
+function reducer(state, action) {
+  switch (action.type) {
+    case 'increment':
+      return { ...state, count: state.count + 1 }
+    default:
+      return state
+  }
+}
+```
+
+#### **Reducer Composition**
+
+- Redux allows splitting logic into many reducers.
+    
+- `combineReducers` collects them into a single root reducer.
+    
+- Each slice reducer is responsible for its own fragment of state.
+    
+
+---
+
+### Important Notes
+
+- The reducer is the only place where the logic for changing state is defined.
+- Any mutation inside a reducer breaks the Redux flow and optimizations.
+- In RTK, the reducer is described inside `createSlice`, but the concept remains the same.
+
+
+## What Is the Store
+
+> The Store is the central Redux object that holds the global state and manages its updates.  
+> It accepts actions, runs the reducer, and notifies subscribers of the new state, ensuring a predictable data flow.
+
+---
+
+### Technical Explanation
+
+#### **Store's Role**
+
+- Holds the application's only object — **global state**.
+    
+- Provides three key methods:
+    
+    - `getState()` — get the current state
+        
+    - `dispatch(action)` — initiate an update
+        
+    - `subscribe(listener)` — subscribe to changes
+    
+
+#### **How the Store Processes Updates**
+
+The Store implements a fixed cycle:
+
+**Action → dispatch(action) → Middleware (optional) → Reducer → New State → Notify Subscribers**
+
+- **dispatch** accepts an action.
+    
+- The action passes through a chain of middleware (if connected).
+    
+- The Store calls the root reducer with `(previousState, action)`.
+    
+- The reducer returns a new immutable state.
+    
+- The Store saves the new state.
+    
+- All subscribers are called again.
+    
+
+#### **What the Store DOES NOT Do**
+
+- Does not contain business logic (it's in reducers).
+    
+- Does not change the state directly.
+    
+- Does not perform side effects.
+    
+
+#### **Why There is Only One Store**
+
+- One Store = one source of truth.
+    
+- Ensures consistency and a predictable data flow.
+    
+
+---
+
+### Important Notes
+
+- The Store in Redux is not an analogue of the Flux Store: it does not update the state on its own and does not hold the logic of actions.
+    
+- Dispatch is a built-in Store mechanism, not a separate Dispatcher object.
+    
+- DevTools connect to the Store to display all state updates.
+
+
+## What Is Middleware in Redux
+
+> Middleware is a layer between `dispatch(action)` and the reducer, allowing you to intercept actions and extend Redux behavior without changing its core.  
+> It adds the ability to perform side effects, asynchronous operations, logging, as well as to modify or cancel actions.
+
+---
+
+### Technical Explanation
+
+#### **Role of Middleware**
+
+- Intercepts every action before it reaches the reducer.
+    
+- Can:
+    
+    - pass the action further,
+        
+    - change it,
+        
+    - cancel it,
+        
+    - send new actions,
+        
+    - perform a side effect (e.g., an API request).
+    
+
+#### **Middleware in the Redux Chain**
+
+The action processing cycle looks like this:
+
+**Action → dispatch → Middleware Chain → Reducer → New State**
+
+- `dispatch()` starts the middleware chain.
+    
+- Each middleware decides what to do next.
+    
+- At the end of the chain, the action reaches the reducer.
+    
+
+#### **What Middleware is Used For**
+
+- Asynchronous logic (e.g., Thunk, Saga).
+- Logging of actions and states.
+- Tracing and analytics.
+- Validation and filtering of actions.
+- Error handling.
+- Working with tokens, authorization, refresh flows.
+    
+
+#### **Why Middleware is Important**
+
+- Redux itself is synchronous.
+    
+- Middleware makes it flexible, extensible, and suitable for complex scenarios.
+    
+
+---
+
+### Important Notes
+
+- Middleware never changes the state — only the reducer does.
+    
+- The order of connecting middleware affects the behavior of the chain.
+    
+- Redux Toolkit automatically includes useful middleware (thunk, immutability checks, serializability checks).
+
+
+## How Middleware Fits Into the Dispatch → Reducer Pipeline
+
+> Middleware is inserted between `dispatch(action)` and the reducer call, forming a chain of functions through which every action passes.  
+> This allows intercepting, modifying, or stopping actions before they reach the reducer.
+
+---
+
+### Technical Explanation
+
+#### **Middleware Flow Structure**
+
+The full action processing cycle:
+
+**Action → dispatch → Middleware Chain → Reducer → New State**
+
+- The UI calls `dispatch(action)`.
+    
+- The action is passed to the first middleware.
+    
+- Each middleware decides:
+    
+    - whether to pass the action further (`next(action)`),
+        
+    - modify it,
+        
+    - send another action,
+        
+    - stop the chain.
+    
+- At the end, the action reaches the reducer.
+    
+
+#### **Purpose of the Middleware Chain**
+
+- Separate side effects from reducers.
+    
+- Provide a modular way to extend Redux behavior.
+    
+- Allow multiple middlewares to process one action sequentially.
+    
+
+#### **How the Chain Works**
+
+Each middleware has the form:
+
+```js
+store => next => action
+```
+
+- `store` — access to `dispatch` and `getState`.
+    
+- `next` — link to the next middleware.
+    
+- `action` — the current action being processed.
+    
+
+This makes the pipeline transparent and manageable.
+
+---
+
+### Important Notes
+
+- The reducer is always at the end of the chain.
+- No middleware can directly change the state.
+- The order of connecting middlewares determines the order of their execution.
+
+
+## What Problems Does Middleware Solve
+
+> Middleware solves tasks that are impossible or incorrect to perform inside a reducer: asynchrony, side effects, logging, action control, and extending Redux behavior.  
+> It makes Redux flexible while maintaining the purity and predictability of reducers.
+
+---
+
+### Technical Explanation
+
+#### **1. Asynchronous Logic**
+
+Redux itself is strictly synchronous.  
+Middleware allows:
+
+- performing API requests,
+    
+- waiting for a response,
+    
+- dispatching "success/error" actions,
+    
+- coordinating chains of asynchronous operations.
+    
+
+Without middleware, there is no asynchrony in Redux.
+
+#### **2. Side Effects**
+
+The reducer must be a pure function.  
+Middleware handles effects:
+
+- timers,
+    
+- accessing localStorage,
+    
+- logging,
+    
+- authentication,
+    
+- working with tokens.
+    
+
+This separates business change logic from side effects.
+
+#### **3. Logging and Diagnostics**
+
+Typical middleware:
+
+- logger,
+    
+- crash reporting,
+    
+- analytics,
+    
+- action monitoring.
+    
+
+They allow tracking the behavior of the application without changing reducers.
+
+#### **4. Filtering and Modifying Actions**
+
+Middleware can:
+
+- reject certain actions,
+    
+- transform the payload,
+    
+- add metadata.
+    
+
+This is useful for validation, normalization, and security.
+
+#### **5. Creating New Actions**
+
+Means like Thunk and Saga can send additional actions:
+
+- start → success → error
+    
+- optimistic updates
+    
+- background refresh
+    
+
+This is impossible to do inside a reducer (it must be pure).
+
+#### **6. Encapsulation of Complex Logic**
+
+Middleware hides complexity:
+
+- retry mechanisms,
+    
+- debounce/throttle of actions,
+    
+- request queue control.
+    
+
+---
+
+### Important Notes
+
+- The primary goal of middleware is to extend Redux without violating its three principles.
+    
+- Every action passes through ALL connected middleware.
+    
+- Redux Toolkit includes useful middleware by default (thunk + checks).
+
+
+## What Is a Thunk and Why Does It Allow Dispatching Functions
+
+> A thunk is a wrapper function that defers the execution of logic until a certain moment.  
+> In Redux, a thunk is used as an action function, allowing you to perform asynchronous operations and dispatch regular actions manually.
+
+---
+
+### Technical Explanation
+
+#### **What a Thunk Is in a General Sense**
+
+- A thunk is a function that returns another function.
+    
+- It allows "deferring" the execution of logic until it is explicitly called.
+    
+
+Concept example:  
+`const thunk = () => computeLater()`
+
+#### **Thunk in Redux**
+
+Redux by default accepts only **object actions**.  
+Thunk middleware changes the rule: if `dispatch()` receives a function, it **does not send it to the reducer**, but calls it with arguments:
+
+```
+(dispatch, getState) => { ... }
+```
+
+This allows:
+
+- executing asynchronous code,
+    
+- dispatching multiple regular actions sequentially,
+    
+- reading the current state through `getState()`.
+    
+
+#### **Why a Thunk Can Dispatch Functions**
+
+Because the Thunk middleware checks the type:
+
+1. If `action` is an object → send it further to the reducer.
+    
+2. If `action` is a function → execute it and pass `dispatch` and `getState` there.
+    
+
+The reducer will never see the function — it exists only in the middleware layer.
+
+#### **What Makes a Thunk Unique**
+
+- Allows running async/await inside an action.
+    
+- Gives direct control over the sequence of actions.
+    
+- Keeps the reducer pure and synchronous.
+    
+
+---
+
+### Important Notes
+
+- A thunk effectively turns Redux into an asynchronous engine without violating the architecture.
+    
+- Action functions are not actions; they are instructions that create actions.
+    
+- Redux Toolkit includes Thunk by default (via `configureStore`).
+
+
+## How Async Logic Is Implemented With Thunk
+
+> Thunk allows performing asynchronous code because the action function receives access to `dispatch` and `getState`.  
+> This provides the opportunity to perform requests, wait for their completion, and dispatch regular actions in the required sequence.
+
+---
+
+### Technical Explanation
+
+#### **Main Idea**
+
+- Regular Redux accepts only object actions.
+    
+- Thunk middleware allows passing a **function** to `dispatch`, which performs asynchronous logic.
+    
+- This function itself decides when and which actions to dispatch.
+    
+
+#### **Typical Async Flow with Thunk**
+
+1. UI calls:  
+    `dispatch(fetchData())`
+    
+2. Redux Thunk detects that it is a function and calls it:  
+    `(dispatch, getState) => { ... }`
+    
+3. Inside the thunk, you can perform:
+    
+    - `dispatch(startAction())`
+        
+    - `await fetch(...)`
+        
+    - `dispatch(successAction(data))`
+        
+    - `dispatch(errorAction(err))`
+        
+4. Reducer receives regular actions and updates the state.
+    
+
+#### **Why It's Needed**
+
+- Management of the request lifecycle (pending → success → error).
+    
+- Error handling without cluttering UI components.
+    
+- Access to the current state (`getState()`) — for conditional requests or cancellation.
+    
+
+#### **What Remains Synchronous**
+
+- Reducer.
+    
+- State update flow.
+    
+- All state changes pass only through regular actions.
+    
+
+---
+
+### Minimal Example
+
+```js
+function fetchUser() {
+  return async (dispatch, getState) => {
+    dispatch({ type: 'user/loading' })
+
+    try {
+      const res = await fetch('/api/user')
+      const data = await res.json()
+      dispatch({ type: 'user/success', payload: data })
+    } catch (err) {
+      dispatch({ type: 'user/error', payload: err })
+    }
+  }
+}
+```
+
+---
+
+### Important Notes
+
+- Thunk makes Redux asynchronous, but **reducers remain pure and synchronous**.
+- Most applications used Thunk before the advent of RTK Query and Saga.
+- Redux Toolkit can automatically generate async flows through `createAsyncThunk`.
+
+
+## What Is Redux Toolkit
+
+> Redux Toolkit (RTK) is the official high-level API for Redux, created to reduce boilerplate code, ensure safe immutability, and standardize architecture.  
+> It simplifies Store configuration, working with reducers, actions, and asynchronous logic.
+
+---
+
+### Technical Explanation
+
+#### **Main Goal of RTK**
+
+- Simplify the use of Redux.
+    
+- Reduce the amount of boilerplate (actions, switch, immutable updates).
+    
+- Embed best practices directly into the tools.
+    
+- Make Redux architecture safer and more predictable.
+    
+
+#### **What RTK Adds**
+
+- **Immer** for safe immutable updates via "draft-state."
+    
+- **createSlice** for automatic generation of reducers and actions.
+    
+- **configureStore** with a ready-made configuration of middleware and DevTools.
+    
+- **createAsyncThunk** with a standard async pattern pending/fulfilled/rejected.
+    
+- **RTK Query** for managing server data and caching.
+    
+
+#### **Why It's Important**
+
+- No longer need to manually write action creators.
+    
+- Reducers can be written via mutation (but under the hood, a new state is created).
+    
+- Store settings are uniform and safe by default.
+    
+- Asynchronous logic becomes standardized.
+    
+
+#### **Relationship to Redux**
+
+- RTK is not a replacement for Redux — it is the recommended way to use it.
+    
+- It makes Redux modern and convenient while maintaining all principles.
+    
+
+---
+
+### Important Notes
+
+- RTK has been the officially recommended way to use Redux since 2020.
+- Most new Redux projects use RTK by default.
+- RTK eliminates the risk of incorrect mutations and simplifies developer onboarding.
+
+
+## Why Was Redux Toolkit Created
+
+> Redux Toolkit was created to address the pain points of classic Redux: excessive boilerplate code, complex immutable updates, and the lack of a standardized structure.  
+> It makes Redux simpler, shorter, and safer while maintaining its fundamental principles.
+
+---
+
+### Technical Explanation
+
+#### **1. Excessive Boilerplate**
+
+Classic Redux required too much repetitive code:
+
+- manually creating actions,
+    
+- writing action creators,
+    
+- using `switch` in reducers,
+    
+- carefully updating nested objects via spread.
+    
+
+RTK automates these steps via `createSlice`.
+
+#### **2. Complexity of Immutable Updates**
+
+- It is difficult to safely update deep structures.
+    
+- Mutation errors often broke the Redux flow.
+    
+- Immer inside RTK makes immutability safe and convenient.
+    
+
+#### **3. Inconsistency of Project Structure**
+
+Before RTK, each project had its own approaches:
+
+- different folders,
+    
+- different names,
+    
+- different tools.
+    
+
+RTK standardizes the architecture:
+
+- slices,
+    
+- configureStore,
+    
+- unified async logic (createAsyncThunk).
+    
+
+#### **4. Lack of Built-in Best Practices**
+
+RTK includes:
+
+- Redux Thunk,
+    
+- DevTools,
+    
+- immutability checks,
+    
+- serializability checks.
+    
+
+All of this previously had to be added manually.
+
+#### **5. Lowering the Entry Barrier**
+
+- It is hard for beginners to understand classic Redux.
+    
+- RTK makes the API intuitive and uniform.
+    
+- Focus on business logic rather than infrastructure.
+    
+
+---
+
+### Important Notes
+
+- RTK does not change the foundation of Redux — state is read-only, reducers are pure, and the data flow is unidirectional.
+    
+- It replaces old "handmade Redux" with recommended, modern practice.
+    
+- RTK has become the official standard for using Redux.

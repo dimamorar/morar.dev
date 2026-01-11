@@ -1,0 +1,92 @@
+---
+title: "Declaration merging"
+description: "Declaration merging is a TypeScript mechanism that allows combining several declarations with the same name into a single extended type. The compiler "merges" t"
+---
+
+> Declaration merging is a TypeScript mechanism that allows combining several declarations with the same name into a single extended type. The compiler "merges" them, combining properties, methods, or function signatures into a unified definition.
+
+---
+
+### 🧩 Main Idea
+
+- If **multiple declarations with the same identifier** exist in the code, TypeScript automatically merges them.
+- This applies to:
+    - **interfaces**
+    - **namespaces**
+    - **functions and classes**, if they are declared compatibly with a namespace.
+
+---
+
+### 🧩 Example: Merging Interfaces
+
+```tsx
+interface User {
+  id: number;
+}
+
+interface User {
+  name: string;
+}
+
+const person: User = {
+  id: 1,
+  name: "Anna",
+};
+```
+
+- Both definitions are combined:
+    
+    ```tsx
+    interface User {
+      id: number;
+      name: string;
+    }
+    ```
+    
+
+> This is convenient for extending library types without directly editing them.
+
+---
+
+### 🧩 Example: Namespace + Function/Class
+
+- You can add properties to functions or classes via a namespace.
+
+```tsx
+function greet(name: string) {
+  return `Hello, ${name}`;
+}
+
+namespace greet {
+  export const version = "1.0";
+}
+
+console.log(greet.version); // ✅ "1.0"
+```
+
+- The namespace "merges" with the function, creating a **hybrid entity**.
+
+---
+
+### 🧩 Example: Extending Types from Libraries
+
+```tsx
+interface Window {
+  myCustomVar: string;
+}
+
+window.myCustomVar = "Hello!"; // ✅ now TypeScript "knows" about the new property
+```
+
+> Declaration merging allows adding custom types to global objects or library APIs (via .d.ts files).
+
+---
+
+### 💡 Key Ideas
+
+- Declaration merging = **combining multiple definitions into one**.
+- Most commonly used for:
+    - extending existing types or APIs,
+    - adding types to libraries without typings,
+    - creating hybrid types (function + namespace).
+- A powerful mechanism that allows extending code **without losing compatibility or overrides**.

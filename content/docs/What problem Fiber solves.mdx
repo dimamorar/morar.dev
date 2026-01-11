@@ -1,0 +1,92 @@
+---
+title: "What problem Fiber solves"
+description: "React Fiber was created to eliminate the fundamental limitations of the old synchronous stack-based renderer."
+---
+
+> React Fiber was created to eliminate the fundamental limitations of the old synchronous stack-based renderer.  
+> Its goal is to make React capable of working incrementally, with priorities, pauses, and work resumption without blocking the UI.
+
+---
+
+### 🧩 Key Problems Fiber Solves
+
+#### **1. Inability to interrupt rendering**
+
+The old renderer blocked the main thread until all work was completed.  
+Fiber allows:
+
+- pausing work,
+    
+- yielding control to the browser,
+    
+- resuming an incomplete update.
+    
+
+This prevents UI "freezes."
+
+---
+
+#### **2. Lack of Update Priorities**
+
+Previously, all updates were equal.  
+Fiber introduces a **scheduler** and **priorities (lanes)**:
+
+- high-priority updates (user input),
+    
+- low-priority updates (rendering lists, background tasks).
+    
+
+React decides what is more important to execute now.
+
+---
+
+#### **3. Inability to Cancel Work**
+
+If data changed during render, React could not stop the current process.  
+Fiber allows:
+
+- **discarding** work,
+    
+- **re-calculating** it with new input data.
+    
+
+---
+
+#### **4. Lack of Incremental Rendering**
+
+The old approach required rendering the entire tree branch in one large cycle.  
+Fiber splits work into **small units of work**, processing them in stages.
+
+---
+
+#### **5. Inability to Distribute Work Between Frames (time slicing)**
+
+The browser could not insert its tasks (painting, scrolling, events).  
+Fiber allows React to "yield control," which makes the UI smooth.
+
+---
+
+#### **6. Inability to Create Concurrent Rendering and Suspense**
+
+Without interruption, resumption, and priorities, these features are impossible.  
+Fiber became the base for:
+
+- Concurrent rendering,
+    
+- Suspense for data fetching,
+    
+- Transitions,
+    
+- Automatic batching.
+
+---
+
+### 💡 Key Ideas
+
+- Fiber solves all the problems of the old synchronous renderer.
+    
+- It allows React not to block the UI, working in parts and by priority.
+    
+- It is the foundation of all modern React 18+ features.
+    
+- The goal of Fiber is to **make React adaptive, asynchronous, and smooth** for the user.

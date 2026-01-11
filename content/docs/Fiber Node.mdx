@@ -1,0 +1,124 @@
+---
+title: "Fiber Node"
+description: "Fiber Node is the primary structural unit of the Fiber architecture."
+---
+
+> Fiber Node is the primary structural unit of the Fiber architecture.  
+> It is a lightweight, mutable structure that represents each component or DOM node, allowing React to perform incremental, interruptible, and prioritized rendering.
+
+---
+
+### 🧩 Core Concept of Fiber Node
+
+- Every React element in the tree is converted into a **Fiber node**.
+    
+- Fiber is not an element or a component, but a **rendering unit of work**.
+    
+- It stores:
+    
+    - component information,
+        
+    - state,
+        
+    - effects,
+        
+    - updates,
+        
+    - pointers to neighboring nodes.
+        
+
+Fiber forms a **tree that React can traverse and manipulate iteratively**, rather than recursively.
+
+---
+
+### 🧩 Fiber Node Structure
+
+Typical Fiber structure (simplified):
+
+```js
+{
+  type,            // Element type (component or DOM tag)
+  tag,             // Type of Fiber (Function, Class, HostComponent, etc.)
+  pendingProps,    // New props for processing
+  memoizedProps,   // Previous props (for comparison)
+  memoizedState,   // Component state
+  updateQueue,     // Update queue
+  child,           // First child Fiber
+  sibling,         // Next sibling Fiber
+  return,          // Parent Fiber
+  alternate,       // Node clone (for double-buffering)
+  flags,           // Effects (Placement, Update, Deletion, Passive)
+}
+```
+
+---
+
+### 🧩 Pointer Tree Structure
+
+Fiber uses **pointers like in a singly linked list**, rather than recursion.
+
+#### Key Pointers:
+
+- **`child`** — first child
+    
+- **`sibling`** — next sibling
+    
+- **`return`** — reference to parent
+    
+
+This allows React to:
+
+- traverse the tree without recursion,
+    
+- pause rendering,
+    
+- return to any point,
+    
+- re-run work.
+    
+
+---
+
+### 🧩 alternate: double-buffering
+
+- Each Fiber has a clone — **`alternate`**,  
+    which corresponds to the previous state of the node.
+    
+- React compares “current” and “work-in-progress” versions.
+    
+- This allows:
+    
+    - keeping two trees simultaneously,
+        
+    - not mutating the current tree,
+        
+    - interrupting work without damaging the UI.
+        
+
+---
+
+### 🧩 flags: effect system
+
+The `flags` field records effects to be executed in the commit phase:
+
+- `Placement` — insert element into DOM
+    
+- `Update` — update attributes / props
+        
+- `Deletion` — delete node
+    
+- `Passive` — `useEffect`
+    
+- other service flags
+    
+
+This allows performing DOM operations optimally and in batches.
+
+---
+
+### 💡 Key Ideas
+- Fiber Node is a React working block that replaced the recursive stack.
+- It contains data about the component, state, updates, and effects.
+- The pointer system allows React to pause rendering and manage the process.
+- alternate provides double-buffering and safe tree transformations.
+- flags define what will happen in the commit phase.

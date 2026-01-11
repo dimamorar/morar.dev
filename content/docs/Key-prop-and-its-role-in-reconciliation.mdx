@@ -1,0 +1,76 @@
+---
+title: "Key prop and its role in reconciliation"
+description: "key is a special React prop used to identify elements in lists."
+---
+
+## Key prop and its role in reconciliation
+
+> key is a special React prop used to identify elements in lists.
+> 
+> 
+> It helps the **Reconciliation** mechanism precisely determine which elements have changed, been added or removed, minimizing operations with the DOM.
+> 
+
+---
+
+### 🧩 Why `key` is needed
+
+- During render of lists, React compares the old and new Virtual DOM tree.
+- Without `key` it is guided only by **element positions**, which can lead to erroneous re-renders.
+- `key` gives React a stable way to map elements between renders.
+
+```jsx
+{users.map(user => (
+  <UserCard key={user.id} user={user} />
+))}
+
+```
+
+---
+
+### 🧩 How Reconciliation works with keys
+
+**1. If `key` matches** → React **reuses the element** and updates only changed props.
+
+**2. If `key` is different** → React considers the element new and **removes the old one**, creating a new DOM node.
+
+Example:
+
+```jsx
+// Old list
+[{ key: 1, name: 'Alex' }, { key: 2, name: 'Bob' }]
+
+// New list
+[{ key: 2, name: 'Bob' }, { key: 1, name: 'Alex' }]
+
+```
+
+Without keys, React will simply change the order of elements;
+
+with keys, it will understand that the data has swapped places, rather than being replaced.
+
+---
+
+### 🧩 Incorrect Use
+
+- ❌ Using the array index (`key={index}`) during dynamic changes:
+    - leads to state desynchronization (for example, inputs lose focus).
+- ❌ Random or unstable keys (`Math.random()`).
+    - React cannot map elements between renders → recreates them every time.
+
+---
+
+### 🧩 Best Practices
+
+- Use **unique and stable keys** (`id`, `uuid`, constant slug).
+- The key must be **unique among neighbors**, not globally.
+- In nested lists, keys must be unique **within each level**.
+
+---
+
+### 💡 Key Ideas
+
+- `key` is part of the internal Reconciliation mechanism.
+- Helps React precisely determine which elements need to be updated.
+- Stable keys = fewer unnecessary DOM updates.
+- Incorrect keys → loss of state and incorrect UI behavior.

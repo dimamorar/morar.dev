@@ -1,0 +1,48 @@
+---
+title: "DOM vs. Virtual DOM"
+description: "DOM (Document Object Model) is a structure representing an HTML document as a tree of objects."
+---
+
+## DOM vs Virtual DOM
+
+> DOM (Document Object Model) is a structure representing an HTML document as a tree of objects.
+> 
+> 
+> **Virtual DOM** is its virtual copy in memory, used to optimize interface updates.
+> 
+
+---
+
+### 🧩 DOM (Document Object Model)
+
+- DOM is a **real tree of objects**, reflecting the structure of an HTML document in the browser.
+- Every element on the page is a **node (`node`)**, available for reading, changing, and deleting through JavaScript.
+- Main disadvantage: **any change** to the DOM causes **repaint** and **reflow (style recalculation)**.
+- With a large number of operations, this makes interface updates **slow and costly** in terms of performance.
+
+---
+
+### 🧩 Virtual DOM (Virtual DOM)
+
+- Virtual DOM is a **virtual copy of the real DOM** that exists **in memory**.
+- Used by libraries like **React** to optimize rendering.
+
+When the application state changes:
+
+1. A **new virtual tree** is created.
+2. The **diffing** process is performed — comparing the new and old Virtual DOM.
+3. The **minimal set of changes** is determined.
+4. In the **reconciliation** stage, these changes are **point-applied to the real DOM**.
+
+---
+
+### 💡 Main Idea
+
+- **DOM** — works directly with the browser, every change causes a re-render.
+- **Virtual DOM** — works in memory and updates **only changed nodes**, minimizing the load.
+- This approach makes updates **faster, more efficient, and less costly**.
+
+---
+
+> Virtual DOM is a "smart layer" that protects the real DOM from unnecessary updates.
+> 

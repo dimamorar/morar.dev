@@ -1,0 +1,65 @@
+---
+title: "React 15 16 18 19"
+description: "React has evolved from class components and synchronous rendering"
+---
+
+> React has evolved from class components and synchronous rendering  
+> to a functional model with hooks, concurrent rendering, and a server-first approach.  
+> A key milestone is the transition **from classes to hooks** and the change of React's role from a UI library to an application layer.
+
+---
+
+### React 15 — class-based, sync React
+
+- The only full-fledged component model — **classes**
+- State and side effects are managed through lifecycle methods
+- Reconciliation — **stack reconciler** (fully synchronous)
+- Functional components — only presentational
+- Logical composition is impossible without HOC / render props
+
+React 15 scales poorly due to a rigid lifecycle model and lack of logical reuse.
+
+---
+### React 16 — Fiber and the emergence of hooks (16.8)
+
+- **Fiber reconciler** introduced — the basis for async / interruptible rendering
+- Classes and functional components coexist
+- React 16.8:
+    - **Hooks** appear
+    - functional components become stateful
+- Logic is moved from lifecycle to hooks
+- Beginning of **class → function** migration
+
+Hooks solve the problems of lifecycle chaos and make logic compositional.
+
+---
+### React 18 — hooks-first, concurrent React
+- **Functional components + hooks** — the standard
+- Classes are supported but considered legacy
+- **Concurrent Rendering** introduced (opt-in)
+- Automatic batching for sync and async updates
+- New hooks for priority management:
+    - `useTransition`
+    - `useDeferredValue`
+- New root API — `createRoot`
+
+React 18 allows React to **manage update priorities** rather than just re-rendering.
+
+---
+### React 19 — server-first, full-stack React
+- Consolidates server-centric model
+- Introduces **React Actions** for mutations
+- Built-in form state management:
+    - `useFormState`
+    - `useFormStatus`
+- Deeper integration with Server Components
+- Less client-side JavaScript
+
+React 19 shifts React from a UI library to an **application abstraction layer** (UI + data + mutations).
+
+---
+### Key Evolution (1 sentence for an interview)
+React 15 — class & sync →  
+React 16.8 — hooks →  
+React 18 — concurrent rendering →  
+React 19 — server-first full-stack React.

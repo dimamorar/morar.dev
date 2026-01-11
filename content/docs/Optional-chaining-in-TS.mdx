@@ -1,0 +1,62 @@
+---
+title: "Optional chaining in TS"
+description: "Optional chaining (?.) allows safe access to nested properties without the risk of a TypeError if one of the intermediate parts is null or undefined. Instead of"
+---
+
+> Optional chaining (?.) allows safe access to nested properties without the risk of a TypeError if one of the intermediate parts is null or undefined. Instead of the program crashing, the result will be `undefined`.
+
+---
+
+### 🧩 Essence of the mechanism
+
+- The `?.` operator checks if the **object before it exists**, and only then accesses the property or method.
+- If the value is `null` or `undefined` — the expression stops and returns `undefined`.
+
+```tsx
+const user = {
+  profile: {
+    email: "test@mail.com",
+  },
+};
+
+console.log(user.profile?.email);   // "test@mail.com"
+console.log(user.account?.email);   // undefined (no error)
+```
+
+---
+
+### 🧩 Combination with other operators
+
+### Method call:
+
+```tsx
+user.getInfo?.(); // called only if getInfo exists
+```
+
+### Access to array elements:
+
+```tsx
+const item = cart?.[0];
+```
+
+### Together with Nullish Coalescing (`??`):
+
+```tsx
+const email = user.profile?.email ?? "No email";
+```
+
+---
+
+### 🧩 Important details
+
+- Works only for **`null` and `undefined`**, not for other "falsy" values (`0`, `false`, `""`).
+- Reduces the number of nested checks like `if (obj && obj.prop && obj.prop.sub)`.
+- Supported starting from **TypeScript 3.7**.
+
+---
+
+### 💡 Key Ideas
+
+- `?.` — a safe way to access nested data.
+- Stops evaluation if `null` or `undefined` is found.
+- Increases code cleanliness and eliminates the need for bulky check conditions.

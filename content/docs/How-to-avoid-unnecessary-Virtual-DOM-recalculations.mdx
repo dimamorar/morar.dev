@@ -1,0 +1,92 @@
+---
+title: "How to avoid unnecessary Virtual DOM recalculations"
+description: "Suboptimal state updates cause redundant re-renders and re-calculations of the Virtual DOM."
+---
+
+## How to avoid unnecessary Virtual DOM recalculations
+
+> Suboptimal state updates cause redundant re-renders and re-calculations of the Virtual DOM.
+> React provides a set of tools to control **when and why a component should update**.
+
+---
+
+### 🧩 Causes of Redundant Re-renders
+
+- State changes that don't affect JSX.
+- Passing **new object or function references** on every render.
+- Lack of memoization for calculations and handlers.
+- Incorrect use of context or props.
+
+---
+
+### 🧩 Core Optimization Techniques
+
+### 1. **Component Memoization — `React.memo`**
+
+- Wraps a functional component and prevents its re-render if props haven't changed compared to the previous render.
+
+```jsx
+const UserCard = React.memo(function UserCard({ user }) {
+  return <div>{user.name}</div>;
+});
+
+```
+
+---
+
+### 2. **Calculation Memoization — `useMemo`**
+
+- Caches the result of complex calculations between renders.
+- Calculation is performed only when dependencies change.
+
+```jsx
+const filtered = useMemo(() => items.filter(i => i.active), [items]);
+
+```
+
+---
+
+### 3. **Callback Memoization — `useCallback`**
+
+- Caches the function so as not to create a new reference on every render.
+- Used together with `React.memo` to optimize child components.
+
+```jsx
+const handleClick = useCallback(() => onSelect(id), [id]);
+
+```
+
+---
+
+### 4. **List Optimization with Keys (`key`)**
+
+- Use stable and unique keys (`id`) so that React correctly matches elements during diffing.
+- Changing keys leads to full recreation of nodes.
+
+```jsx
+{items.map(item => <ListItem key={item.id} {...item} />)}
+
+```
+
+---
+
+### 5. **Avoiding Unnecessary Context Updates**
+
+- Separate contexts by areas of responsibility.
+- For frequently changing data, use local `useState` or external state (Redux, Zustand).
+
+---
+
+### 🧩 Performance Diagnostics
+
+- **React DevTools → Profiler** helps identify which components re-render more often than necessary.
+- You can enable visual update highlighting (`highlight updates`) for analysis.
+
+---
+
+### 💡 Key Ideas
+
+- Any state change causes a Virtual DOM recalculation, but it's not always needed.
+- `React.memo`, `useMemo`, `useCallback`, and correct `key` help reduce redundant re-renders.
+- Render optimization should be **selective** — only where there is an actual load.
+- The goal is to **maintain performance without overcomplicating the code**.

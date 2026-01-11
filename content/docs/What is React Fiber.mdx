@@ -1,0 +1,79 @@
+---
+title: "What is React Fiber"
+description: "React Fiber is a new rendering engine architecture that replaced the old stack-based reconciliation algorithm."
+---
+
+> React Fiber is a new rendering engine architecture that replaced the old stack-based reconciliation algorithm.  
+> It was created to support incremental, interruptible, and prioritized rendering, ensuring a smooth UX even in complex interfaces.
+
+---
+
+### 🧩 Essence of React Fiber
+
+- Fiber is a **rewritten React rendering mechanism** that represents each component as a separate object (_fiber node_).
+    
+- The main goal is to give React the ability to:
+    
+    - **pause** rendering,
+        
+    - **resume** it,
+        
+    - **cancel** work,
+        
+    - **assign priorities** to updates,
+        
+    - **distribute work between frames** (cooperative scheduling).
+        
+
+- Fiber is not a standalone framework, but an **architectural level within React**.
+
+---
+
+### 🧩 What exactly did Fiber change
+
+- Transitioned from a recursive stack traversal to an **iterative algorithm** with its own loop.
+    
+- Allowed React to work "in parts" (incremental rendering).
+    
+- Added the ability to **process updates with different priority levels** ("lanes").
+    
+- Created the foundation for:
+    
+    - Concurrent Rendering,
+        
+    - Suspense,
+        
+    - Transitions (`useTransition`),
+        
+    - Automatic batching.
+
+---
+
+### 🧩 How Fiber organizes the component tree
+
+- The old DOM/React Tree has been replaced by the **Fiber Tree** — a set of Fiber nodes.
+    
+- Each Fiber corresponds to one component or DOM element.
+    
+- Fiber nodes link to each other via:
+    
+    - `child`,
+        
+    - `sibling`,
+        
+    - `return` (parent).
+    
+
+This way, React can move through the tree **like a singly linked list**, rather than recursively.
+
+---
+
+### 💡 Key Ideas
+
+- React Fiber = a new rendering engine, not a new API.
+    
+- The main goal is incremental, interruptible work with priorities.
+    
+- Fiber allows React to keep the UI smooth and responsive under load.
+    
+- All modern functionality (Concurrent Mode, Suspense, transitions) is based on Fiber.

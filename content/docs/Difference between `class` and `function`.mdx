@@ -1,0 +1,43 @@
+---
+title: "Difference between `class` and `function`"
+description: "Classes and constructor functions are both used to create objects."
+---
+
+## Difference between `class` and `function`
+
+> Classes and constructor functions are both used to create objects.
+> 
+> 
+> Classes are **syntactic sugar** over constructor functions and prototypal inheritance, providing a more readable and structured approach.
+> 
+
+---
+
+### 🧩 Function (Functional approach)
+
+- Before classes were introduced, objects and their "types" were created through **constructor functions**.
+- A function is used as a template to create objects when called with the `new` operator.
+- Methods are added manually via the `prototype` property.
+- This approach remains valid but is considered **low-level and less readable** compared to classes.
+
+---
+
+### 🧩 Class (Class approach)
+
+- Classes are **syntactic sugar** over constructor functions and prototypal inheritance.
+- They make code **declarative, readable, and predictable**.
+- They define a template with a set of properties and methods, and support inheritance via `extends`.
+- They are not hoisted like functions and always execute in **strict mode**.
+
+---
+
+### 💡 Key Differences
+
+- A class is a **modern and convenient form** of constructor functions.
+- Classes have built-in support for **inheritance and methods**.
+- Constructor functions require manual binding of methods via `prototype`.
+- Classes cannot be called as a regular function without `new`.
+
+---
+
+> In other words, classes are a structured and safe way to create objects, while constructor functions are a more **raw mechanism** underlying this system.
