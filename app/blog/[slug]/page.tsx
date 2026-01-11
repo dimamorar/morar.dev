@@ -56,7 +56,8 @@ export default async function BlogPost({
 }: {
   params: { slug: string };
 }) {
-  const post = await getPostBySlug(params.slug);
+  const slug = await params.slug;
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     notFound();
