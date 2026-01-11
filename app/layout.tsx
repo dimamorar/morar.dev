@@ -5,6 +5,7 @@ import { ScrollProgressIndicator } from "@/components/scroll-progress-indicator"
 import { AnimationProvider } from "@/contexts/animation-context";
 import { SiteHeader } from "@/components/site-header";
 import { getMetaInfo } from "@/lib/data";
+import { RootProvider } from 'fumadocs-ui/provider/next';
 
 const metaInfo = getMetaInfo();
 
@@ -21,11 +22,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AnimationProvider>
-          <SiteHeader />
-          <ScrollProgressIndicator />
-          {children}
-        </AnimationProvider>
+        <RootProvider>
+          <AnimationProvider>
+            <SiteHeader />
+            <ScrollProgressIndicator />
+            {children}
+          </AnimationProvider>
+        </RootProvider>
       </body>
     </html>
   );
