@@ -1,33 +1,33 @@
 export interface ProjectGalleryImage {
-  url: string
-  caption?: string
+  url: string;
+  caption?: string;
 }
 
 export interface RelatedProject {
-  slug: string
-  title: string
-  category: string
-  image: string
+  slug: string;
+  title: string;
+  category: string;
+  image: string;
 }
 
 export interface Project {
-  id: number
-  slug: string
-  title: string
-  category: string
-  shortDescription: string
-  description: string[]
-  features: string[]
-  technologies: string[]
-  coverImage: string
-  thumbnailImage: string
-  gallery?: ProjectGalleryImage[]
-  client?: string
-  timeline: string
-  role: string
-  liveUrl?: string
-  githubUrl?: string
-  relatedProjects?: RelatedProject[]
+  id: number;
+  slug: string;
+  title: string;
+  category: string;
+  shortDescription: string;
+  description: string[];
+  features: string[];
+  technologies: string[];
+  coverImage: string;
+  thumbnailImage: string;
+  gallery?: ProjectGalleryImage[];
+  client?: string;
+  timeline: string;
+  role: string;
+  liveUrl?: string;
+  githubUrl?: string;
+  relatedProjects?: RelatedProject[];
 }
 
 const projects: Project[] = [
@@ -36,7 +36,8 @@ const projects: Project[] = [
     slug: "job-finder-app",
     title: "Job Finder App",
     category: "Mobile App",
-    shortDescription: "A modern job search application designed to connect job seekers with employers efficiently.",
+    shortDescription:
+      "A modern job search application designed to connect job seekers with employers efficiently.",
     description: [
       "The Job Finder App is a comprehensive mobile application designed to streamline the job search process. It provides an intuitive interface for job seekers to discover opportunities that match their skills and preferences.",
       "The app features a smart matching algorithm that analyzes user profiles and job requirements to suggest the most relevant positions. Users can easily filter jobs by location, industry, experience level, and salary range.",
@@ -50,15 +51,18 @@ const projects: Project[] = [
       "Interview scheduling and calendar integration",
       "Detailed analytics for job seekers to track their application progress",
     ],
-    technologies: ["React Native", "TypeScript", "Node.js", "Express", "MongoDB", "AWS", "Firebase"],
-    coverImage: "/job-finder-cover.png",
-    thumbnailImage: "/modern-finance-app.png",
-    gallery: [
-      { url: "/job-finder-screen1.png", caption: "Home Screen with Job Recommendations" },
-      { url: "/job-finder-screen2.png", caption: "Job Detail View" },
-      { url: "/job-finder-screen3.png", caption: "User Profile and Skills" },
-      { url: "/job-finder-screen4.png", caption: "Application Tracking Dashboard" },
+    technologies: [
+      "React Native",
+      "TypeScript",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "AWS",
+      "Firebase",
     ],
+    coverImage: "",
+    thumbnailImage: "",
+    gallery: [],
     timeline: "3 months (Q2 2023)",
     role: "Lead Product Designer",
     liveUrl: "https://example.com/job-finder",
@@ -68,13 +72,13 @@ const projects: Project[] = [
         slug: "finance-dashboard",
         title: "Finance Dashboard",
         category: "Web Application",
-        image: "/modern-finance-overview.png",
+        image: "",
       },
       {
         slug: "ecommerce-redesign",
         title: "E-Commerce Redesign",
         category: "UX Case Study",
-        image: "/modern-apparel-storefront.png",
+        image: "",
       },
     ],
   },
@@ -99,15 +103,19 @@ const projects: Project[] = [
       "Customizable reports and data exports",
       "Financial insights and recommendations",
     ],
-    technologies: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Chart.js", "Plaid API", "PostgreSQL", "Vercel"],
-    coverImage: "/finance-dashboard-cover.png",
-    thumbnailImage: "/modern-finance-overview.png",
-    gallery: [
-      { url: "/finance-dashboard-screen1.png", caption: "Main Dashboard Overview" },
-      { url: "/finance-dashboard-screen2.png", caption: "Expense Analysis" },
-      { url: "/finance-dashboard-screen3.png", caption: "Investment Portfolio" },
-      { url: "/finance-dashboard-screen4.png", caption: "Financial Goals Tracker" },
+    technologies: [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "Chart.js",
+      "Plaid API",
+      "PostgreSQL",
+      "Vercel",
     ],
+    coverImage: "",
+    thumbnailImage: "",
+    gallery: [],
     timeline: "4 months (Q3-Q4 2022)",
     role: "UX/UI Designer & Frontend Developer",
     liveUrl: "https://example.com/finance-dashboard",
@@ -117,13 +125,13 @@ const projects: Project[] = [
         slug: "job-finder-app",
         title: "Job Finder App",
         category: "Mobile App",
-        image: "/modern-finance-app.png",
+        image: "",
       },
       {
         slug: "ecommerce-redesign",
         title: "E-Commerce Redesign",
         category: "UX Case Study",
-        image: "/modern-apparel-storefront.png",
+        image: "",
       },
     ],
   },
@@ -148,15 +156,18 @@ const projects: Project[] = [
       "Improved search functionality with predictive suggestions",
       "Enhanced wishlist and saved items functionality",
     ],
-    technologies: ["Figma", "Adobe XD", "HTML/CSS", "JavaScript", "Shopify", "Hotjar", "Google Analytics"],
-    coverImage: "/ecommerce-redesign-cover.png",
-    thumbnailImage: "/modern-apparel-storefront.png",
-    gallery: [
-      { url: "/ecommerce-redesign-screen1.png", caption: "Homepage Design" },
-      { url: "/ecommerce-redesign-screen2.png", caption: "Product Category Page" },
-      { url: "/ecommerce-redesign-screen3.png", caption: "Product Detail Page" },
-      { url: "/ecommerce-redesign-screen4.png", caption: "Checkout Process" },
+    technologies: [
+      "Figma",
+      "Adobe XD",
+      "HTML/CSS",
+      "JavaScript",
+      "Shopify",
+      "Hotjar",
+      "Google Analytics",
     ],
+    coverImage: "",
+    thumbnailImage: "",
+    gallery: [],
     client: "Fashion Retailer Inc.",
     timeline: "6 months (Q1-Q2 2022)",
     role: "Lead UX Designer",
@@ -166,32 +177,35 @@ const projects: Project[] = [
         slug: "job-finder-app",
         title: "Job Finder App",
         category: "Mobile App",
-        image: "/modern-finance-app.png",
+        image: "",
       },
       {
         slug: "finance-dashboard",
         title: "Finance Dashboard",
         category: "Web Application",
-        image: "/modern-finance-overview.png",
+        image: "",
       },
     ],
   },
-]
+];
 
-export { projects }
+export { projects };
 
 // Add these functions after the projects array export
 
 export function getAllProjects(): Project[] {
-  return projects
+  return projects;
 }
 
 export function getProjectBySlug(slug: string): Project | undefined {
-  return projects.find((project) => project.slug === slug)
+  return projects.find((project) => project.slug === slug);
 }
 
-export function getRelatedProjects(currentSlug: string, limit = 2): RelatedProject[] {
-  const currentProject = getProjectBySlug(currentSlug)
+export function getRelatedProjects(
+  currentSlug: string,
+  limit = 2
+): RelatedProject[] {
+  const currentProject = getProjectBySlug(currentSlug);
   if (!currentProject || !currentProject.relatedProjects) {
     // If no related projects defined, return random projects
     return projects
@@ -202,8 +216,8 @@ export function getRelatedProjects(currentSlug: string, limit = 2): RelatedProje
         title: project.title,
         category: project.category,
         image: project.thumbnailImage,
-      }))
+      }));
   }
 
-  return currentProject.relatedProjects.slice(0, limit)
+  return currentProject.relatedProjects.slice(0, limit);
 }
