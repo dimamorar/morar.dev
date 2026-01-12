@@ -2,10 +2,9 @@ import type React from "react";
 import { Metadata } from "next";
 import "./globals.css";
 import { ScrollProgressIndicator } from "@/components/scroll-progress-indicator";
-import { AnimationProvider } from "@/contexts/animation-context";
 import { SiteHeader } from "@/components/site-header";
 import { getMetaInfo } from "@/lib/data";
-import { RootProvider } from 'fumadocs-ui/provider/next';
+import { RootProvider } from "fumadocs-ui/provider/next";
 
 const metaInfo = getMetaInfo();
 
@@ -22,12 +21,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <RootProvider>
-          <AnimationProvider>
-            <SiteHeader />
-            <ScrollProgressIndicator />
-            {children}
-          </AnimationProvider>
+        <RootProvider
+          search={{
+            enabled: false,
+          }}
+        >
+          <SiteHeader />
+          <ScrollProgressIndicator />
+          {children}
         </RootProvider>
       </body>
     </html>

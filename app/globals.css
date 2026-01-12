@@ -1,10 +1,9 @@
 @import "tailwindcss";
-@plugin "@tailwindcss/typography";
 @plugin "tailwindcss-animate";
+@plugin "@tailwindcss/typography";
 
-@layer components {
-  @import "fumadocs-ui/style.css";
-}
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
 
 @theme {
   --color-border: hsl(var(--border));
@@ -91,13 +90,6 @@
   --color-muted: hsl(var(--muted));
   --color-border: hsl(var(--border));
   --spacing: 0.25rem;
-
-  /* Fumadocs variable overrides to match existing theme */
-  --fd-background: 0 0% 99.2%;
-  --fd-foreground: 300 2% 15%;
-  --fd-primary: 201 100% 34%;
-  --fd-primary-foreground: 0 0% 99.2%;
-  --fd-border: 0 0% 92%;
 }
 
 html {
@@ -253,33 +245,4 @@ body {
 
 .animate-pulse-glow {
   animation: pulse-glow 3s ease-in-out infinite;
-}
-
-/* Fumadocs component customization to match existing design */
-[data-sidebar] {
-  font-family: var(--font-mono);
-}
-
-[data-sidebar-item][data-active="true"] {
-  color: hsl(var(--accent));
-  font-weight: 600;
-  border-left: 2px solid hsl(var(--accent));
-}
-
-.fd-sidebar-title {
-  font-size: 0.875rem;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-  font-family: var(--font-mono);
-}
-
-/* Table of contents styling */
-[data-toc] a {
-  font-size: 0.875rem;
-  font-family: var(--font-mono);
-}
-
-[data-toc] a[data-active="true"] {
-  color: hsl(var(--accent));
-  font-weight: 600;
 }

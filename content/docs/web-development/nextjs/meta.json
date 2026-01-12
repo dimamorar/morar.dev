@@ -1,0 +1,28 @@
+{
+  "title": "Next.js",
+  "pages": [
+    "api-routes-route-handlers",
+    "app-router-vs-pages-router",
+    "authentication-in-app-router",
+    "caching-in-next.js",
+    "client-components-and-bundle-impact",
+    "code-splitting-in-next.js",
+    "css-handling-in-next.js",
+    "dynamic-routes-catch-all-optional-catch-all",
+    "fetch-in-next.js",
+    "hydration-and-re-hydration",
+    "image-and-font-optimization",
+    "metadata-in-next.js",
+    "next.js-middleware",
+    "react-server-components",
+    "rendering-modes-rsc-ssr-ssg-isr",
+    "routing-in-app-router",
+    "server-actions",
+    "server-actions-vs-api-routes",
+    "server-vs-client-navigation",
+    "special-files-loading-error-not-found",
+    "ssr-vs-ssg-vs-csr",
+    "static-generation-and-isr",
+    "suspense-boundaries-and-rsc-streaming"
+  ]
+}

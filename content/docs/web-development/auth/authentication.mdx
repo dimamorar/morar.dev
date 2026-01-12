@@ -4,8 +4,8 @@ description: "A mechanism for verifying a user's identity, confirming that the c
 ---
 
 ## **Authentication**
+
 > A mechanism for verifying a user's identity, confirming that the client is exactly who they claim to be.
-> 
 > Used to establish trust between the client and the server before granting access to protected resources.
 
 ---
@@ -36,9 +36,7 @@ After successful verification, the server can issue a token, a session, or other
 ### 3. Token-based Authentication
 
 - The server issues a token (usually JWT), which the client stores and sends in the header:
-    
-    `Authorization: Bearer <token>`.
-    
+  `Authorization: Bearer <token>`.
 - The server **does not store state** — the token is self-contained.
 - Suitable for SPA and microservices, but requires monitoring expiration and revocation of tokens.
 

@@ -1,0 +1,9 @@
+{
+  "title": "Core Web",
+  "pages": [
+    "dom-vs-virtual-dom",
+    "how browser works",
+    "networking",
+    "preload vs prefetch vs defer vs async"
+  ]
+}

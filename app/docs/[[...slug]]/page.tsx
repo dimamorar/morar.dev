@@ -1,8 +1,8 @@
-import { source } from '@/lib/source';
-import { DocsPage, DocsBody } from 'fumadocs-ui/layouts/docs/page';
-import { notFound } from 'next/navigation';
-import type { Metadata } from 'next';
-import defaultMdxComponents from 'fumadocs-ui/mdx';
+import { source } from "@/lib/source";
+import { DocsPage, DocsBody } from "fumadocs-ui/layouts/docs/page";
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import defaultMdxComponents from "fumadocs-ui/mdx";
 
 export default async function Page(props: {
   params: Promise<{ slug?: string[] }>;
@@ -38,7 +38,7 @@ export async function generateMetadata(props: {
 
   if (!page) {
     return {
-      title: 'Page Not Found',
+      title: "Page Not Found",
     };
   }
 

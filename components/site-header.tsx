@@ -4,10 +4,17 @@ import { useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { getPersonalInfo } from "@/lib/data";
+import { usePathname } from "next/navigation";
 
 export function SiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const personalInfo = getPersonalInfo();
+  const pathname = usePathname();
+  const isDocsPage = pathname.startsWith("/docs");
+
+  if (isDocsPage) {
+    return null;
+  }
 
   return (
     <header className="sticky top-0 z-50 bg-background">

@@ -1,15 +1,13 @@
 ---
-title: "Bearer Tokens OAuth 2.0 Context"
+title: "Bearer Tokens"
 description: "A Bearer token is an access token that confirms its owner has the right to make a request on behalf of the user."
 ---
 
 ## Bearer Tokens (OAuth 2.0 Context)
 
 > A Bearer token is an access token that confirms its owner has the right to make a request on behalf of the user.
-> 
-> 
+>
 > Used in the **OAuth 2.0** standard and passed through the `Authorization: Bearer <token>` header.
-> 
 
 ---
 
@@ -27,16 +25,16 @@ The token is the only thing the client uses to access protected APIs.
 2. **The Identity Provider** verifies the data and issues an **Authorization Code**.
 3. The client exchanges this code for an **Access Token** (and optionally a Refresh Token).
 4. The client stores the Access Token and adds it to the header of every request:
-    
-    `Authorization: Bearer <access_token>`.
-    
+
+   `Authorization: Bearer <access_token>`.
+
 5. The resource server validates the token and provides access.
 
 ---
 
 ### **What is "Bearer"**
 
-The word *Bearer* means: **whoever presents the token is considered the owner of the access rights**.
+The word _Bearer_ means: **whoever presents the token is considered the owner of the access rights**.
 
 → If the token is stolen, the attacker receives the same rights.
 
