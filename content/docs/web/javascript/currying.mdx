@@ -1,21 +1,13 @@
 ---
 title: "Currying"
-description: "Currying is a functional programming technique where a function with multiple arguments"
+description: ""
 ---
 
-## Currying
-
-> Currying is a functional programming technique where a function with multiple arguments
-> 
-> 
-> is transformed into a sequence of functions, each of which takes **one argument**.
+> Currying is a functional programming technique where a function with multiple arguments is transformed into a sequence of functions, each of which takes **one argument**.
 > 
 > It allows creating **partially applied functions** and increases **code reusability**.
-> 
 
----
-
-### 🧩 Technical Explanation
+### Technical Explanation
 
 Currying transforms a function of the type:
 
@@ -36,16 +28,13 @@ function multiply(a) {
 
 const double = multiply(2);
 console.log(double(5)); // 10
-
 ```
 
-📘 `multiply(2)` returns an internal function that remembers the value `a = 2` and waits for `b`.
+`multiply(2)` returns an internal function that remembers the value `a = 2` and waits for `b`.
 
 This is achieved through a **closure** — the internal function maintains access to the variables of the external one.
 
----
-
-### ⚙️ Currying Application
+### Currying Application
 
 - **Partial application**
     
@@ -55,7 +44,6 @@ This is achieved through a **closure** — the internal function maintains acces
     const add = a => b => a + b;
     const add10 = add(10);
     add10(5); // 15
-    
     ```
     
 - **Function Composition**
@@ -66,9 +54,7 @@ This is achieved through a **closure** — the internal function maintains acces
     
     Allows creating specialized functions from universal templates.
 
----
-
-### 💡 Key Ideas
+### Key Ideas
 
 - Currying creates a **chain of functions**, each returning a new one until all arguments are applied.
 - Based on **closures**, which preserve the argument context.

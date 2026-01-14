@@ -1,19 +1,13 @@
 ---
 title: "Error Handling & Custom Error Types"
-description: "Error handling in JavaScript provides control over unforeseen situations during code execution."
+description: ""
 ---
-
-## Error Handling & Custom Error Types
 
 > Error handling in JavaScript provides control over unforeseen situations during code execution.
 > 
-> 
 > It uses `try...catch...finally` structures, error objects (`Error`), and the ability to create **custom error types**.
-> 
 
----
-
-### 🧩 Error Handling Basics
+### Error Handling Basics
 
 - The `try...catch` structure catches exceptions thrown with `throw`.
 - The `finally` block always executes — regardless of whether there was an error.
@@ -26,14 +20,11 @@ try {
 } finally {
   console.log('Completed');
 }
-
 ```
 
-📘 If an error is not caught, code execution is interrupted and an exception is thrown in the call stack.
+If an error is not caught, code execution is interrupted and an exception is thrown in the call stack.
 
----
-
-### 🧩 `Error` Object
+### `Error` Object
 
 - A built-in error type containing standard properties:
     - `name` — the name of the error (`Error`, `TypeError`, `ReferenceError`, etc.);
@@ -42,12 +33,9 @@ try {
 
 ```jsx
 throw new Error('Something went wrong');
-
 ```
 
----
-
-### 🧩 Asynchronous Errors
+### Asynchronous Errors
 
 - In `async/await` structures, errors are handled via `try...catch` around `await`.
 - For `Promise`, `.catch()` or `Promise.allSettled()` are used.
@@ -62,14 +50,11 @@ async function fetchData() {
     console.error('Request error:', err);
   }
 }
-
 ```
 
-📘 An error inside a promise is **not caught** by an external `try...catch` unless `await` is used.
+An error inside a promise is **not caught** by an external `try...catch` unless `await` is used.
 
----
-
-### 🧩 Creating Custom Error Types
+### Creating Custom Error Types
 
 - You can extend the base `Error` class to create **custom errors** with a meaningful name.
 
@@ -82,23 +67,18 @@ class ValidationError extends Error {
 }
 
 throw new ValidationError('Invalid input data');
-
 ```
 
-📘 This approach makes it easier to distinguish between error types during debugging and logging.
+This approach makes it easier to distinguish between error types during debugging and logging.
 
----
-
-### ⚙️ Practical Recommendations
+### Practical Recommendations
 
 1. Use **specific error types** (`TypeError`, `SyntaxError`, `RangeError`) instead of a general `Error`.
 2. Always add `.catch()` or `try...catch` in asynchronous code.
 3. Do not suppress errors unnecessarily — log them or throw them higher (`throw err`).
 4. Use **global handlers** (`window.onerror`, `unhandledrejection`) for monitoring.
 
----
-
-### 💡 Key Ideas
+### Key Ideas
 
 - `try...catch` protects execution from unpredictable crashes.
 - Errors can be caught synchronously and asynchronously (`Promise`, `async/await`).

@@ -1,13 +1,11 @@
 ---
 title: "Data Types in JavaScript"
-description: "In JavaScript, there are two main data types: primitive and reference. Primitives store the value itself, while reference types store a **reference to the memor"
+description: ""
 ---
 
 > In JavaScript, there are two main data types: primitive and reference. Primitives store the value itself, while reference types store a **reference to the memory area** where the value is located.
 
----
-
-### 🧩 Primitive Types (Primitive Types)
+### Primitive Types
 
 Store the **actual value**, not a reference.
 Passed **by value**.
@@ -27,14 +25,11 @@ typeof 42;        // 'number'
 typeof 'Hello';   // 'string'
 typeof null;      // 'object' (historical bug)
 typeof Symbol();  // 'symbol'
-
 ```
 
-📘 Primitives are **immutable** — their values cannot be changed without creating a new one.
+Primitives are **immutable** — their values cannot be changed without creating a new one.
 
----
-
-### 🧩 Reference Types (Reference Types)
+### Reference Types
 
 Store a **reference (address)** to an object in memory.
 Passed **by reference**.
@@ -51,11 +46,9 @@ typeof [];             // 'object'
 typeof function() {};  // 'function'
 ```
 
-📘 Arrays and functions are **subtypes of objects**, so `typeof []` returns `'object'`.
+Arrays and functions are **subtypes of objects**, so `typeof []` returns `'object'`.
 
----
-
-### 💡 Key Ideas
+### Key Ideas
 
 - **Primitives** store values directly → immutable, compared by value.
 - **Reference types** store references → mutable, compared by memory address.
@@ -66,5 +59,4 @@ typeof function() {};  // 'function'
 ```jsx
 Array.isArray([]);         // true
 obj.constructor === Object // true
-
 ```

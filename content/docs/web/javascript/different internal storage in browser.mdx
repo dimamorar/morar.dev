@@ -1,19 +1,13 @@
 ---
 title: "Different Internal Storage in Browser"
-description: "Web browsers provide several mechanisms for storing data on the client side."
+description: ""
 ---
-
-## Different Internal Storage in Browser
 
 > Web browsers provide several mechanisms for storing data on the client side.
 > 
-> 
 > The main types: **Cookies**, **LocalStorage**, **SessionStorage**, and **IndexedDB** — differ in volume, lifespan, access scope, and purpose.
-> 
 
----
-
-### 🧩 1. Cookies
+### 1. Cookies
 
 - Store small **key-value** pairs automatically sent with every HTTP request.
 - Used for **authentication**, **sessions**, and **user tracking**.
@@ -22,9 +16,7 @@ description: "Web browsers provide several mechanisms for storing data on the cl
 - Accessible from the client (via `document.cookie`) and the server.
 - Not suitable for storing large or sensitive data — **automatically transmitted to the server**.
 
----
-
-### 🧩 2. LocalStorage
+### 2. LocalStorage
 
 - **Persistent storage** on the client; data is saved between sessions.
 - Not sent to the server.
@@ -32,9 +24,7 @@ description: "Web browsers provide several mechanisms for storing data on the cl
 - Suitable for storing **settings, themes, tokens, data cache**.
 - API: `localStorage.setItem()`, `getItem()`, `removeItem()`.
 
----
-
-### 🧩 3. SessionStorage
+### 3. SessionStorage
 
 - Similar to `LocalStorage`, but lives only **within one tab**.
 - Data is deleted when the tab is closed or the page is reloaded.
@@ -42,9 +32,7 @@ description: "Web browsers provide several mechanisms for storing data on the cl
 - Used for **temporary data** — form states, filters, current actions.
 - API is identical to `LocalStorage`.
 
----
-
-### 🧩 4. IndexedDB
+### 4. IndexedDB
 
 - **Asynchronous object-oriented database** in the browser.
 - Supports storing **structured data** (objects, arrays, binary files).
@@ -53,9 +41,7 @@ description: "Web browsers provide several mechanisms for storing data on the cl
 - Used for **offline applications**, **caching**, and **large volumes of data** (up to hundreds of megabytes).
 - API is low-level, often used via wrappers (for example, `idb`).
 
----
-
-### ⚖️ Comparison
+### Comparison
 
 | Storage | Volume | Lifespan | Access | Sent to Server | Data Format | Main Use |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -64,9 +50,7 @@ description: "Web browsers provide several mechanisms for storing data on the cl
 | **SessionStorage** | 5–10 MB | While tab is active | Client only | ❌ No | Strings | Temporary states |
 | **IndexedDB** | 100+ MB | Permanent | Client only | ❌ No | Objects | Offline, large data |
 
----
-
-### 💡 Key Ideas
+### Key Ideas
 
 - **Cookies** — for exchanging data with the server.
 - **LocalStorage** — for long-term client-side storage.

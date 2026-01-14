@@ -1,19 +1,13 @@
 ---
 title: "Normal Function vs. Arrow Function"
-description: "In JavaScript, regular functions (function declaration / expression) and arrow functions differ in context behavior, the ability to use `new`, handling of argum"
+description: ""
 ---
-
-## Normal Function vs Arrow Function
 
 > In JavaScript, regular functions (function declaration / expression) and arrow functions differ in context behavior, the ability to use `new`, handling of arguments, and syntax.
 > 
-> 
 > The main difference is that arrow functions **do not have their own `this`** and **inherit the context from the outer scope**.
-> 
 
----
-
-### 🧩 1. Context (`this`)
+### 1. Context (`this`)
 
 - **Regular function**: the value of `this` is defined **dynamically** — it depends on how the function is called.
     
@@ -21,30 +15,22 @@ description: "In JavaScript, regular functions (function declaration / expressio
     
 - **Arrow function**: **does not have its own `this`** — it **inherits the context** from the outer lexical environment where it was declared.
 
----
-
-### 🧩 2. Constructors
+### 2. Constructors
 
 - **Regular function** can be called with `new` and create instances because it has a `prototype` property.
 - **Arrow function** cannot be used as a constructor — it throws an error when called with `new`.
 
----
-
-### 🧩 3. Arguments
+### 3. Arguments
 
 - **Regular function** has a special `arguments` object containing all passed parameters.
 - **Arrow function** does not have its own `arguments`; to access parameters, a **rest parameter** (`...args`) is used.
 
----
-
-### 🧩 4. Syntax
+### 4. Syntax
 
 - **Regular function** — more verbose syntax, suitable for methods, constructors, and declarations.
 - **Arrow function** — short form, convenient for callbacks and nested functions.
 
----
-
-### 💡 Key Ideas
+### Key Ideas
 
 - Arrow functions do not create their own `this`, `arguments`, `super`, `new.target`.
 - They are used where it's important to preserve the context from the outer function.

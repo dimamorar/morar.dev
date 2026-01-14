@@ -1,13 +1,11 @@
 ---
 title: "Difference between `let`, `var` and `const`"
-description: "`var`, `let`, and `const` define variables with different scopes, hoisting behavior, and re-declaration capabilities."
+description: ""
 ---
 
 > `var`, `let`, and `const` define variables with different scopes, hoisting behavior, and re-declaration capabilities.
 
----
-
-### 🧩 `var`
+### `var`
 
 - Functional scope.
 - Hoisting with initialization to `undefined`.
@@ -19,9 +17,7 @@ var name = "Alex";
 var name = "Oleh"; // allowed
 ```
 
----
-
-### 🧩 `let`
+### `let`
 
 - Block scope.
 - Subject to hoisting but falls into the **TDZ (Temporal Dead Zone)** until initialization → accessing the declaration causes an error.
@@ -32,9 +28,7 @@ let age = 25;
 age = 30;
 ```
 
----
-
-### 🧩 `const`
+### `const`
 
 - Block scope.
 - Also has **TDZ until initialization**.
@@ -46,9 +40,8 @@ const user = { name: "Anna" };
 user.name = "Olha";
 ```
 
----
+### Key Ideas
 
-### 💡 Key Ideas
 - `var` — hoisting + undefined + function scope.
 - `let`/`const` — block scope + TDZ until initialization.
 - `let` changes, `const` — does not, but objects remain mutable.

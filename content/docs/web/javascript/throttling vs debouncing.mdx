@@ -1,17 +1,13 @@
 ---
 title: "Throttling vs. Debouncing"
-description: "Throttling and Debouncing are techniques for optimizing function call frequency, used to manage frequent events (`scroll`, `resize`, `input`)."
+description: ""
 ---
-
-## Throttling vs Debouncing
 
 > Throttling and Debouncing are techniques for optimizing function call frequency, used to manage frequent events (`scroll`, `resize`, `input`).
 > 
 > They prevent an excessive number of triggers and reduce the load on the browser.
 
----
-
-### 🧩 Debouncing
+### Debouncing
 
 - **Debounce** delays function execution until a specified time has passed **after the last call**.
 - If the event occurs again before the timer expires, the wait is reset.
@@ -29,14 +25,11 @@ function debounce(fn, delay) {
 window.addEventListener('resize', debounce(() => {
   console.log('Resize finished');
 }, 300));
-
 ```
 
-📘 Called **once after a pause** in activity.
+Called **once after a pause** in activity.
 
----
-
-### 🧩 Throttling
+### Throttling
 
 - **Throttle** limits the frequency of function execution: it is called **no more often** than once in a specified interval.
 - Even if the event triggers more often, the function runs **at a fixed interval**.
@@ -57,14 +50,11 @@ function throttle(fn, interval) {
 window.addEventListener('scroll', throttle(() => {
   console.log('Scroll event (throttled)');
 }, 200));
-
 ```
 
-📘 Called **regularly**, but no more often than the set interval.
+Called **regularly**, but no more often than the set interval.
 
----
-
-### ⚖️ Comparison
+### Comparison
 
 | Criterion | **Debounce** | **Throttle** |
 | --- | --- | --- |
@@ -73,9 +63,7 @@ window.addEventListener('scroll', throttle(() => {
 | **Suitable for** | `resize`, `search input`, `autocomplete` | `scroll`, `mousemove`, `resize` |
 | **Goal** | Execute once after a pause | Execute periodically with frequency limitation |
 
----
-
-### 💡 Key Ideas
+### Key Ideas
 
 - **Debouncing** eliminates "noise" from frequent events by performing an action only after activity has ceased.
 - **Throttling** controls execution frequency, maintaining interface responsiveness.

@@ -1,21 +1,17 @@
 ---
 title: "Async Await"
-description: "Async / Await is syntactic sugar over promises that makes asynchronous code **readable and linear**, while maintaining the benefits of `Promise` and the `Event "
+description: ""
 ---
 
 > Async / Await is syntactic sugar over promises that makes asynchronous code **readable and linear**, while maintaining the benefits of `Promise` and the `Event Loop`.
 
----
-
-### 🧩 Main Idea
+### Main Idea
 
 - `async` and `await` simplify working with promises, allowing you to write asynchronous code in a **synchronous style**.
 - The **`async`** keyword before a function automatically makes it **return a `Promise`**.
 - The **`await`** keyword **pauses function execution** until the promise is settled (`fulfilled` or `rejected`).
 
----
-
-### ⚙️ How It Works
+### How It Works
 
 ```jsx
 async function getUserData() {
@@ -27,29 +23,21 @@ async function getUserData() {
     console.error('Error:', error);
   }
 }
-
 ```
 
 - `await` can be used **only inside an `async` function**.
-- When `await promise` is executed, the interpreter **pauses the function**,
-    
-    releasing the thread for other tasks (via the Event Loop).
-    
+- When `await promise` is executed, the interpreter **pauses the function**, releasing the thread for other tasks (via the Event Loop).
 - After the promise is resolved, execution continues with the received value.
 - If the promise was rejected, an exception is generated, which can be caught via `try...catch`.
 
----
-
-### 🧠 Behavior and Microtasks
+### Behavior and Microtasks
 
 - Every `await` access creates a **microtask**.
 - After pausing the function, the execution of other microtasks continues until the promise is completed.
 - `async/await` does not block the thread — it simply **splits execution into phases**.
 - If there is an error in `await`, it is passed to the nearest `catch`.
 
----
-
-### ⚙️ Sequential and Parallel Calls
+### Sequential and Parallel Calls
 
 **Sequential execution (slower):**
 
@@ -57,19 +45,15 @@ async function getUserData() {
 await fetchData1();
 await fetchData2();
 await fetchData3();
-
 ```
 
 **Parallel execution (more optimal):**
 
 ```jsx
 const [a, b, c] = await Promise.all([fetchData1(), fetchData2(), fetchData3()]);
-
 ```
 
----
-
-### 💡 Key Ideas
+### Key Ideas
 
 - `async` guarantees that the function **always returns a `Promise`**.
 - `await` makes the code **readable and step-by-step**, simplifying the handling of asynchronous operations.

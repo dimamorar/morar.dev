@@ -1,15 +1,13 @@
 ---
 title: "Events in JavaScript"
-description: "An event is a signal from the browser that an action occurred (click, input, scroll, etc.)."
+description: ""
 ---
 
 > An event is a signal from the browser that an action occurred (click, input, scroll, etc.).
 >
 > When an event occurs, the browser **creates an event object** and **passes it to the registered handler**.
 
----
-
-### 🧩 Stages of an Event
+### Stages of an Event
 
 JavaScript uses the **event flow model**, consisting of three phases:
 
@@ -23,9 +21,7 @@ JavaScript uses the **event flow model**, consisting of three phases:
    - The event moves back up the DOM — from the target to `window`.
    - Handlers without the third argument (or with `false` by default) trigger at this stage.
 
----
-
-### ⚙️ Event Transmission Mechanism
+### Event Transmission Mechanism
 
 When an event occurs:
 
@@ -46,9 +42,7 @@ div.addEventListener("click", (e) => {
 });
 ```
 
----
-
-### 💡 Key Ideas
+### Key Ideas
 
 - Events propagate **down (capturing)** and **up (bubbling)** through the DOM tree.
 - The ability to control propagation makes the event model **flexible and efficient**.

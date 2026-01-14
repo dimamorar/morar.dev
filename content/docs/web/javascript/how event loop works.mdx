@@ -1,25 +1,19 @@
 ---
 title: "How Event Loop Works"
-description: "The Event Loop is a mechanism that controls the order of code execution in JavaScript."
+description: ""
 ---
-
-## How Event Loop Works
 
 > The Event Loop is a mechanism that controls the order of code execution in JavaScript.
 > It allows single-threaded JS to process asynchronous tasks, ensuring **continuous program execution without blocking**.
 
----
-
-### 🧩 Core Idea
+### Core Idea
 
 - JavaScript works in **one thread**, where the call stack (**Call Stack**) is executed.
 - Asynchronous operations (timers, I/O, promises) are handled by **external APIs** of the environment (browser, Node.js).
 - Upon completion, the operation adds a callback to the corresponding **task queue**.
 - The **Event Loop** monitors the stack: when it is empty, it takes a task from the queue and places it in the stack for execution.
 
----
-
-### ⚙️ Execution Order and Priority
+### Execution Order and Priority
 
 1. All **synchronous code** (code in the call stack) is executed.
 2. When the stack is empty, the **Event Loop** takes **one macrotask** from the queue and executes it.
@@ -29,18 +23,14 @@ description: "The Event Loop is a mechanism that controls the order of code exec
 
 > If new microtasks are created during the execution of microtasks — they are also executed in the same pass until the queue is empty.
 
----
-
-### 🧠 Microtasks
+### Microtasks
 
 - `Promise.then`, `.catch`, `.finally`
 - `queueMicrotask()`
 - `MutationObserver`
 - _(Node.js)_ `process.nextTick()` — executed **earlier than regular microtasks**
 
----
-
-### ⏱ Macrotasks
+### Macrotasks
 
 - `setTimeout`, `setInterval`
 - `setImmediate` _(Node.js)_
@@ -48,9 +38,7 @@ description: "The Event Loop is a mechanism that controls the order of code exec
 - DOM event callbacks
 - `requestAnimationFrame` — called **between microtask clearing and frame rendering**, formally does not belong to any category.
 
----
-
-### ⚖️ Microtask vs Macrotask
+### Microtask vs Macrotask
 
 | Characteristic | **Microtask** | **Macrotask** |
 | ---------------- | ----------------------------------------------------------- | ----------------------------------------------- |
@@ -62,18 +50,14 @@ description: "The Event Loop is a mechanism that controls the order of code exec
 
 > In other words, microtasks are executed earlier than macrotasks — they create an internal priority cycle within one step of the Event Loop.
 
----
-
-### 💡 Key Ideas
+### Key Ideas
 
 - The Event Loop coordinates the execution of **synchronous and asynchronous code**.
 - **Microtasks** are always executed **before the next macrotask**.
 - Promises and timers fall into different queues and are processed at different stages of the cycle.
 - This mechanism guarantees **smooth, non-blocking operation of JS applications**.
 
----
-
-### 🔗 Links
+### Links
 
 - [Asynchronous JavaScript: The Event Loop, Callbacks, Promises, and Async/Await — Medium](https://www.notion.so/Asynchronous-JavaScript-The-Event-Loop-Callbacks-Promises-and-Async-Await-by-Viduni-Wickramara-bc1733f64e3f4aaa974912c88774260e?pvs=21)
 - https://www.deepintodev.com/blog/how-javascript-works-behind-the-scenes

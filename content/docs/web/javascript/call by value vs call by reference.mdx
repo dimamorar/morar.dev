@@ -1,12 +1,12 @@
 ---
 title: "Call by Value vs. Call by Reference"
-description: "In JavaScript, all arguments are passed by value, but if the value is a **reference to an object**, the function receives a **copy of that reference**. Therefor"
+description: ""
 ---
 
 > In JavaScript, all arguments are passed by value, but if the value is a **reference to an object**, the function receives a **copy of that reference**. Therefore, **primitives do not change**, but **objects can be modified** through the shared reference.
 
----
-### 🧩 Call by Value
+### Call by Value
+
 - A **copy of the value itself** is passed (`number`, `string`, `boolean`, `null`, `undefined`, `symbol`, `bigint`).
 - Changes inside the function **do not affect the original**, as the function works with its local copy.
 
@@ -19,14 +19,12 @@ function modifyPrimitive(num) {
 let value = 10;
 modifyPrimitive(value);
 console.log('Outside:', value); // 10
-
 ```
 
-📘 Primitives are **immutable** and are passed as a separate value.
+Primitives are **immutable** and are passed as a separate value.
 
----
+### Call by Reference
 
-### 🧩 Call by Reference
 - A **copy of the reference** to the object (`object`, `array`, `function`) is passed.
 - Both identifiers point to the **same object in memory**.
 - Changing properties is reflected outside, but **reassigning the reference** does not affect the original.
@@ -49,14 +47,11 @@ function reassignObject(obj) {
 let data = { country: 'USA' };
 reassignObject(data);
 console.log('Outside:', data); // { country: 'USA' }
-
 ```
 
-📘 Internal **property modification** is preserved, but **reassigning the object** inside the function does not affect the external variable.
+Internal **property modification** is preserved, but **reassigning the object** inside the function does not affect the external variable.
 
----
-
-### 💡 Key Ideas
+### Key Ideas
 
 - Primitives → **copied by value**, isolated from the original.
 - Objects → **the reference is copied**, pointing to the same place in memory.

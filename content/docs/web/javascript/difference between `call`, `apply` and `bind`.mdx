@@ -1,13 +1,11 @@
 ---
 title: "Difference between `call`, `apply` and `bind`"
-description: "The methods `call`, `apply`, and `bind` are used for manual management of the context (`this`) of a function. They are available to all functions through the `F"
+description: ""
 ---
 
 > The methods `call`, `apply`, and `bind` are used for manual management of the context (`this`) of a function. They are available to all functions through the `Function.prototype` prototype.
 
----
-
-### 🧩 `call()`
+### `call()`
 
 - Calls the function **immediately**, passing `this` and arguments **separated by commas**.
 - Used when you need to call a function with a specific context right now.
@@ -16,9 +14,7 @@ description: "The methods `call`, `apply`, and `bind` are used for manual manage
 func.call(thisArg, arg1, arg2, ...);
 ```
 
----
-
-### 🧩 `apply()`
+### `apply()`
 
 - Similar to `call()`, but arguments are passed **in the form of an array or pseudo-array**.
 - Convenient when arguments are already in an array (for example, when using `Math.max`).
@@ -27,21 +23,16 @@ func.call(thisArg, arg1, arg2, ...);
 func.apply(thisArg, [arg1, arg2, ...]);
 ```
 
----
-
-### 🧩 `bind()`
+### `bind()`
 
 - **Does not call the function immediately**, but **returns a new function** with a fixed `this` and (optionally) partially set arguments.
 - Used for **deferred call** or **permanent context binding**, for example, in event handlers.
 
 ```jsx
 const newFunc = func.bind(thisArg, arg1, arg2, ...);
-
 ```
 
----
-
-### 💡 Key Ideas
+### Key Ideas
 
 - `call` and `apply` — **execute** the function immediately, with different ways of passing arguments.
 - `bind` — **does not execute** immediately, but returns a new function.

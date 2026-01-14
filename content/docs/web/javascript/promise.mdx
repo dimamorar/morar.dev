@@ -1,13 +1,11 @@
 ---
 title: "Promise"
-description: "A Promise is an object representing the result of an asynchronous operation that may be received now, later, or never. It allows writing asynchronous code witho"
+description: ""
 ---
 
 > A Promise is an object representing the result of an asynchronous operation that may be received now, later, or never. It allows writing asynchronous code without "callback hell" and managing the sequence of execution.
 
----
-
-### 🎭 Analogy for Understanding
+### Analogy for Understanding
 
 Imagine you are a famous singer, and fans ask day and night about your new song.
 To not worry constantly, you **promise** to send it when it's ready. You give fans a list where they can leave their email. When the song becomes available, all subscribers immediately receive it. And even if something goes wrong (for example, a fire in the studio), they will still receive a notification.
@@ -18,9 +16,7 @@ This is an analogy for what we have in programming:
 2. **"Consuming code"** — wants to get the result when it's ready. Many functions may need this result. These are the "fans".
 3. **Promise** — a special JavaScript object that links "producing code" and "consuming code". In our analogy, this is the "subscription list".
 
----
-
-### 🧩 Main Idea
+### Main Idea
 
 `Promise` is a special ECMAScript object that encapsulates the **state of an asynchronous operation**.
 
@@ -32,9 +28,7 @@ It can be in one of three states:
 
 After moving from `pending` to a final state (`fulfilled` or `rejected`), the Promise becomes **immutable** — its state no longer changes.
 
----
-
-### ⚙️ Creation and Operation
+### Creation and Operation
 
 A Promise is created via the `new Promise(executor)` constructor, where `executor` is a function with two arguments: `resolve` and `reject`.
 
@@ -72,9 +66,7 @@ let promise = new Promise((resolve, reject) => {
 });
 ```
 
----
-
-### 🔒 Internal Promise Properties
+### Internal Promise Properties
 
 The Promise object returned by the `new Promise` constructor has internal properties:
 
@@ -83,9 +75,7 @@ The Promise object returned by the `new Promise` constructor has internal proper
 
 **Important:** The `state` and `result` properties are **internal**. We cannot access them directly. For this, methods `.then`/`.catch`/`.finally`, described below, are used.
 
----
-
-### 📥 Result Handling: then, catch, finally
+### Result Handling: then, catch, finally
 
 #### `.then()`
 
@@ -204,9 +194,7 @@ new Promise((resolve, reject) => {
 - If the `finally` handler returns something, it is ignored.
 - When `finally` throws an error, execution moves to the nearest error handler.
 
----
-
-### ⏱️ Adding handlers to already settled promises
+### Adding handlers to already settled promises
 
 If a promise is in the `pending` state, `.then/catch/finally` handlers wait for its result. Sometimes it may happen that the promise is already settled when we add a handler to it. In such a case, these handlers simply execute **instantly**:
 
@@ -219,9 +207,7 @@ promise.then(alert); // done! (appears right now)
 
 This makes promises more flexible. We can add handlers at any time: if the result is already there, they simply execute.
 
----
-
-### 🔗 Promise Chains
+### Promise Chains
 
 Each call to `.then()` returns a **new Promise**, which allows building **chains of asynchronous actions**:
 
@@ -231,15 +217,11 @@ fetchData().then(parseJSON).then(render).catch(handleError);
 
 Errors that occur at any stage of the chain are **automatically passed** to the nearest `.catch()`.
 
----
-
-### 🧠 Microtasks and Event Loop
+### Microtasks and Event Loop
 
 When a Promise moves to the `fulfilled` or `rejected` state, its handlers (`then`, `catch`, `finally`) go into the **microtask queue**. This means they execute **after the current macrotask**, but **before the next frame render**.
 
----
-
-### 💼 Practical Example: loadScript
+### Practical Example: loadScript
 
 Here is an example of rewriting the `loadScript` function from callbacks to Promise:
 
@@ -295,9 +277,7 @@ promise.then((script) => alert("Another handler..."));
 | Promise allows doing things in a natural order. First we call `loadScript(script)`, and then with `.then()` we write what to do with the result.           | We must have a callback function at hand when calling `loadScript(script, callback)`. In other words, we must know what to do with the result **before** calling `loadScript`. |
 | We can call `.then()` on a Promise as many times as we want. Each time we add a new "fan", a new subscription function to the "subscription list". | There can be only one callback.                                                                                                                                                |
 
----
-
-### ⚙️ Static Promise Methods
+### Static Promise Methods
 
 - `Promise.resolve(value)` — returns an already **fulfilled** Promise.
 - `Promise.reject(reason)` — returns a **rejected** Promise.
@@ -403,9 +383,7 @@ Promise.any([
 });
 ```
 
----
-
-### 💡 Key Ideas
+### Key Ideas
 
 - Promise is a **result container** for an asynchronous operation.
 - Works on the principle of **states** and **handlers**.

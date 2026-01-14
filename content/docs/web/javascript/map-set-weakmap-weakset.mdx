@@ -1,13 +1,11 @@
 ---
 title: "Map Set WeakMap WeakSet"
-description: "Map, Set, WeakMap, and WeakSet collections are built-in data structures in JavaScript designed for storing unique values and key–value pairs. They resolve the l"
+description: ""
 ---
 
 > Map, Set, WeakMap, and WeakSet collections are built-in data structures in JavaScript designed for storing unique values and key–value pairs. They resolve the limitations of plain objects and arrays.
 
----
-
-### 🧩 Map
+### Map
 
 - Stores data as **key–value pairs**.
 - Keys can be of **any type** (including objects and functions).
@@ -18,15 +16,12 @@ const map = new Map();
 map.set('name', 'Alex');
 map.set({ id: 1 }, 'Object key');
 console.log(map.get('name')); // 'Alex'
-
 ```
 
-📘 Methods: `set()`, `get()`, `has()`, `delete()`, `clear()`, `size`.
-📘 Iterates via `for...of`, `map.entries()`, `map.keys()`, `map.values()`.
+Methods: `set()`, `get()`, `has()`, `delete()`, `clear()`, `size`.
+Iterates via `for...of`, `map.entries()`, `map.keys()`, `map.values()`.
 
----
-
-### 🧩 Set
+### Set
 
 - Stores **unique values of any type**.
 - When adding a value again — ignores duplicates.
@@ -37,16 +32,14 @@ const set = new Set([1, 2, 2, 3]);
 console.log(set.size); // 3
 ```
 
-📘 Methods: `add()`, `has()`, `delete()`, `clear()`.
-📘 Often used to remove duplicates from an array:
+Methods: `add()`, `has()`, `delete()`, `clear()`.
+Often used to remove duplicates from an array:
 
 ```jsx
 const unique = [...new Set(array)];
 ```
 
----
-
-### 🧩 WeakMap
+### WeakMap
 
 - Keys can **only be objects**.
 - Stores **weak references** — if an object becomes unreachable, the entry is automatically removed by the GC.
@@ -59,11 +52,9 @@ weakMap.set(obj, 'data');
 obj = null; // entry will be removed by the garbage collector
 ```
 
-📘 Used for storing **private data or caches** without interfering with garbage collection.
+Used for storing **private data or caches** without interfering with garbage collection.
 
----
-
-### 🧩 WeakSet
+### WeakSet
 
 - Stores **only objects**, analogous to `WeakMap` but without key–value pairs.
 - Not iterable, does not have `size`.
@@ -74,12 +65,9 @@ let user = { name: 'John' };
 const weakSet = new WeakSet();
 weakSet.add(user);
 user = null; // will be removed by GC
-
 ```
 
----
-
-### ⚖️ Comparison
+### Comparison
 
 | Feature | **Map** | **Set** | **WeakMap** | **WeakSet** |
 | --- | --- | --- | --- | --- |
@@ -89,9 +77,7 @@ user = null; // will be removed by GC
 | Iterability | ✅ Yes | ✅ Yes | ❌ No | ❌ No |
 | Removed by GC | ❌ No | ❌ No | ✅ Yes | ✅ Yes |
 
----
-
-### 💡 Key Ideas
+### Key Ideas
 
 - `Map` and `Set` are **general-purpose iterable collections**.
 - `WeakMap` and `WeakSet` are **non-guaranteed collections** with **weak references** that prevent memory leaks.

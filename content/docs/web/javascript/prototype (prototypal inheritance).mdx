@@ -1,16 +1,12 @@
 ---
 title: "Prototype (Prototypal inheritance)"
-description: "A prototype is an object from which other objects can inherit properties and methods."
+description: ""
 ---
-
-## Prototype (Prototypal inheritance)
 
 > A prototype is an object from which other objects can inherit properties and methods.  
 > Every object in JavaScript has an internal link `[[Prototype]]`, which points to another object or `null`.
 
----
-
-### 🧩 Prototype Chain
+### Prototype Chain
 
 - If a property is not found in an object, the search continues through its prototype chain.
 - This chain forms the inheritance mechanism known as the **prototype chain**.
@@ -21,9 +17,7 @@ const obj = {};
 console.log(obj.__proto__ === Object.prototype); // true
 ```
 
----
-
-### ⚙️ Constructor Functions and `prototype`
+### Constructor Functions and `prototype`
 
 - Every function in JS has a `prototype` property.
 - Objects created via `new` inherit properties and methods from `Function.prototype`.
@@ -40,9 +34,7 @@ const user = new User('Alex');
 console.log(user.sayHi()); // 'Hi, Alex'
 ```
 
----
-
-### 🧠 `Object.create()`
+### `Object.create()`
 
 Creates a new object with the specified prototype:
 
@@ -52,16 +44,12 @@ const user = Object.create(person);
 console.log(user.greet()); // 'Hello'
 ```
 
----
-
-### 💡 Key Idea
+### Key Idea
 
 - A prototype is a **mechanism for delegating properties**.
 - All objects inherit from `Object.prototype` unless specified otherwise.
 - The prototype model is at the core of classes (`class`) and inheritance in modern JavaScript.
 
----
-
-### 🔗 Links
+### Links
 
 [JavaScript Object Prototypes — Medium](https://medium.com/@aniteshthakur/javascript-object-prototypes-20ed3478a7d6)
