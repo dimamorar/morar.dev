@@ -1,8 +1,7 @@
 ---
-title: "How browser works"
-description: "- The browser converts the domain name (`example.com`) into an **IP address** through DNS."
+title: "Browser"
+description: ""
 ---
-
 
 ## 1. Navigation and Resource Loading
 
@@ -18,8 +17,6 @@ description: "- The browser converts the domain name (`example.com`) into an **I
 
 ### HTTP Request
 - The browser sends a **GET request** to the server to obtain HTML and resources (CSS, JS, images).
-
----
 
 ## 2. Critical Rendering Path
 
@@ -47,8 +44,6 @@ After receiving the first bytes of HTML, the browser begins **parsing** and buil
 - Render nodes turn into **pixels on the screen**: text, colors, borders, shadows, images.
 - The stage should fit into **16.67 ms per frame** for smooth animation.
 - If elements are on **separate layers**, the browser uses the **GPU** to speed up composition.
-
----
 
 ## 3. Page Interactivity
 

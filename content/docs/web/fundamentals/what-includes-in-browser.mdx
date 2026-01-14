@@ -1,4 +1,43 @@
 ---
-title: "What includes in browser"
+title: "Browser components"
 description: ""
 ---
+
+A browser consists of several key components that work together to render web pages and execute JavaScript.
+
+### Rendering Engine
+
+- Parses HTML and CSS to build the DOM and CSSOM trees.
+- Combines them into a render tree and paints pixels to the screen.
+- Examples: Blink (Chrome, Edge), Gecko (Firefox), WebKit (Safari).
+
+### JavaScript Engine
+
+- Executes JavaScript code.
+- Handles compilation, optimization, and garbage collection.
+- Examples: V8 (Chrome, Node.js), SpiderMonkey (Firefox), JavaScriptCore (Safari).
+
+### Browser APIs
+
+- **DOM API** — manipulate HTML elements.
+- **Fetch API** — make HTTP requests.
+- **Storage APIs** — localStorage, sessionStorage, IndexedDB.
+- **Web APIs** — Geolocation, WebRTC, Canvas, WebGL.
+
+### Network Stack
+
+- Handles HTTP/HTTPS requests.
+- Manages DNS resolution, TCP connections, TLS handshakes.
+- Implements caching and cookie management.
+
+### UI Components
+
+- Address bar, navigation buttons, bookmarks, developer tools.
+- Tab management and window controls.
+
+### Security Features
+
+- Same-origin policy enforcement.
+- CORS handling.
+- Content Security Policy (CSP) support.
+- Sandboxing for untrusted content.

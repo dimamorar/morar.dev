@@ -1,4 +1,40 @@
 ---
-title: "What the URL is"
+title: "URL"
 description: ""
 ---
+
+**URL (Uniform Resource Locator)** is the address of a resource on the web. It tells the browser where to find and how to access a specific page or file.
+
+### URL Structure
+
+A URL consists of several parts:
+
+```
+https://example.com:443/path/to/page?query=value#fragment
+```
+
+- **Protocol** (`https://`) — the communication method (HTTP, HTTPS, FTP).
+- **Domain** (`example.com`) — the server address.
+- **Port** (`:443`) — optional, specifies the connection port (default: 80 for HTTP, 443 for HTTPS).
+- **Path** (`/path/to/page`) — the location of the resource on the server.
+- **Query String** (`?query=value`) — optional parameters passed to the server.
+- **Fragment** (`#fragment`) — optional, points to a specific section within the page (client-side only).
+
+### Common Protocols
+
+- `http://` — unencrypted web traffic.
+- `https://` — encrypted web traffic (TLS/SSL).
+- `file://` — local file system access.
+- `data:` — embedded data (base64-encoded content).
+
+### URL Encoding
+
+Special characters must be encoded:
+- Space becomes `%20` or `+`.
+- `#` becomes `%23`.
+- `&` becomes `%26`.
+
+### Relative vs Absolute URLs
+
+- **Absolute**: `https://example.com/page` — complete address.
+- **Relative**: `/page` or `../page` — resolved relative to current page URL.
