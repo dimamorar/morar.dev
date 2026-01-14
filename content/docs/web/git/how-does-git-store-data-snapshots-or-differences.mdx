@@ -1,18 +1,8 @@
 ---
-title: "How does Git store data snapshots or differences"
-description: "Git stores not deltas, but full snapshots of file states at the moment of each commit."
+title: "Git storage"
+description: ""
 ---
 
-## How does Git store data — snapshots or differences?
+Git stores not deltas, but full snapshots of file states at the moment of each commit.
 
-> Git stores not deltas, but full snapshots of file states at the moment of each commit.
-
----
-
-### Explanation
-
-Each commit is a **snapshot** of all files, represented as hashes (`blob`).
-
-If a file hasn't changed, Git simply points to the previous blob.
-
-In this way, high storage efficiency and instant rollbacks to any state are achieved.
+Each commit is a **snapshot** of all files, represented as hashes (`blob`). If a file hasn't changed, Git simply points to the previous blob. In this way, high storage efficiency and instant rollbacks to any state are achieved.

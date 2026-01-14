@@ -1,73 +1,54 @@
 ---
-title: "git merge vs. git rebase"
-description: "`git merge` combines branches, creating a merge commit and preserving the real branching history."
+title: "Merge vs rebase"
+description: ""
 ---
 
-> `git merge` combines branches, creating a merge commit and preserving the real branching history.  
-> `git rebase` rewrites history, “moving” commits to a new base to form a linear history.  
-> Both tools solve the same problem — integrating changes, but with different approaches and consequences.
+`git merge` combines branches, creating a merge commit and preserving the real branching history. `git rebase` rewrites history, "moving" commits to a new base to form a linear history. Both tools solve the same problem — integrating changes, but with different approaches and consequences.
 
----
-
-### 🧩 git merge
-
-#### Essence
+### git merge
 
 - Creates a **merge commit** that links two branches.
 - Does not rewrite existing commits.
 - Preserves a **non-linear** but accurate history.
 
-#### When to apply
-
+**When to apply:**
 - Teamwork, shared branches.
 - Need to see where branches diverged and merged.
 - History should not be changed.
 
-#### Example
-
+**Example:**
 ```bash
 git checkout develop
 git merge feature/login
 ```
 
----
-
-### 🧩 git rebase
-
-#### Essence
+### git rebase
 
 - **Rewrites history**, moving commits on top of another branch.
 - Forms a **linear and neat** history.
 - Creates new commits (`D'`, `E'`), rather than changing old ones.
 
-#### When to apply
-
-- Before a merge, to “remove the noise” of history.
+**When to apply:**
+- Before a merge, to "remove the noise" of history.
 - Work in a local feature before push.
 - When a clean chain history of changes is needed.
 
-#### Example
-
+**Example:**
 ```bash
 git checkout feature/login
 git rebase develop
 ```
 
----
-
-### 🧩 Direct Comparison
+### Direct Comparison
 
 - **merge**: safe, does not rewrite history → suitable for teams.
 - **rebase**: clean linear history, but risky on shared branches.
 - merge creates a **merge commit**, rebase — **new commits**.
 - rebase can cause conflicts **step-by-step**, merge — once.
 
----
+### History Visualization
 
-### 🧩 Infographic
-
-#### Merge (merge history is preserved)
-
+**Merge (merge history is preserved):**
 ```
 A---B---C  (main)
      \
@@ -76,15 +57,12 @@ A---B---C  (main)
               F---G  (merge commit)
 ```
 
-#### Rebase (linear history)
-
+**Rebase (linear history):**
 ```
 A---B---C---D'---E'  (feature rebased)
 ```
 
----
-
-### 💡 Key Ideas
+### Key Ideas
 
 - **merge = preserve history**, **rebase = rewrite for neatness**.
 - rebase cannot be performed on branches that other developers have already pulled.

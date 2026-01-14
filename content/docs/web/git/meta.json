@@ -1,14 +1,14 @@
 {
   "title": "Git",
   "pages": [
-    "cherry-pick",
-    "detached-head",
     "git",
-    "git merge vs git rebase",
-    "git-checkout-vs-git-switch",
-    "how-does-git-store-data-snapshots-or-differences",
-    "merge commit vs squash merge vs rebase merge",
+    "working-directory-staging-area-repository",
     "what-happens-when-you-run-git-add-and-git-commit",
-    "working-directory-staging-area-repository"
+    "how-does-git-store-data-snapshots-or-differences",
+    "git-checkout-vs-git-switch",
+    "git merge vs git rebase",
+    "merge commit vs squash merge vs rebase merge",
+    "detached-head",
+    "cherry-pick"
   ]
 }
