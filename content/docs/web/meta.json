@@ -1,0 +1,19 @@
+{
+  "title": "Web",
+  "description": "",
+  "icon": "Globe",
+  "root": true,
+  "pages": [
+    "fundamentals",
+    "hml-css",
+    "javascript",
+    "essentials",
+    "typescript",
+    "react",
+    "state-management",
+    "nextjs",
+    "auth",
+    "git",
+    "practice"
+  ]
+}

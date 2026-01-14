@@ -1,0 +1,41 @@
+---
+title: "Deep vs. Shallow Copy"
+description: ""
+---
+
+> Shallow copy creates a new object but only copies the top level — nested objects are passed by reference.
+
+- Copies only "surface" properties.
+- Nested objects, arrays, and other reference types remain shared.
+- Examples: `Object.assign({}, obj)`, spread `{ ...obj }`, `[ ...arr ]`, `Array.prototype.slice()`
+- Drawback: changing nested elements in the copy affects the original (and vice versa).
+
+### Deep Copy
+> Deep copy creates a completely independent structure, recursively copying all nested levels of data.
+
+- A completely new structure is created without shared reference values.
+- Each nested level is copied recursively.
+- Ways to deep copy: `structuredClone(value)` (modern native), `JSON.parse(JSON.stringify(obj))` (has limitations: Date, undefined, functions), manual recursion or libraries (lodash `cloneDeep`).
+- Advantage: the copy is completely isolated → safe modification of nested data.
+
+### Minimal Example
+
+```js
+const original = { user: { name: 'Ann' } };
+
+// shallow copy
+const shallow = { ...original };
+shallow.user.name = 'Tom'; // changes original.user.name
+
+// deep copy
+const deep = structuredClone(original);
+deep.user.name = 'Sam'; // original remains unchanged
+```
+
+### Important Notes
+- In Redux, shallow copy is recommended for updating state, but the structure should be built so that nested objects do not require deep copying.
+- JSON deep copy is unsuitable for complex structures (Map, Set, Date, functions).
+
+### Links
+[Shallow - MDN](https://developer.mozilla.org/en-US/docs/Glossary/Shallow_copy)
+[Deep - MDN](https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy)

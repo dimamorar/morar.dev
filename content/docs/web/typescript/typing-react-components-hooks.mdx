@@ -1,0 +1,101 @@
+---
+title: "How do you type React components and hooks with TypeScript"
+description: "In React with TypeScript, typing components and hooks ensures data control between components and predictable state behavior."
+---
+
+## How do you type React components and hooks with TypeScript (e.g., props, `useState`, `useRef`)?
+
+> In React with TypeScript, typing components and hooks ensures data control between components and predictable state behavior.
+> 
+> 
+> The main idea is to define types for `props`, `state`, `ref`, as well as the results of hooks (`useState`, `useRef`, `useEffect`, etc.).
+> 
+
+---
+
+### 🧩 Typing Props
+
+- For **functional components**, a separate interface or type is created:
+
+```tsx
+type ButtonProps = {
+  label: string;
+  onClick?: () => void;
+};
+
+const Button: React.FC<ButtonProps> = ({ label, onClick }) => (
+  <button onClick={onClick}>{label}</button>
+);
+```
+
+- `React.FC` automatically adds a type for `children`, but it can be omitted for more flexibility:
+
+```tsx
+const Button = ({ label, onClick }: ButtonProps) => (
+  <button onClick={onClick}>{label}</button>
+);
+```
+
+---
+
+### 🧩 Typing `useState`
+
+- Use a generic parameter if the initial value does not define the type clearly:
+
+```tsx
+const [count, setCount] = React.useState<number>(0);
+setCount(10);   // ✅
+setCount("10"); // ❌ Error
+```
+
+- For complex structures:
+
+```tsx
+type User = { name: string; age: number };
+const [user, setUser] = React.useState<User | null>(null);
+```
+
+---
+
+### 🧩 Typing `useRef`
+
+- If `ref` stores a DOM element:
+
+```tsx
+const inputRef = React.useRef<HTMLInputElement>(null);
+
+<input ref={inputRef} />;
+inputRef.current?.focus();
+```
+
+- If `ref` stores an arbitrary value:
+
+```tsx
+const timer = React.useRef<number | null>(null);
+```
+
+---
+
+### 🧩 Typing Custom Hooks
+
+- Custom hooks are typed through generics or their own interfaces:
+
+```tsx
+function useFetch<T>(url: string): [T | null, boolean] {
+  const [data, setData] = React.useState<T | null>(null);
+  const [loading, setLoading] = React.useState(true);
+  // ...
+  return [data, loading];
+}
+
+const [user, loading] = useFetch<User>("/api/user");
+```
+
+---
+
+### 💡 Key Ideas
+
+- Props are typed through interfaces or generics (`React.FC<P>` or `({}: P) => JSX.Element`).
+- `useState<T>` and `useRef<T>` are always better typed explicitly if the initial value is ambiguous.
+- For DOM references, element types are used (`HTMLDivElement`, `HTMLInputElement`).
+- TypeScript makes React code **predictable, safe, and self-documenting**.

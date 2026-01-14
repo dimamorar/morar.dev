@@ -1,0 +1,42 @@
+---
+title: "Security"
+description: ""
+---
+
+> Security best practices for authentication and authorization systems.
+
+### **General Security Principles**
+
+- Always use **HTTPS** for all authentication-related communications.
+- Implement proper **token expiration** and **refresh mechanisms**.
+- Store sensitive tokens (refresh tokens) in **HttpOnly cookies**.
+- Implement **token rotation** for refresh tokens.
+- Use **short-lived access tokens** (15 minutes or less).
+- Validate and sanitize all user inputs.
+- Implement **rate limiting** to prevent brute force attacks.
+- Use **secure password hashing** (bcrypt, Argon2).
+- Implement **CSRF protection** for cookie-based authentication.
+- Use **Content Security Policy (CSP)** to prevent XSS attacks.
+
+### **Token Security**
+
+- Access tokens: store in memory or secure storage, short expiration.
+- Refresh tokens: store in HttpOnly cookies, longer expiration, revocable.
+- Implement token blacklist/revocation mechanism.
+- Never store tokens in localStorage for sensitive applications.
+
+### **Authentication Security**
+
+- Require strong passwords with complexity rules.
+- Implement **multi-factor authentication (MFA)** for sensitive accounts.
+- Use secure session management.
+- Implement account lockout after failed attempts.
+- Log all authentication events for security monitoring.
+
+### **Authorization Security**
+
+- Verify permissions on every request (never trust client-side checks).
+- Use principle of least privilege.
+- Implement role-based or attribute-based access control.
+- Invalidate tokens when user permissions change.
+- Store authorization rules on the server, not client.

@@ -1,0 +1,23 @@
+---
+title: "Access Token"
+description: ""
+---
+
+> A token used to authenticate a user and authorize access to resources.
+> Sent in every request to the API in the header:
+> `Authorization: Bearer <access_token>`
+
+The main token confirming that the user is authorized. Sent in every request to the API in the header: `Authorization: Bearer <access_token>`. Used to access protected resources.
+
+### **Characteristics**
+
+- **Short lifespan** — from a few minutes to an hour.
+- Contains data (claims): `userId`, `role`, `exp`.
+- After the expiration date — becomes invalid.
+- Loss of token = loss of access (it cannot be revoked without a blacklist mechanism).
+
+### **Security**
+
+- Transfer only via HTTPS.
+- Store in secure location (memory or HttpOnly cookie).
+- Keep expiration time short.

@@ -1,0 +1,54 @@
+---
+title: "Access vs. Refresh"
+description: ""
+---
+
+> Two types of tokens used in authentication and authorization systems.
+> **Access Token** provides temporary access to resources, while **Refresh Token** is used to safely update expired access tokens without the user having to log in again.
+
+### **Access Token**
+
+The main token confirming that the user is authorized. Sent in every request to the API in the header: `Authorization: Bearer <access_token>`. Used to access protected resources.
+
+**Characteristics:**
+
+- **Short lifespan** — from a few minutes to an hour.
+- Contains data (claims): `userId`, `role`, `exp`.
+- After the expiration date — becomes invalid.
+- Loss of token = loss of access (it cannot be revoked without a blacklist mechanism).
+
+### **Refresh Token**
+
+Allows obtaining a new Access Token without repeated authentication. Used in the background (silent refresh) or during explicit session updates.
+
+**Characteristics:**
+
+- **Long-lived** (days, weeks, months).
+- Not used directly to access the API.
+- Stored in a more secure place (e.g., `HttpOnly cookie`).
+- Can be revoked on the server upon logout or compromise.
+
+### **Interaction Mechanism**
+
+1. The user logs in → the server issues **access** and **refresh** tokens.
+2. The client uses the access token for API requests.
+3. When the access token expires, the client sends the refresh token to the server.
+4. The server verifies the refresh token and issues a new access token (and, if necessary, a new refresh token).
+5. The user continues working without logging in again.
+
+### **Key Differences**
+
+| Criterion       | Access Token               | Refresh Token          |
+| --------------- | -------------------------- | ---------------------- |
+| Purpose         | API Access                 | Updating access token  |
+| Lifespan        | Short (minutes/hours)      | Long (days/weeks)      |
+| Where used      | In every request           | Only during update     |
+| Where stored    | Usually in memory / cookie | Only in secure storage |
+| Compromise risk | Loss = access leak         | Loss = update leak     |
+
+### **Security**
+
+- Transfer only via HTTPS.
+- Store refresh token in **HttpOnly cookie**.
+- Implement **token rotation** (updating the refresh token with every use).
+- Invalidate the refresh token upon logout.

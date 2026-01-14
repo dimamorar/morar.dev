@@ -1,0 +1,50 @@
+---
+title: "How rendering modes work in Next.js (RSC, SSR, SSG, ISR) and when to use them"
+description: "Next.js combines several rendering models, where the base is React Server Components, and SSR/SSG/ISR are managed through cache and update policies."
+---
+
+## **How rendering modes work in Next.js (RSC, SSR, SSG, ISR) and when to use them**
+
+> Next.js combines several rendering models, where the base is React Server Components, and SSR/SSG/ISR are managed through cache and update policies.  
+> App Router uses the server as the main source of UI and decides when to return a cached or dynamic response.  
+> The choice of mode depends on data stability, response speed, and personalization requirements.
+
+---
+
+### Technical Explanation
+
+#### React Server Components (RSC)
+
+- The default mode of App Router — UI is built **on the server without JS hydration**.
+- Ideal for stable content, heavy logic, and working with databases.
+- Can be streamed in parts via **React Suspense**.
+
+#### SSR (Server-Side Rendering)
+
+- Rendering is **performed on every request**, without using the cache.
+- Used when:
+  - personalization is needed;
+  - data changes on every request;
+  - secure server-only operations are needed.
+- In App Router, SSR is activated:
+  - via **dynamic parameters**,
+  - `fetch({ cache: "no-store" })`,
+  - `export const dynamic = "force-dynamic"`.
+
+#### SSG (Static Site Generation)
+
+- The page is generated **once during build** and cached as static HTML + RSC payload.
+- Suitable for stable pages: marketing, documentation, blogs.
+
+#### ISR (Incremental Static Regeneration)
+
+- Next.js updates static pages **in the background after the `revalidate` time expires**.
+- The user receives the old version while the new one is being generated.
+- In App Router, it is implemented via `export const revalidate = N`.
+
+#### When to Choose What
+
+- **RSC** — default option, universal.
+- **SSR** — personal data, admin panels, dashboards.
+- **SSG** — marketing, blog, FAQ.
+- **ISR** — semi-dynamic pages: news, product catalogs.

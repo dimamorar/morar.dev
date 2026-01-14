@@ -1,0 +1,56 @@
+---
+title: "Session vs Token Authentication"
+description: ""
+---
+
+> Two approaches to storing user state after logging into the system.
+> Session-based uses server-side state (stateful), while Token-based transfers responsibility to the client (stateless).
+
+### **Session-based Authentication**
+
+**How it works:**
+
+- After a successful login, the server creates a **session** with a unique `session_id`.
+- Session data (user, duration, rights) are stored on the server — in memory, Redis, or a DB.
+- The client receives a cookie with this `session_id` and automatically sends it in every request.
+- The server looks for the entry by ID and restores the user's context.
+
+**Features:**
+
+- **Stateful** — the server stores active sessions.
+- Supports **forced logout** (by deleting the entry on the server).
+- Requires balancing and synchronization during scaling.
+- **CSRF vulnerability**, as the cookie is automatically sent by the browser.
+
+### **Token-based Authentication**
+
+**How it works:**
+
+- After login, the server issues a **token**, usually JWT.
+- The token contains user data and is signed with a secret.
+- The client stores the token and adds it to the header
+  `Authorization: Bearer <token>`.
+- The server verifies the signature without accessing the database.
+
+**Features:**
+
+- **Stateless** — the server does not store user sessions.
+- Scales easily, suitable for SPA and microservices.
+- **Logout is harder** — you can't just "delete" a token, you have to wait for it to expire or use a blacklist.
+- Vulnerable to **XSS** if the token is stored in `localStorage`.
+
+### **Comparison**
+
+| Criterion | Session-based     | Token-based              |
+| --------- | ----------------- | ------------------------ |
+| State     | Stored on server  | Stored on client         |
+| Scaling   | Harder (stateful) | Easier (stateless)       |
+| Logout    | Instant           | Requires blacklist/TTL   |
+| Security  | Prone to CSRF     | Prone to XSS             |
+| Usage     | SSR apps, legacy  | SPA, mobile clients, API |
+
+### **Summary**
+
+Session-based is convenient for classic sites with server-side rendering.
+
+Token-based — the standard for modern SPAs and distributed APIs.

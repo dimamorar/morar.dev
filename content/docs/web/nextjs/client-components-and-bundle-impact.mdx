@@ -1,0 +1,58 @@
+---
+title: "When a component becomes a Client Component and how it affects the bundle"
+description: "A component becomes a Client Component when it contains client logic — state, events, useEffect, or DOM work."
+---
+
+## **When a component becomes a Client Component and how it affects the bundle**
+
+> A component becomes a Client Component when it contains client logic — state, events, useEffect, or DOM work.  
+> In such components, Next.js adds a special marker `"use client"`, which forces them to be passed to the client bundle.  
+> This increases the amount of JavaScript in the browser and reduces performance compared to server components.
+
+---
+
+### Technical Explanation
+
+#### What makes a component a Client Component
+
+A component becomes a client one if it:
+
+- contains the **"use client"** directive in the first line of the file;
+    
+- uses **React Hooks**: `useState`, `useEffect`, `useReducer`, `useRef`;
+    
+- has browser APIs: `window`, `document`, `localStorage`;
+    
+- handles events (`onClick`, `onChange`, `onSubmit`, etc.).
+    
+
+#### How Next.js defines a Client Component
+
+- Any file with `"use client"` either at the top or in nested imports.
+    
+- If a Client Component imports a Server Component — it's an error.
+    
+- If a Server Component imports a Client Component — it's allowed.
+    
+
+#### How it affects the bundle
+
+- The code of such a component goes into the **client-side bundle**.
+    
+- It needs to be **hydrated**, which increases time to interactivity.
+    
+- More client components → more JS on the browser side.
+    
+- Client Components **are not cached** like RSC because they execute in the browser.
+    
+
+#### Example of a minimal client component
+
+```jsx
+"use client";
+
+export default function Counter() {
+  const [value, setValue] = useState(0);
+  return <button onClick={() => setValue(value + 1)}>{value}</button>;
+}
+```

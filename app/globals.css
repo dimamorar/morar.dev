@@ -195,6 +195,18 @@ body {
   ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.3);
   }
+
+  #nd-docs-layout {
+    a {
+      text-decoration: none;
+    }
+  }
+
+  [data-radix-popper-content-wrapper] {
+    a {
+      text-decoration: none;
+    }
+  }
 }
 
 @layer base {

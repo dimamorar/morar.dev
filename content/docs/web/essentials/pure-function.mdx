@@ -1,0 +1,38 @@
+---
+title: "Pure Function"
+description: ""
+---
+
+> A pure function is a function that always returns the same result for the same arguments and has no side effects. It does not change external state and does not depend on it, making it predictable and suitable for optimizations.
+
+#### Determinism
+
+- Same input values → same result.
+- Does not use variables that can change outside the function.
+
+#### Absence of Side Effects
+
+- Does not mutate arguments.
+- Does not change external objects, variables, DOM, global state.
+- Does not perform IO operations (network requests, logging, working with time, etc.).
+
+#### Isolation
+
+- Completely depends only on its arguments.
+- The result can be cached (memoization).
+- Easily testable because it does not require external context.
+
+### Minimal Example
+
+```js
+// pure
+const add = (a, b) => a + b;
+
+// impure
+const addToGlobal = (x) => { globalSum += x; };
+```
+
+### Important Notes
+
+- Pure functions are the foundation of Redux (reducers must be pure).
+- In functional programming, they are used for predictable logic and referential transparency.

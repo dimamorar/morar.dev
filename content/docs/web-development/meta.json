@@ -1,7 +1,0 @@
-{
-  "title": "Web Development",
-  "description": "Web development documentation",
-  "icon": "Globe",
-  "root": true,
-  "pages": ["---Introduction---", "fundamentals", "---References---", "..."]
-}

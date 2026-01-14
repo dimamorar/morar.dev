@@ -1,0 +1,68 @@
+---
+title: "How do you create a new type using a subset of an interface?"
+description: "In TypeScript, you can create a new type containing only part of the properties of an existing interface using built-in utility types such as Pick or Omit."
+---
+
+## How do you create a new type using a subset of an interface?
+
+> In TypeScript, you can create a new type containing only part of the properties of an existing interface using built-in utility types such as Pick or Omit.
+> 
+> 
+> This allows reusing interfaces without code duplication.
+> 
+
+---
+
+### 🧩 `Pick<T, K>`
+
+- Creates a new type that includes **only selected keys** `K` from type or interface `T`.
+
+```tsx
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  isAdmin: boolean;
+}
+
+type PublicUser = Pick<User, "id" | "name">;
+
+const user: PublicUser = {
+  id: 1,
+  name: "Anna",
+};
+```
+
+---
+
+### 🧩 `Omit<T, K>`
+
+- Creates a type that **excludes specified keys** `K` from type or interface `T`.
+
+```tsx
+type UserWithoutEmail = Omit<User, "email">;
+
+const u: UserWithoutEmail = {
+  id: 1,
+  name: "Olha",
+  isAdmin: true,
+};
+```
+
+---
+
+### 🧩 Alternative via Own Types
+
+You can also create a subtype manually through **intersection or type indexing**, but `Pick` and `Omit` are the most convenient and common solutions.
+
+```tsx
+type CustomUser = { id: User["id"]; name: User["name"] };
+```
+
+---
+
+### 💡 Key Ideas
+
+- `Pick` → select needed properties.
+- `Omit` → exclude unnecessary properties.
+- Both help **reduce duplication** and increase type consistency in the project.

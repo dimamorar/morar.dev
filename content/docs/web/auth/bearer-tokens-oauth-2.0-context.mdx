@@ -1,0 +1,49 @@
+---
+title: "Bearer Tokens"
+description: ""
+---
+
+> A Bearer token is an access token that confirms its owner has the right to make a request on behalf of the user.
+> Used in the **OAuth 2.0** standard and passed through the `Authorization: Bearer <token>` header.
+
+OAuth 2.0 is **a framework for delegated authentication and authorization**, where a user trusts a third-party service (identity provider) to confirm their identity and issue an access token. The token is the only thing the client uses to access protected APIs.
+
+### **Working Principle**
+
+1. **The client requests authorization** — the user logs in through a provider (e.g., Google).
+2. **The Identity Provider** verifies the data and issues an **Authorization Code**.
+3. The client exchanges this code for an **Access Token** (and optionally a Refresh Token).
+4. The client stores the Access Token and adds it to the header of every request:
+
+   `Authorization: Bearer <access_token>`.
+
+5. The resource server validates the token and provides access.
+
+### **What is "Bearer"**
+
+The word _Bearer_ means: **whoever presents the token is considered the owner of the access rights**.
+
+→ If the token is stolen, the attacker receives the same rights.
+
+Therefore, it is critically important to:
+
+- Transfer tokens only via HTTPS,
+- Store them in a secure place,
+- Set a short lifespan.
+
+### **Token Types in OAuth 2.0**
+
+- **Access Token** — a short-lived token used to access the API.
+- **Refresh Token** — a long-lived token that allows updating the Access Token without re-logging.
+- **ID Token** — a token containing user information (in OpenID Connect).
+
+### **Security Features**
+
+- A Bearer token is not encrypted, but **signed** (e.g., as a JWT).
+- Verified by the server by signature or by request to the Authorization Server.
+- Loss of token = loss of access → it must be possible to **revoke** it.
+
+### **Application**
+
+- The main standard for **REST API**, **SPA**, and **mobile clients**.
+- Used in conjunction with OpenID Connect to pass user information.

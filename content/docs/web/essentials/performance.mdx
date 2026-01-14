@@ -1,0 +1,84 @@
+---
+title: "Performance"
+description: ""
+---
+
+> Website performance is a set of factors that determine the loading speed, responsiveness, and smoothness of a web application. The main goal is to make interaction **fast and unnoticeable** for the user.
+
+### Main Metrics (Navigation Timing API)
+
+1. **Network** — time for connection establishment, DNS, TLS, resource loading.
+2. **Server Response Time** — time for the server to respond to the first request.
+3. **Render Blocking** — delays due to CSS/JS affecting the first paint.
+4. **First Contentful Paint (FCP)** — time until the first content appears.
+5. **Largest Contentful Paint (LCP)** — time until the main element of the page appears.
+6. **Time To Interactive (TTI)** — the moment the page is ready for interaction.
+7. **Response Latency** — response time to user actions.
+8. **Smoothness** — FPS stability, smoothness of scrolling and animations.
+
+Navigation metrics can be measured via **Navigation Timing API**, `performance.now()`, DevTools → *Performance*.
+
+### User Perception of Time
+
+- < **100 ms** — instantaneous (felt immediately).
+- < **1 s** — comfortable.
+- **1–2 s** — acceptable, but attention drops.
+- **2 s** — user loses focus.
+- Active waiting (loader, skeleton) is perceived better than passive.
+
+### Key Sources of Slowdowns
+
+1. **Network:** slow DNS, lack of cache, heavy resources.
+2. **Server:** slow rendering or API response.
+3. **Browser:** blocking scripts, heavy JS logic, layout/reflow.
+4. **Runtime:** frequent repaints, heavy loops, inefficient events.
+
+### Optimization Techniques
+
+### HTTP Level
+
+- **Minification & Compression** — minimization and `gzip` / `brotli`.
+- **Caching** — `Cache-Control`, `ETag`, `Service Worker`.
+- **CDN & Sprites** — reducing latency and number of requests.
+
+### Scripts
+
+- `async` / `defer` for non-blocking loading.
+- **Code splitting** — dividing JS into chunks.
+- **Lazy loading** of modules and heavy computations.
+- Removing unused scripts (`Coverage` in DevTools).
+
+### Rendering
+
+- Inline-CSS for critical-path.
+- Minimize reflow/repaint.
+- Use `will-change` and `transform` instead of `top/left`.
+
+### Images & Fonts
+
+- Optimization of formats (`webp`, `avif`, `woff2`).
+- `srcset`, `sizes`, `fetchpriority`, `loading="lazy"`.
+- Minimizing the number of custom fonts.
+
+### Preload / Prefetch / Preconnect
+
+- `preload` — for critical resources.
+- `prefetch` — for future pages.
+- `preconnect` — early opening of connections.
+
+### Analysis Tools
+
+**High-level:**
+- Lighthouse (PageSpeed Insights, DevTools Audit).
+
+**Low-level:**
+- DevTools → *Network*, *Performance*, *Rendering*, *Memory*, *Coverage*, *Profiler*.
+- Metrics: `performance.timing`, `PerformanceObserver`.
+
+### Key Ideas
+
+- Performance = **loading speed + responsiveness + smoothness**.
+- It is important to optimize not only the network but also the **runtime**.
+- A UX indicator is when the user **doesn't notice** speed problems.
+- Use DevTools and Lighthouse for constant control.
+- Every optimization is a **struggle for milliseconds and user attention**.

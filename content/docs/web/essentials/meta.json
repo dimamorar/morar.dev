@@ -1,0 +1,9 @@
+{
+  "title": "Essentials",
+  "pages": [
+    "pure-function",
+    "sideeffects",
+    "deep-vs-shallow-copy",
+    "performance"
+  ]
+}
