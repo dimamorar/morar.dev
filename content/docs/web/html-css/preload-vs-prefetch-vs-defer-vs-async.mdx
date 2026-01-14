@@ -1,74 +1,39 @@
 ---
-title: "Preload vs. Prefetch vs. Defer vs. Async"
-description: "These attributes and directives for resource loading management allow optimizing the speed and execution order of scripts and other resources."
+title: "Resource Loading"
+description: ""
 ---
+### `async`
 
-## Preload vs Prefetch vs Defer vs Async
-
-> These attributes and directives for resource loading management allow optimizing the speed and execution order of scripts and other resources.
-> 
-> The main difference is **when and why the browser loads and executes the file**.
-
----
-
-### 🧩 `async`
-
-- The script is **loaded in parallel** with HTML and is **executed immediately after loading**,
-    
-    **without waiting** for parsing to finish.
-    
-- Execution order is not guaranteed.
-- Used for **external independent scripts** (analytics, advertising).
+The script is **loaded in parallel** with HTML and is **executed immediately after loading**, **without waiting** for parsing to finish. Execution order is not guaranteed. Used for **external independent scripts** (analytics, advertising).
 
 ```html
 <script src="analytics.js" async></script>
 ```
 
----
+### `defer`
 
-### 🧩 `defer`
-
-- The script is **loaded in parallel**, but is executed **after HTML parsing is complete**.
-- All `defer` scripts are executed **in the order they were declared**.
-- They run **before the `DOMContentLoaded` event**.
-- Suitable for **main scripts** interacting with the DOM.
+The script is **loaded in parallel**, but is executed **after HTML parsing is complete**. All `defer` scripts are executed **in the order they were declared**. They run **before the `DOMContentLoaded` event**. Suitable for **main scripts** interacting with the DOM.
 
 ```html
 <script src="app.js" defer></script>
 ```
 
----
+### `preload`
 
-### 🧩 `preload`
-
-- An instruction for the browser to **start loading in advance** an important resource
-    
-    that will be needed **in the near future** (fonts, styles, images, scripts).
-    
-- Does not execute or apply the resource automatically — only loads it.
-- Used in `<link>` with `rel="preload"` and the `as` attribute.
+An instruction for the browser to **start loading in advance** an important resource that will be needed **in the near future** (fonts, styles, images, scripts). Does not execute or apply the resource automatically — only loads it. Used in `<link>` with `rel="preload"` and the `as` attribute.
 
 ```html
 <link rel="preload" href="main.js" as="script">
 <link rel="preload" href="font.woff2" as="font" type="font/woff2" crossorigin>
 ```
 
----
+### `prefetch`
 
-### 🧩 `prefetch`
-
-- Allows **loading resources in advance** that **might be needed later**
-    (for example, on the next page or during the next action).
-- Has a low priority and does not block current rendering.
-- Used for **optimizing transitions between pages**.
+Allows **loading resources in advance** that **might be needed later** (for example, on the next page or during the next action). Has a low priority and does not block current rendering. Used for **optimizing transitions between pages**.
 
 ```html
 <link rel="prefetch" href="next-page.js" as="script">
 ```
-
----
-
-### 💡 Key Ideas
 
 | Attribute / Directive | When Loaded | When Executed / Used | Main Purpose |
 | --- | --- | --- | --- |
@@ -76,10 +41,3 @@ description: "These attributes and directives for resource loading management al
 | **`defer`** | In parallel with HTML | After parsing, before `DOMContentLoaded` | Main DOM scripts |
 | **`preload`** | Immediately (high priority) | When accessing the resource | Preparation of critical resources |
 | **`prefetch`** | Later (low priority) | In the future, upon transition | Preloading for the next page |
-
----
-
-### 🔗 Links
-
-- [MDN: Script loading strategies](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script)
-- [MDN: Resource hints — preload & prefetch](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/preload)
