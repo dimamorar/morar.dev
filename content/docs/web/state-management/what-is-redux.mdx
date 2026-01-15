@@ -1,54 +1,16 @@
 ---
-title: "What Is Redux"
-description: "Redux is a predictable state container for JavaScript applications, based on a unidirectional data flow and pure reducer functions."
+title: "Redux"
+description: ""
 ---
 
-## What Is Redux
+Redux is a predictable state container with a strict action → reducer → state flow.
 
-> Redux is a predictable state container for JavaScript applications, based on a unidirectional data flow and pure reducer functions.  
-> It centralizes the state, makes changes deterministic, and provides transparent control over how the UI is updated.
+### What it gives you
+- One global state tree
+- Pure reducers and immutable updates
+- Debuggable history with devtools
 
----
-
-### Technical Explanation
-
-#### **The Main Role of Redux**
-
-- Manage the global state of the application.
-    
-- Guarantee that updates pass through a controlled process.
-    
-- Simplify debugging and reproducibility of UI behavior.
-    
-
-#### **Key Features**
-
-- Centralized state: one Store holds the entire global state.
-    
-- Changes are possible only through dispatch(action).
-- Reducers handle actions and purely calculate the new state.
-- DevTools support: time-travel, action logging, state inspection.
-
-#### **Where Redux is Used**
-
-- In large SPAs where local state or the Context API are insufficient.
-- In applications with a lot of business logic and complex interrelationships.
-
-#### **Why Redux Became a Standard**
-
-- Predictability due to immutability and pure functions.
-    
-- Objectively transparent data flow: easy to understand what happened and why.
-    
-- Rich ecosystem: middleware, Redux Toolkit, RTK Query.
-    
-
----
-
-### Important Notes
-
-- Redux is not exclusively linked to React — it can work with any UI library.
-    
-- Redux itself is minimalistic; all the power comes through middleware and the Redux Toolkit.
-    
-- In Redux, there is no Dispatcher (unlike Flux) — dispatch is built into the store.
+### When it fits
+- Complex shared state across many views
+- Need for auditability and replay
+- Teams that want strict update rules

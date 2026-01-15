@@ -1,80 +1,16 @@
 ---
-title: "How createAsyncThunk Works"
-description: "`createAsyncThunk` is the standard Redux Toolkit mechanism for describing asynchronous operations."
+title: "createAsyncThunk"
+description: ""
 ---
 
-## How `createAsyncThunk` Works
-> `createAsyncThunk` is the standard Redux Toolkit mechanism for describing asynchronous operations.  
-> It automatically generates three request states (pending, fulfilled, rejected) and allows managing async logic without manually creating dozens of actions.
+`createAsyncThunk` is RTK’s standard helper for async work.
 
----
-
-### Technical Explanation
-
-#### **Core Idea**
-
-`createAsyncThunk` accepts:
-
-- **typePrefix** — the name of the operation
-    
-- **payloadCreator** — an asynchronous function that performs the request
-    
-
-After calling, the thunk returns a **promise**, and Redux automatically dispatches three events:
-
+### What it generates
 - `${typePrefix}/pending`
-    
 - `${typePrefix}/fulfilled`
-    
 - `${typePrefix}/rejected`
-    
 
-#### **How the async flow is executed**
-
-1. Component calls:  
-    `dispatch(fetchUser())`
-    
-2. RTK generates and dispatches `fetchUser/pending`.
-    
-3. `payloadCreator` is executed (e.g., `await fetch(...)`).
-    
-4. If successful → `fetchUser/fulfilled` is dispatched with the data.
-    
-5. If error → `fetchUser/rejected` is dispatched with the error.
-    
-
-All these actions are automatically intercepted by reducers in `extraReducers`.
-
-#### **Advantages**
-
-- No need to manually create three actions (loading/success/error).
-    
-- Built-in typing and error control.
-    
-- Clear async logic standard across the project.
-    
-- Works on top of Redux Thunk but abstracts low-level code.
-    
-
-#### **How it works with reducers**
-
-In `createSlice`, you can handle states:
-
-```js
-builder
-  .addCase(fetchUser.pending, …)
-  .addCase(fetchUser.fulfilled, …)
-  .addCase(fetchUser.rejected, …)
-```
-
-This gives full control over UI states: loading/error/data.
-
----
-
-### Important Notes
-
-- `createAsyncThunk` always returns a promise — this allows waiting for operations in components or other thunks.
-    
-- Errors automatically go into `rejected` without the need for manual try/catch in the slice.
-    
-- This is the recommended async logic standard in Redux Toolkit.
+### How it fits
+- You dispatch the thunk
+- RTK runs the async function
+- Reducers handle the three states in `extraReducers`

@@ -1,71 +1,14 @@
 ---
-title: "What Is a Thunk and Why Does It Allow Dispatching Functions"
-description: "A thunk is a wrapper function that defers the execution of logic until a certain moment."
+title: "Thunk"
+description: ""
 ---
 
-## What Is a Thunk and Why Does It Allow Dispatching Functions
+A thunk is a function you dispatch instead of an action object. The thunk runs with `(dispatch, getState)` so it can perform async work and then dispatch actions.
 
-> A thunk is a wrapper function that defers the execution of logic until a certain moment.  
-> In Redux, a thunk is used as an action function, allowing you to perform asynchronous operations and dispatch regular actions manually.
+### How it works
+- If `dispatch` receives a function, the thunk middleware runs it
+- The reducer never sees the function, only the actions it dispatches
 
----
-
-### Technical Explanation
-
-#### **What a Thunk Is in a General Sense**
-
-- A thunk is a function that returns another function.
-    
-- It allows "deferring" the execution of logic until it is explicitly called.
-    
-
-Concept example:  
-`const thunk = () => computeLater()`
-
-#### **Thunk in Redux**
-
-Redux by default accepts only **object actions**.  
-Thunk middleware changes the rule: if `dispatch()` receives a function, it **does not send it to the reducer**, but calls it with arguments:
-
-```
-(dispatch, getState) => { ... }
-```
-
-This allows:
-
-- executing asynchronous code,
-    
-- dispatching multiple regular actions sequentially,
-    
-- reading the current state through `getState()`.
-    
-
-#### **Why a Thunk Can Dispatch Functions**
-
-Because the Thunk middleware checks the type:
-
-1. If `action` is an object → send it further to the reducer.
-    
-2. If `action` is a function → execute it and pass `dispatch` and `getState` there.
-    
-
-The reducer will never see the function — it exists only in the middleware layer.
-
-#### **What Makes a Thunk Unique**
-
-- Allows running async/await inside an action.
-    
-- Gives direct control over the sequence of actions.
-    
-- Keeps the reducer pure and synchronous.
-    
-
----
-
-### Important Notes
-
-- A thunk effectively turns Redux into an asynchronous engine without violating the architecture.
-    
-- Action functions are not actions; they are instructions that create actions.
-    
-- Redux Toolkit includes Thunk by default (via `configureStore`).
+### Why it matters
+- Keeps reducers pure
+- Enables async and multi-step flows

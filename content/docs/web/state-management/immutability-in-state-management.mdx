@@ -1,69 +1,20 @@
 ---
-title: "Immutability in State Management"
-description: "Immutability means that the state is not changed directly — any update creates a new object."
+title: "Immutability"
+description: ""
 ---
 
-## Immutability in State Management
+Immutability means you never modify existing state. Each update produces a new state object.
 
-> Immutability means that the state is not changed directly — any update creates a new object.  
-> This guarantees the predictability of changes, correct operation of comparison by reference, and stable behavior of the unidirectional data flow.
+### Why it matters
+- Reliable change detection via reference checks
+- Predictable updates and debug traces
+- Enables memoization and time-travel tooling
 
----
-
-### Technical Explanation
-
-#### **Why immutability is critical**
-
-- Updates become deterministic: one action → one new state.
-    
-- It's easy to understand when data has changed using comparison by reference (===).
-    
-- Hidden mutations are prevented, which can break rendering logic or make the state inconsistent.
-    
-
-#### **Immutability in Redux**
-
-- Reducer cannot mutate state directly.
-    
-- It is obliged to return a **new object**, even if only one part changes.
-    
-- Violation of immutability breaks middleware, time-travel, and render optimization.
-    
-
-Example:  
-`state.user.name = 'Alex'` — **forbidden**, because it mutates the object.  
-`{ ...state, user: { ...state.user, name: 'Alex' } }` — correct.
-
-#### **Connection with unidirectional flow**
-
-- New state is created at the end of each dispatch → reducer cycle.
-    
-- Thanks to immutability, the UI receives a clear signal: "data has changed".
-    
-
-#### **Immutability in Redux Toolkit**
-
-- RTK uses **Immer**, which allows writing "as if mutation", but under the hood creates a new object.
-    
-- This makes the code shorter and safer.
-    
-
----
-
-### Minimal Example
+### In Redux and RTK
+- Reducers must return new objects
+- RTK uses Immer to allow mutation-like syntax while keeping immutability
 
 ```js
-// correct (immutable update)
+// correct
 return { ...state, count: state.count + 1 }
-
-// incorrect (mutation)
-state.count++
 ```
-
----
-
-### Important Notes
-
-- Immutability is a condition for the operation of structural sharing, selectors, and memoization.
-    
-- This is a direct requirement of reducer purity: a pure function cannot mutate an external object.

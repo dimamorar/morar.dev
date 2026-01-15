@@ -1,74 +1,15 @@
 ---
-title: "How the Redux Data Flow Works"
-description: "Redux uses a strictly unidirectional data flow: an action initiates a change, a reducer calculates the new state, and the Store updates the UI."
+title: "Redux Data Flow"
+description: ""
 ---
 
-## How the Redux Data Flow Works
+Redux updates always follow the same path.
 
-> Redux uses a strictly unidirectional data flow: an action initiates a change, a reducer calculates the new state, and the Store updates the UI.  
-> This fixed path makes application behavior deterministic and simplifies debugging.
+### Steps
+1. UI dispatches an action
+2. Store calls reducers
+3. Reducers return new state
+4. Store notifies subscribers
+5. UI re-renders
 
----
-
-### Technical Explanation
-
-#### **Main Flow: from Action to UI**
-
-1. **UI initiates an event**  
-    A component calls `dispatch(action)` in response to a user action or system event.
-    
-2. **Store receives the action**  
-    The Store passes the action to the root reducer (or a set of combined reducers).
-    
-3. **Reducer calculates the new state**  
-    A Reducer is a pure function that:
-    
-    - receives `previousState` and `action`
-        
-    - creates a **new state** without mutations
-        
-    - returns it to the Store
-        
-4. **Store saves the new state**  
-    The Store updates the internal state and calls subscribers (`listeners`).
-    
-5. **UI updates**  
-    Subscribed components receive the new state and re-render.
-    
-
----
-
-### Redux Flow Formula
-
-**dispatch(Action) → Reducer → New State → UI Render**
-
----
-
-### Flow Characteristics
-
-#### **No Dispatcher as in Flux**
-
-- Redux uses a single Store, and `dispatch` is a Store method.
-    
-- There is no separate routing layer.
-    
-
-#### **Reducer never performs side effects**
-
-- Only pure logic → predictable result.
-    
-
-#### **State is immutable**
-
-- Creating a new object on every update is key to correct UI updates and DevTools operation.
-    
-
----
-
-### Important Notes
-
-- The order is always the same — it's impossible to "skip" a reducer or change the state directly.
-    
-- The entire flow is synchronous until middleware (like Thunk) is connected.
-    
-- Redux DevTools shows this flow step by step — action → diff → state.
+**dispatch(Action) → reducer → new state → UI**

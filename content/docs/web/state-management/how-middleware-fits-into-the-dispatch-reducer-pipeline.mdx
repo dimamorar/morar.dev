@@ -1,70 +1,18 @@
 ---
-title: "How Middleware Fits Into the Dispatch Reducer Pipeline"
-description: "Middleware is inserted between `dispatch(action)` and the reducer call, forming a chain of functions through which every action passes."
+title: "Middleware Pipeline"
+description: ""
 ---
 
-## How Middleware Fits Into the Dispatch → Reducer Pipeline
+Middleware sits between `dispatch` and the reducer in a chain.
 
-> Middleware is inserted between `dispatch(action)` and the reducer call, forming a chain of functions through which every action passes.  
-> This allows intercepting, modifying, or stopping actions before they reach the reducer.
+### Flow
+**Action → dispatch → middleware chain → reducer → new state**
 
----
-
-### Technical Explanation
-
-#### **Middleware Flow Structure**
-
-The full action processing cycle:
-
-**Action → dispatch → Middleware Chain → Reducer → New State**
-
-- The UI calls `dispatch(action)`.
-    
-- The action is passed to the first middleware.
-    
-- Each middleware decides:
-    
-    - whether to pass the action further (`next(action)`),
-        
-    - modify it,
-        
-    - send another action,
-        
-    - stop the chain.
-    
-- At the end, the action reaches the reducer.
-    
-
-#### **Purpose of the Middleware Chain**
-
-- Separate side effects from reducers.
-    
-- Provide a modular way to extend Redux behavior.
-    
-- Allow multiple middlewares to process one action sequentially.
-    
-
-#### **How the Chain Works**
-
-Each middleware has the form:
-
+### Shape
 ```js
 store => next => action
 ```
 
-- `store` — access to `dispatch` and `getState`.
-    
-- `next` — link to the next middleware.
-    
-- `action` — the current action being processed.
-    
-
-This makes the pipeline transparent and manageable.
-
----
-
-### Important Notes
-
-- The reducer is always at the end of the chain.
-- No middleware can directly change the state.
-- The order of connecting middlewares determines the order of their execution.
+### Notes
+- Each middleware decides whether to pass, modify, or stop an action
+- Reducers are always last

@@ -1,98 +1,15 @@
 ---
-title: "What Role Does Immer Play Inside RTK Reducers"
-description: "Immer is a library that allows writing mutation code in reducers, but under the hood, it guarantees the creation of a new immutable state."
+title: "Immer in RTK"
+description: ""
 ---
 
-## What Role Does Immer Play Inside RTK Reducers
+Immer lets you write reducers that look mutable while keeping state immutable.
 
-> Immer is a library that allows writing "mutation" code in reducers, but under the hood, it guarantees the creation of a new immutable state.  
-> In Redux Toolkit, Immer completely eliminates the risks of dangerous mutations and makes reducers shorter and safer.
+### How it works
+- Creates a draft state
+- Applies your changes to the draft
+- Produces a new immutable result
 
----
-
-### Technical Explanation
-
-#### **The Core Idea of Immer**
-
-- You write code as if you are modifying an object directly.
-    
-- Immer creates a _draft_ copy of the state.
-    
-- All changes are applied to the draft.
-    
-- On exit, Immer forms a new immutable state object.
-    
-
-Thus:
-
-- the syntax is simple (like mutation),
-    
-- the behavior is safe (immutable).
-    
-
-#### **Why Immer is needed in Redux**
-
-Redux requires:
-
-- never mutate the state,
-    
-- always return a new object,
-    
-- maintain the predictability of pure reducer functions.
-    
-
-Without Immer, complex nested updates look like this:
-
-```js
-return {
-  ...state,
-  user: {
-    ...state.user,
-    profile: {
-      ...state.user.profile,
-      name: 'Alex'
-    }
-  }
-}
-```
-
-With Immer in RTK:
-
-```js
-state.user.profile.name = 'Alex'
-```
-
-Under the hood, a new immutable state is still created.
-
-#### **Advantages of Immer in RTK**
-
-- **Simplifies complex updates.**
-    
-- **Reduces mutation risks to zero.**
-    
-- **Improves the readability of reducers.**
-    
-- **Works naturally with `createSlice`.**
-    
-- **Preserves Redux optimizations**, because the new state is created correctly.
-    
-
-#### **Immer Does Not Violate Redux Principles**
-
-Although the reducer looks "mutational,"  
-in reality:
-
-- the reducer remains a pure function,
-    
-- the state remains immutable,
-    
-- the logic of Redux principles is not violated.
-    
-
----
-
-### Important Notes
-
-- Immer is activated in RTK **by default**.
-- At any time, you can return to classic immutable updates (return a new object).
-- Immer builds a tree of changes — so it is efficient even for complex structures.
+### Why it helps
+- Less boilerplate for deep updates
+- Safer reducer code

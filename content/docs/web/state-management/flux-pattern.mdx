@@ -1,79 +1,20 @@
 ---
-title: "Flux Pattern"
-description: "Flux is an architectural pattern based on a **strictly unidirectional data flow** and separation of responsibility between Action, Dispatcher, Store, and View."
+title: "Flux"
+description: ""
 ---
 
-## Flux Pattern
+Flux is an architectural pattern with a strict one-way flow and clear roles.
 
-> Flux is an architectural pattern based on a **strictly unidirectional data flow** and separation of responsibility between Action, Dispatcher, Store, and View.  
-> It was created as a response to the chaos of two-way connections in MVC and provides predictable state updates in complex UI applications.
+### Core pieces
+- Action: intent to change state
+- Dispatcher: routes actions to stores
+- Store: holds state and update logic
+- View: reads state and triggers actions
 
----
+### Why it exists
+- Avoids two-way update chaos
+- Makes updates predictable and traceable
 
-### Technical Explanation
-
-#### **Core Idea**
-
-- All state changes pass through one controlled chain.
-    
-- No direct UI → state or state → UI updates.
-    
-- Each part of the pattern is responsible for only one role.
-    
-
-#### **Flux Components**
-
-##### **Action**
-
-- A formalized description of the intent to change the state.
-    
-- Contains `type` and `payload`.
-    
-- Initiated by the View or a system event.
-    
-
-##### **Dispatcher**
-
-- The central router for all actions.
-    
-- Passes the action to each registered Store.
-    
-- Guarantees the sequence of processing.
-    
-
-##### **Store**
-
-- Stores the state of a specific domain area.
-    
-- Contains the business logic for updating the state upon receiving an action.
-    
-- Notifies the View after the state changes.
-    
-
-##### **View**
-
-- The UI layer of the application.
-    
-- Subscribes to the Store, receives the state, and displays it.
-    
-- Initiates Actions in response to user events.
-    
-
-#### **Why Flux emerged**
-
-- Two-way connections in MVC created unpredictable updates.
-    
-- It was difficult to understand what caused the change.
-    
-- Flux introduces a transparent, deterministic update path.
-    
-
----
-
-### Important Notes
-
-- Flux is not a framework, but an architectural idea.
-    
-- Redux is a simplified implementation of the same principles, but **without a Dispatcher**.
-    
-- Store in Flux contains business logic, while in Redux this role is performed by the Reducer.
+### Compared to Redux
+- Redux removes the dispatcher
+- Reducers replace store-side business logic

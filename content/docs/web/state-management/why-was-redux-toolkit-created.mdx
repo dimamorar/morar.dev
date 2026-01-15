@@ -1,91 +1,17 @@
 ---
-title: "Why Was Redux Toolkit Created"
-description: "Redux Toolkit was created to address the pain points of classic Redux: excessive boilerplate code, complex immutable updates, and the lack of a standardized str"
+title: "Why RTK"
+description: ""
 ---
 
-## Why Was Redux Toolkit Created
+Redux Toolkit was created to solve common Redux pain points.
 
-> Redux Toolkit was created to address the pain points of classic Redux: excessive boilerplate code, complex immutable updates, and the lack of a standardized structure.  
-> It makes Redux simpler, shorter, and safer while maintaining its fundamental principles.
+### Problems it fixes
+- Too much boilerplate
+- Error-prone immutable updates
+- Inconsistent project structure
+- Missing defaults for middleware and devtools
 
----
-
-### Technical Explanation
-
-#### **1. Excessive Boilerplate**
-
-Classic Redux required too much repetitive code:
-
-- manually creating actions,
-    
-- writing action creators,
-    
-- using `switch` in reducers,
-    
-- carefully updating nested objects via spread.
-    
-
-RTK automates these steps via `createSlice`.
-
-#### **2. Complexity of Immutable Updates**
-
-- It is difficult to safely update deep structures.
-    
-- Mutation errors often broke the Redux flow.
-    
-- Immer inside RTK makes immutability safe and convenient.
-    
-
-#### **3. Inconsistency of Project Structure**
-
-Before RTK, each project had its own approaches:
-
-- different folders,
-    
-- different names,
-    
-- different tools.
-    
-
-RTK standardizes the architecture:
-
-- slices,
-    
-- configureStore,
-    
-- unified async logic (createAsyncThunk).
-    
-
-#### **4. Lack of Built-in Best Practices**
-
-RTK includes:
-
-- Redux Thunk,
-    
-- DevTools,
-    
-- immutability checks,
-    
-- serializability checks.
-    
-
-All of this previously had to be added manually.
-
-#### **5. Lowering the Entry Barrier**
-
-- It is hard for beginners to understand classic Redux.
-    
-- RTK makes the API intuitive and uniform.
-    
-- Focus on business logic rather than infrastructure.
-    
-
----
-
-### Important Notes
-
-- RTK does not change the foundation of Redux — state is read-only, reducers are pure, and the data flow is unidirectional.
-    
-- It replaces old "handmade Redux" with recommended, modern practice.
-    
-- RTK has become the official standard for using Redux.
+### Outcome
+- Faster setup
+- Safer reducers
+- Standardized patterns

@@ -1,89 +1,16 @@
 ---
-title: "How Async Logic Is Implemented With Thunk"
-description: "Thunk allows performing asynchronous code because the action function receives access to `dispatch` and `getState`."
+title: "Async Thunk Flow"
+description: ""
 ---
 
-## How Async Logic Is Implemented With Thunk
+Thunk enables async work by letting `dispatch` accept functions.
 
-> Thunk allows performing asynchronous code because the action function receives access to `dispatch` and `getState`.  
-> This provides the opportunity to perform requests, wait for their completion, and dispatch regular actions in the required sequence.
+### Typical flow
+1. UI dispatches a thunk
+2. Thunk runs async work
+3. Thunk dispatches start/success/error actions
+4. Reducers update state as usual
 
----
-
-### Technical Explanation
-
-#### **Main Idea**
-
-- Regular Redux accepts only object actions.
-    
-- Thunk middleware allows passing a **function** to `dispatch`, which performs asynchronous logic.
-    
-- This function itself decides when and which actions to dispatch.
-    
-
-#### **Typical Async Flow with Thunk**
-
-1. UI calls:  
-    `dispatch(fetchData())`
-    
-2. Redux Thunk detects that it is a function and calls it:  
-    `(dispatch, getState) => { ... }`
-    
-3. Inside the thunk, you can perform:
-    
-    - `dispatch(startAction())`
-        
-    - `await fetch(...)`
-        
-    - `dispatch(successAction(data))`
-        
-    - `dispatch(errorAction(err))`
-        
-4. Reducer receives regular actions and updates the state.
-    
-
-#### **Why It's Needed**
-
-- Management of the request lifecycle (pending → success → error).
-    
-- Error handling without cluttering UI components.
-    
-- Access to the current state (`getState()`) — for conditional requests or cancellation.
-    
-
-#### **What Remains Synchronous**
-
-- Reducer.
-    
-- State update flow.
-    
-- All state changes pass only through regular actions.
-    
-
----
-
-### Minimal Example
-
-```js
-function fetchUser() {
-  return async (dispatch, getState) => {
-    dispatch({ type: 'user/loading' })
-
-    try {
-      const res = await fetch('/api/user')
-      const data = await res.json()
-      dispatch({ type: 'user/success', payload: data })
-    } catch (err) {
-      dispatch({ type: 'user/error', payload: err })
-    }
-  }
-}
-```
-
----
-
-### Important Notes
-
-- Thunk makes Redux asynchronous, but **reducers remain pure and synchronous**.
-- Most applications used Thunk before the advent of RTK Query and Saga.
-- Redux Toolkit can automatically generate async flows through `createAsyncThunk`.
+### Why it helps
+- Keeps async logic out of components
+- Maintains pure reducers

@@ -1,60 +1,15 @@
 ---
-title: "MobX Core Idea"
-description: "MobX is a reactive library for state management that uses **observable data**, **computed values**, and **reactions**, automatically synchronizing state and UI."
+title: "MobX"
+description: ""
 ---
 
-## MobX: Core Idea
+MobX is a reactive state library built on observables, computed values, and reactions.
 
-> MobX is a reactive library for state management that uses **observable data**, **computed values**, and **reactions**, automatically synchronizing state and UI.  
-> Its main principle: _"minimum code — maximum reactivity"_.
+### Core pieces
+- `observable` state
+- `computed` derived values
+- `reaction` side effects on change
 
----
-
-### Technical Explanation
-
-#### **Reactivity as the basis**
-
-- Data becomes **observable** — MobX tracks who reads them.
-    
-- When an observable changes, MobX automatically updates all dependent calculations and components.
-    
-- You do not need to manually call `dispatch`, create reducers, or immutable copies.
-    
-
-#### **Three key primitives**
-
-1. **observable** — state that MobX tracks
-    
-2. **computed** — a value that is cached and reacts only to relevant changes
-    
-3. **reaction** — side logic that runs automatically
-    
-
-#### **Approach "mutable state + tracking"**
-
-Unlike Redux:
-
-- MobX **allows mutations directly** (`store.count++`).
-    
-- Does not use immutable patterns.
-    
-- Maintains a _dependency graph_ and knows exactly what needs to be re-rendered.
-    
-
-#### **How UI updates**
-
-Components (for example, React components with `observer`) become reactive:
-
-- if the component reads an observable — MobX subscribes it to updates
-    
-- when the observable changes, MobX re-renders only components that depend on this data
-    
-
-This is very efficient and reminds of the way Signals work.
-
----
-
-### Important Notes
-- MobX is not a Flux/Redux approach; it is a reactive model, not a one-way flow.
-- Mutations are allowed, but MobX fully controls "when and what to re-render".
-- Very well suited for complex forms, authorization, rich-client UI, pages with a large number of related states.
+### How it feels
+- Direct mutation is allowed
+- Updates are automatic and fine-grained

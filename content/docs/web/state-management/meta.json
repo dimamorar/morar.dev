@@ -1,4 +1,28 @@
 {
   "title": "State Management",
-  "pages": []
+  "pages": [
+    "statemanagment.mdx",
+    "unidirectional-data-flow.mdx",
+    "single-source-of-truth.mdx",
+    "immutability-in-state-management.mdx",
+    "flux-pattern.mdx",
+    "what-is-a-dispatcher-flux-context.mdx",
+    "what-is-redux.mdx",
+    "three-core-principles-of-redux.mdx",
+    "how-the-redux-data-flow-works.mdx",
+    "what-is-the-store.mdx",
+    "what-is-an-action.mdx",
+    "what-is-a-reducer.mdx",
+    "what-is-middleware-in-redux.mdx",
+    "how-middleware-fits-into-the-dispatch-reducer-pipeline.mdx",
+    "what-problems-does-middleware-solve.mdx",
+    "what-is-a-thunk-and-why-does-it-allow-dispatching-functions.mdx",
+    "how-async-logic-is-implemented-with-thunk.mdx",
+    "what-is-redux-toolkit.mdx",
+    "why-was-redux-toolkit-created.mdx",
+    "how-createasyncthunk-works.mdx",
+    "what-role-does-immer-play-inside-rtk-reducers.mdx",
+    "reactive-state.mdx",
+    "mobx-core-idea.mdx"
+  ]
 }

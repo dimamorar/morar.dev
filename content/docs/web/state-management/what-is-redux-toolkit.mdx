@@ -1,63 +1,17 @@
 ---
-title: "What Is Redux Toolkit"
-description: "Redux Toolkit (RTK) is the official high-level API for Redux, created to reduce boilerplate code, ensure safe immutability, and standardize architecture."
+title: "Redux Toolkit"
+description: ""
 ---
 
-## What Is Redux Toolkit
+Redux Toolkit (RTK) is the official, recommended way to use Redux.
 
-> Redux Toolkit (RTK) is the official high-level API for Redux, created to reduce boilerplate code, ensure safe immutability, and standardize architecture.  
-> It simplifies Store configuration, working with reducers, actions, and asynchronous logic.
+### What it adds
+- `configureStore` with safe defaults
+- `createSlice` for reducers + actions
+- Immer for immutable updates
+- `createAsyncThunk` and RTK Query for async/data
 
----
-
-### Technical Explanation
-
-#### **Main Goal of RTK**
-
-- Simplify the use of Redux.
-    
-- Reduce the amount of boilerplate (actions, switch, immutable updates).
-    
-- Embed best practices directly into the tools.
-    
-- Make Redux architecture safer and more predictable.
-    
-
-#### **What RTK Adds**
-
-- **Immer** for safe immutable updates via "draft-state."
-    
-- **createSlice** for automatic generation of reducers and actions.
-    
-- **configureStore** with a ready-made configuration of middleware and DevTools.
-    
-- **createAsyncThunk** with a standard async pattern pending/fulfilled/rejected.
-    
-- **RTK Query** for managing server data and caching.
-    
-
-#### **Why It's Important**
-
-- No longer need to manually write action creators.
-    
-- Reducers can be written via mutation (but under the hood, a new state is created).
-    
-- Store settings are uniform and safe by default.
-    
-- Asynchronous logic becomes standardized.
-    
-
-#### **Relationship to Redux**
-
-- RTK is not a replacement for Redux — it is the recommended way to use it.
-    
-- It makes Redux modern and convenient while maintaining all principles.
-    
-
----
-
-### Important Notes
-
-- RTK has been the officially recommended way to use Redux since 2020.
-- Most new Redux projects use RTK by default.
-- RTK eliminates the risk of incorrect mutations and simplifies developer onboarding.
+### Why it matters
+- Less boilerplate
+- Fewer mutation mistakes
+- Consistent project structure

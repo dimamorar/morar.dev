@@ -1,71 +1,14 @@
 ---
-title: "What Is a Dispatcher Flux Context"
-description: "A Dispatcher is the central router of the Flux architecture, responsible for delivering each action to all registered Stores."
+title: "Dispatcher"
+description: ""
 ---
 
-## What Is a Dispatcher (Flux Context)
+In Flux, the dispatcher is the central router for actions. It delivers each action to all registered stores in a controlled order.
 
-> A Dispatcher is the central router of the Flux architecture, responsible for delivering each action to all registered Stores.  
-> It ensures sequential processing of actions and guarantees that state updates pass through a single controlled path.
+### Why it matters
+- Keeps updates sequential and predictable
+- Prevents stores from talking to each other directly
 
----
-
-### Technical Explanation
-
-#### **Role of the Dispatcher in Flux**
-
-- Receives actions from the View or other sources.
-    
-- Passes the action to _every_ Store that is subscribed to events.
-    
-- Manages the order of action processing, preventing races and unpredictable updates.
-    
-- Eliminates the chaos of two-way connections characteristic of MVC.
-    
-
-#### **Why It's Important in Flux**
-
-- Makes the data flow centralized and deterministic.
-    
-- Stores cannot communicate with each other directly → only through the Dispatcher.
-    
-- Eliminates circular dependencies between stores.
-    
-
-#### **Dispatcher is Absent in Redux**
-
-Redux simplified the Flux model:
-
-- **There is no Dispatcher in Redux.**
-    
-- Its role is replaced by:
-    
-    - a single Store,
-        
-    - the `dispatch()` mechanism built into the Store,
-        
-    - the reducer function, which defines state updates.
-    
-
-The path in Redux looks like this:
-
-**dispatch(Action) → reducer → new state → UI**
-
-And the routing role is not needed because:
-
-- there is only one Store,
-    
-- reducers are combined into one composition,
-    
-- actions are not sent out to multiple Stores.
-    
-
----
-
-### Important Notes
-
-- The Dispatcher is a key component of Flux, but **not a part of Redux**.
-    
-- Questions about the Dispatcher are often used to test understanding of the difference between Flux and Redux.
-    
-- Redux removed the Dispatcher for architectural simplicity and predictability.
+### Redux difference
+- Redux removes the dispatcher
+- `dispatch()` and reducers handle the flow inside a single store
