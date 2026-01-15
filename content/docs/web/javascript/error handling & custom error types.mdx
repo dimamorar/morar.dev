@@ -1,10 +1,10 @@
 ---
-title: "Error Handling & Custom Error Types"
+title: "Error Handling"
 description: ""
 ---
 
 > Error handling in JavaScript provides control over unforeseen situations during code execution.
-> 
+>
 > It uses `try...catch...finally` structures, error objects (`Error`), and the ability to create **custom error types**.
 
 ### Error Handling Basics
@@ -14,11 +14,11 @@ description: ""
 
 ```jsx
 try {
-  const data = JSON.parse('invalid json');
+  const data = JSON.parse("invalid json");
 } catch (err) {
-  console.error('Parsing error:', err.message);
+  console.error("Parsing error:", err.message);
 } finally {
-  console.log('Completed');
+  console.log("Completed");
 }
 ```
 
@@ -27,12 +27,12 @@ If an error is not caught, code execution is interrupted and an exception is thr
 ### `Error` Object
 
 - A built-in error type containing standard properties:
-    - `name` — the name of the error (`Error`, `TypeError`, `ReferenceError`, etc.);
-    - `message` — error description;
-    - `stack` — call trace (for debugging).
+  - `name` — the name of the error (`Error`, `TypeError`, `ReferenceError`, etc.);
+  - `message` — error description;
+  - `stack` — call trace (for debugging).
 
 ```jsx
-throw new Error('Something went wrong');
+throw new Error("Something went wrong");
 ```
 
 ### Asynchronous Errors
@@ -43,11 +43,11 @@ throw new Error('Something went wrong');
 ```jsx
 async function fetchData() {
   try {
-    const res = await fetch('/api');
+    const res = await fetch("/api");
     const data = await res.json();
     return data;
   } catch (err) {
-    console.error('Request error:', err);
+    console.error("Request error:", err);
   }
 }
 ```
@@ -62,11 +62,11 @@ An error inside a promise is **not caught** by an external `try...catch` unless 
 class ValidationError extends Error {
   constructor(message) {
     super(message);
-    this.name = 'ValidationError';
+    this.name = "ValidationError";
   }
 }
 
-throw new ValidationError('Invalid input data');
+throw new ValidationError("Invalid input data");
 ```
 
 This approach makes it easier to distinguish between error types during debugging and logging.

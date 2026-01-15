@@ -1,5 +1,5 @@
 ---
-title: "How `Array.reduce()` Works"
+title: "Array.reduce()"
 description: ""
 ---
 
@@ -8,7 +8,7 @@ description: ""
 ### Signature
 
 ```jsx
-arr.reduce(callback(accumulator, currentValue, index, array), initialValue)
+arr.reduce(callback(accumulator, currentValue, index, array), initialValue);
 ```
 
 ### How it works
@@ -16,7 +16,7 @@ arr.reduce(callback(accumulator, currentValue, index, array), initialValue)
 1. **Accumulator** — stores the result of the previous function call.
 2. **Current Value** — the element currently being processed.
 3. If **`initialValue`** is specified, it is used as the initial value of the accumulator.
-    If not specified — `reduce()` will take the **first element of the array** as the start, and iteration will begin from the second element.
+   If not specified — `reduce()` will take the **first element of the array** as the start, and iteration will begin from the second element.
 4. In each iteration, the result of the callback is assigned to the accumulator.
 5. After completing all iterations, the **final value of the accumulator** is returned.
 
@@ -34,7 +34,7 @@ const sum = numbers.reduce((acc, val) => acc + val, 0);
 - **Does not mutate** the original array.
 - Works with **any data type** (numbers, strings, objects).
 - Suitable for:
-    - summing and aggregating data,
-    - counting element frequency,
-    - grouping by properties,
-    - transforming arrays into objects.
+  - summing and aggregating data,
+  - counting element frequency,
+  - grouping by properties,
+  - transforming arrays into objects.

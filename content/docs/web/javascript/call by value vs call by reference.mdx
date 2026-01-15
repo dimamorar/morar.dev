@@ -1,5 +1,5 @@
 ---
-title: "Call by Value vs. Call by Reference"
+title: "By Value vs By Reference"
 description: ""
 ---
 
@@ -13,12 +13,12 @@ description: ""
 ```jsx
 function modifyPrimitive(num) {
   num = num + 10;
-  console.log('Inside:', num); // 20
+  console.log("Inside:", num); // 20
 }
 
 let value = 10;
 modifyPrimitive(value);
-console.log('Outside:', value); // 10
+console.log("Outside:", value); // 10
 ```
 
 Primitives are **immutable** and are passed as a separate value.
@@ -31,22 +31,22 @@ Primitives are **immutable** and are passed as a separate value.
 
 ```jsx
 function modifyObject(obj) {
-  obj.name = 'Jane';
-  console.log('Inside modify:', obj); // { name: 'Jane', age: 30 }
+  obj.name = "Jane";
+  console.log("Inside modify:", obj); // { name: 'Jane', age: 30 }
 }
 
-let person = { name: 'John', age: 30 };
+let person = { name: "John", age: 30 };
 modifyObject(person);
-console.log('Outside:', person); // { name: 'Jane', age: 30 }
+console.log("Outside:", person); // { name: 'Jane', age: 30 }
 
 function reassignObject(obj) {
-  obj = { city: 'New York' };
-  console.log('Inside reassign:', obj); // { city: 'New York' }
+  obj = { city: "New York" };
+  console.log("Inside reassign:", obj); // { city: 'New York' }
 }
 
-let data = { country: 'USA' };
+let data = { country: "USA" };
 reassignObject(data);
-console.log('Outside:', data); // { country: 'USA' }
+console.log("Outside:", data); // { country: 'USA' }
 ```
 
 Internal **property modification** is preserved, but **reassigning the object** inside the function does not affect the external variable.

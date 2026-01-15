@@ -9,16 +9,16 @@ description: ""
 
 ---
 
-### Class lifecycle (React <=16)
+### Class lifecycle (React < = 16)
 
-* Logic is split between phases:
-  * `componentDidMount`
-  * `componentDidUpdate`
-  * `componentWillUnmount`
-* Side effect often split between multiple methods
-* Manual `prevProps / prevState` checks required
-* Rigid phase model
-* **Support for Error Boundaries**
+- Logic is split between phases:
+  - `componentDidMount`
+  - `componentDidUpdate`
+  - `componentWillUnmount`
+- Side effect often split between multiple methods
+- Manual `prevProps / prevState` checks required
+- Rigid phase model
+- **Support for Error Boundaries**
 
 ```js
 componentDidCatch(error, info)
@@ -31,11 +31,11 @@ Classes are the **only way** to catch rendering errors in child components.
 
 ### useEffect (React 16.8+)
 
-* Single API for side effects
-* Behavior controlled by dependency array
-* Cleanup described declaratively
-* Logic easily extracted into custom hooks
-* **Does not catch rendering errors**
+- Single API for side effects
+- Behavior controlled by dependency array
+- Cleanup described declaratively
+- Logic easily extracted into custom hooks
+- **Does not catch rendering errors**
 
 ```js
 useEffect(() => {
@@ -50,31 +50,30 @@ useEffect(() => {
 
 ### Error Boundaries — Fundamental Difference
 
-* Error Boundary:
+- Error Boundary:
 
-  * catches errors during render / commit phases
-  * isolates UI crashes
-* `useEffect`:
-	- runs **after a successful commit**
-	- cannot be used for error recovery
-Therefore Error Boundaries **cannot be implemented via hooks**.
+  - catches errors during render / commit phases
+  - isolates UI crashes
+
+- `useEffect`: - runs **after a successful commit** - cannot be used for error recovery
+  Therefore Error Boundaries **cannot be implemented via hooks**.
 
 ---
 
 ### Conceptual Difference
 
-* **Class lifecycle** → phase-based, imperative model + error interception
-* **useEffect** → declarative, data-driven model without rendering error control
+- **Class lifecycle** → phase-based, imperative model + error interception
+- **useEffect** → declarative, data-driven model without rendering error control
 
 ---
 
 ### Practical modern pattern
 
-* Business logic, data fetching, subscriptions → **hooks**
-* Error handling UI → **class-based Error Boundary**
-* In real-world projects:
+- Business logic, data fetching, subscriptions → **hooks**
+- Error handling UI → **class-based Error Boundary**
+- In real-world projects:
 
-  * classes are used **almost exclusively** for Error Boundaries
+  - classes are used **almost exclusively** for Error Boundaries
 
 ---
 
@@ -82,4 +81,3 @@ Therefore Error Boundaries **cannot be implemented via hooks**.
 
 `useEffect` replaces lifecycle methods for side effects but **does not replace Error Boundaries**.
 Catching rendering errors is only possible via class components, so classes are still necessary in modern React.
-

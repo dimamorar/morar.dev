@@ -1,5 +1,5 @@
 ---
-title: "How to Iterate Array of Promises"
+title: "Iterate Promises"
 description: ""
 ---
 
@@ -13,7 +13,7 @@ The most efficient way if operations are **independent** of each other.
 
 ```jsx
 const urls = ["a.json", "b.json", "c.json"];
-const promises = urls.map(url => fetch(url));
+const promises = urls.map((url) => fetch(url));
 const results = await Promise.all(promises);
 console.log(results);
 ```
@@ -56,7 +56,10 @@ For order control, use `for...of` or `for await...of`.
 You can combine approaches — run **parts of tasks in parallel**, while groups are performed **sequentially**.
 
 ```jsx
-const chunks = [[1, 2, 3], [4, 5, 6]];
+const chunks = [
+  [1, 2, 3],
+  [4, 5, 6],
+];
 
 for (const group of chunks) {
   const results = await Promise.all(group.map(processItem));

@@ -1,5 +1,5 @@
 ---
-title: "Difference between `document.ready()` and `window.onload()`"
+title: "document.ready() vs window.onload()"
 description: ""
 ---
 
@@ -32,13 +32,13 @@ window.addEventListener("load", callback);
 
 ### Key Differences
 
-| Feature | `document.ready()` / `DOMContentLoaded` | `window.onload()` |
-| --- | --- | --- |
-| **Trigger Timing** | After DOM construction | After all resources load |
-| **Wait for External Files** | ❌ No | ✅ Yes |
-| **Typical Scenarios** | UI initialization, DOM manipulations | Working with images, layout |
-| **Response Speed** | Faster | Slower |
-| **Modern Analogue** | `document.addEventListener('DOMContentLoaded', ...)` | `window.addEventListener('load', ...)` |
+| Feature                     | `document.ready()` / `DOMContentLoaded`              | `window.onload()`                      |
+| --------------------------- | ---------------------------------------------------- | -------------------------------------- |
+| **Trigger Timing**          | After DOM construction                               | After all resources load               |
+| **Wait for External Files** | ❌ No                                                | ✅ Yes                                 |
+| **Typical Scenarios**       | UI initialization, DOM manipulations                 | Working with images, layout            |
+| **Response Speed**          | Faster                                               | Slower                                 |
+| **Modern Analogue**         | `document.addEventListener('DOMContentLoaded', ...)` | `window.addEventListener('load', ...)` |
 
 ### Key Ideas
 

@@ -1,5 +1,5 @@
 ---
-title: "Difference between `==` and `===`"
+title: "== vs ==="
 description: ""
 ---
 
@@ -14,18 +14,18 @@ This affects the result when using the comparison operators.
 ### When conversion occurs
 
 - **Implicit:**
-    Happens automatically during operations with different types:
-    `'5' + 2 → "52"`, `5 + '2' → "52"`, `5 * '2' → 10`.
+  Happens automatically during operations with different types:
+  `'5' + 2 → "52"`, `5 + '2' → "52"`, `5 * '2' → 10`.
 - **Explicit:**
-    When conversion is performed manually:
-    `Number('5')`, `String(123)`, `Boolean(0)`.
+  When conversion is performed manually:
+  `Number('5')`, `String(123)`, `Boolean(0)`.
 
 ### Key Differences
 
 - `==` compares values **with type conversion**.
-    Example: `5 == '5' // true`
+  Example: `5 == '5' // true`
 - `===` compares values **without type conversion** (strict comparison).
-    Example: `5 === '5' // false`
+  Example: `5 === '5' // false`
 - It is recommended to always use `===` to avoid non-obvious results and logic errors.
 
 ### Links

@@ -1,21 +1,25 @@
 ---
-title: "Browser"
+title: "How Browser Works"
 description: ""
 ---
 
 ## 1. Navigation and Resource Loading
 
 ### DNS
+
 - The browser converts the domain name (`example.com`) into an **IP address** through DNS.
 - If the site is visited for the first time, a search for the DNS record is performed.
 
 ### TCP Handshake
+
 - A connection to the server is established through a **three-way handshake** (SYN → SYN-ACK → ACK).
 
 ### TLS Negotiations
+
 - For HTTPS, a **secure connection** is created: a cipher is chosen, the server is verified, a secure channel is established.
 
 ### HTTP Request
+
 - The browser sends a **GET request** to the server to obtain HTML and resources (CSS, JS, images).
 
 ## 2. Critical Rendering Path
@@ -23,24 +27,29 @@ description: ""
 After receiving the first bytes of HTML, the browser begins **parsing** and building internal models.
 
 ### 2.1 HTML Parsing → DOM
+
 - HTML is broken down into tokens (tags, attributes) and converted into a **DOM tree**.
 - To speed up loading, there is a **preload scanner**, which requests resources (CSS, JS, fonts) in advance.
 
 ### 2.2 CSS Parsing → CSSOM
+
 - CSS files create a **CSSOM tree**, similar to DOM, containing cascading styles.
 - Includes **default browser styles**.
 - Rules are applied **cascadingly** (from general to more specific).
 
 ### 2.3 Render Tree
+
 - DOM and CSSOM combine into a **Render Tree**, which includes only **visible nodes**.
 - Each node is assigned calculated styles.
 
 ### 2.4 Layout / Reflow
+
 - **Sizes and positions** of elements are calculated.
 - Start with `body` → descendants.
 - **Reflow**: recalculation of sizes during changes (for example, loading an image without specified sizes).
 
 ### 2.5 Paint & Compositing
+
 - Render nodes turn into **pixels on the screen**: text, colors, borders, shadows, images.
 - The stage should fit into **16.67 ms per frame** for smooth animation.
 - If elements are on **separate layers**, the browser uses the **GPU** to speed up composition.
@@ -48,11 +57,12 @@ After receiving the first bytes of HTML, the browser begins **parsing** and buil
 ## 3. Page Interactivity
 
 ### Time to Interactive (TTI)
+
 - **A page can be visible, but not yet interactive**, if the main thread is busy processing JavaScript.
 - **TTI** is the time from the first request to the moment when the page reacts to user actions in ≤50 ms.
 - Problems of reduced interactivity:
-    - Loading large JS files (for example, 2 MB),
-    - Scripts executing after `onload`,
-    - Busy main thread due to JS compilation/execution.
+  - Loading large JS files (for example, 2 MB),
+  - Scripts executing after `onload`,
+  - Busy main thread due to JS compilation/execution.
 - Consequence: the user sees the page, but **cannot click, scroll or interact**.
 - **Optimization:** use **defer/async**, code splitting, avoid blocking scripts.

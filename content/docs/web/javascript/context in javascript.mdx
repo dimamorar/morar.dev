@@ -1,10 +1,10 @@
 ---
-title: "Context in JavaScript"
+title: "Context"
 description: ""
 ---
 
 > Context (execution context) is the value pointed to by the `this` keyword during code execution.
-> 
+>
 > Context defines the **owner object** within which the function was called and is set **dynamically at call time**.
 
 ### Context vs Scope
@@ -16,19 +16,19 @@ description: ""
 ### Context Types
 
 1. **Global Context**
-    
-    When code runs outside a function — `this` points to the global object (`window` in the browser, `global` in Node.js).
-    
+
+   When code runs outside a function — `this` points to the global object (`window` in the browser, `global` in Node.js).
+
 2. **Function Context**
-    - Regular call: `this` = `undefined` (in strict mode) or the global object.
-    - Method call: `this` refers to the object.
+   - Regular call: `this` = `undefined` (in strict mode) or the global object.
+   - Method call: `this` refers to the object.
 3. **Constructor Context**
-    
-    When using `new`, `this` points to the **new object instance**.
-    
+
+   When using `new`, `this` points to the **new object instance**.
+
 4. **Manual Context Control**
-    
-    Context can be explicitly set using **`call()`**, **`apply()`**, **`bind()`**.
+
+   Context can be explicitly set using **`call()`**, **`apply()`**, **`bind()`**.
 
 ### Key Ideas
 

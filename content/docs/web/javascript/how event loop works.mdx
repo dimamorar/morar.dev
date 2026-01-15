@@ -1,5 +1,5 @@
 ---
-title: "How Event Loop Works"
+title: "Event Loop"
 description: ""
 ---
 
@@ -40,13 +40,13 @@ description: ""
 
 ### Microtask vs Macrotask
 
-| Characteristic | **Microtask** | **Macrotask** |
-| ---------------- | ----------------------------------------------------------- | ----------------------------------------------- |
-| **Examples** | `Promise.then`, `queueMicrotask`, `MutationObserver` | `setTimeout`, `setInterval`, DOM events |
-| **Source** | Internal JS APIs | External environment APIs (browser / Node.js) |
-| **Priority** | Executed **immediately after the current task**, before rendering | Executed **one per iteration** of the Event Loop |
-| **Usage** | Short operations requiring immediate processing | Asynchronous operations, timers, events |
-| **Sequence** | All microtasks are executed **before the next macrotask** | After clearing microtasks and possible rendering |
+| Characteristic | **Microtask**                                                     | **Macrotask**                                    |
+| -------------- | ----------------------------------------------------------------- | ------------------------------------------------ |
+| **Examples**   | `Promise.then`, `queueMicrotask`, `MutationObserver`              | `setTimeout`, `setInterval`, DOM events          |
+| **Source**     | Internal JS APIs                                                  | External environment APIs (browser / Node.js)    |
+| **Priority**   | Executed **immediately after the current task**, before rendering | Executed **one per iteration** of the Event Loop |
+| **Usage**      | Short operations requiring immediate processing                   | Asynchronous operations, timers, events          |
+| **Sequence**   | All microtasks are executed **before the next macrotask**         | After clearing microtasks and possible rendering |
 
 > In other words, microtasks are executed earlier than macrotasks — they create an internal priority cycle within one step of the Event Loop.
 

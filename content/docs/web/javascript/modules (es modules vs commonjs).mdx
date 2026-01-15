@@ -1,5 +1,5 @@
 ---
-title: "Modules (ES Modules vs. CommonJS)"
+title: "ES Modules vs. CommonJS"
 description: ""
 ---
 
@@ -15,11 +15,13 @@ description: ""
 
 ```jsx
 // file: math.js
-export function add(a, b) { return a + b; }
+export function add(a, b) {
+  return a + b;
+}
 export const PI = 3.14;
 
 // file: main.js
-import { add, PI } from './math.js';
+import { add, PI } from "./math.js";
 console.log(add(2, PI));
 ```
 
@@ -36,7 +38,7 @@ Each module has its own **lexical scope**, and `this` at the top level is equal 
 module.exports = { add: (a, b) => a + b };
 
 // file: main.js
-const { add } = require('./math');
+const { add } = require("./math");
 console.log(add(2, 3));
 ```
 
@@ -44,14 +46,14 @@ CommonJS does not support **tree-shaking** and cannot be used directly in the br
 
 ### Key Differences
 
-| Feature | **ES Modules (ESM)** | **CommonJS (CJS)** |
-| --- | --- | --- |
-| Loading | Asynchronous | Synchronous |
-| Import / Export | `import` / `export` | `require()` / `module.exports` |
-| Dependency Analysis | Static | Dynamic |
-| Tree-shaking | ✅ Yes | ❌ No |
-| Scope | Lexical (strict) | General (file as a function) |
-| Support | Browser, Node.js (ESM mode) | Node.js (classic mode) |
+| Feature             | **ES Modules (ESM)**        | **CommonJS (CJS)**             |
+| ------------------- | --------------------------- | ------------------------------ |
+| Loading             | Asynchronous                | Synchronous                    |
+| Import / Export     | `import` / `export`         | `require()` / `module.exports` |
+| Dependency Analysis | Static                      | Dynamic                        |
+| Tree-shaking        | ✅ Yes                      | ❌ No                          |
+| Scope               | Lexical (strict)            | General (file as a function)   |
+| Support             | Browser, Node.js (ESM mode) | Node.js (classic mode)         |
 
 ### Additional Information
 
@@ -59,9 +61,9 @@ CommonJS does not support **tree-shaking** and cannot be used directly in the br
 - Extensions: `.mjs` for ESM, `.cjs` for CommonJS.
 - Systems can be mixed with dynamic import:
 
-    ```jsx
-    const module = await import('./module.js');
-    ```
+  ```jsx
+  const module = await import("./module.js");
+  ```
 
 ### Key Ideas
 

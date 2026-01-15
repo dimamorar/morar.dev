@@ -1,5 +1,5 @@
 ---
-title: "Data Types in JavaScript"
+title: "Data Types"
 description: ""
 ---
 
@@ -10,21 +10,21 @@ description: ""
 Store the **actual value**, not a reference.
 Passed **by value**.
 
-| Type | Description |
-| ------------- | ----------------------------------------------------------- |
-| **Number** | Numeric values: `10`, `3.14`, `-5` |
-| **String** | Text strings: `"Hello"`, `'JS'` |
-| **Boolean** | Logical values: `true`, `false` |
-| **Null** | Intentional absence of a value |
-| **Undefined** | Variable declared but without a value |
-| **Symbol** | Unique and immutable identifier |
-| **BigInt** | Very large integers, larger than `Number.MAX_SAFE_INTEGER` |
+| Type          | Description                                                |
+| ------------- | ---------------------------------------------------------- |
+| **Number**    | Numeric values: `10`, `3.14`, `-5`                         |
+| **String**    | Text strings: `"Hello"`, `'JS'`                            |
+| **Boolean**   | Logical values: `true`, `false`                            |
+| **Null**      | Intentional absence of a value                             |
+| **Undefined** | Variable declared but without a value                      |
+| **Symbol**    | Unique and immutable identifier                            |
+| **BigInt**    | Very large integers, larger than `Number.MAX_SAFE_INTEGER` |
 
 ```jsx
-typeof 42;        // 'number'
-typeof 'Hello';   // 'string'
-typeof null;      // 'object' (historical bug)
-typeof Symbol();  // 'symbol'
+typeof 42; // 'number'
+typeof "Hello"; // 'string'
+typeof null; // 'object' (historical bug)
+typeof Symbol(); // 'symbol'
 ```
 
 Primitives are **immutable** — their values cannot be changed without creating a new one.
@@ -34,16 +34,16 @@ Primitives are **immutable** — their values cannot be changed without creating
 Store a **reference (address)** to an object in memory.
 Passed **by reference**.
 
-| Type | Description |
-| --- | --- |
-| **Object** | Collection of key–value pairs |
-| **Array** | Ordered list of values (a special type of object) |
+| Type         | Description                                                   |
+| ------------ | ------------------------------------------------------------- |
+| **Object**   | Collection of key–value pairs                                 |
+| **Array**    | Ordered list of values (a special type of object)             |
 | **Function** | Object that can be called (has an internal `[[Call]]` method) |
 
 ```jsx
-typeof {};             // 'object'
-typeof [];             // 'object'
-typeof function() {};  // 'function'
+typeof {}; // 'object'
+typeof []; // 'object'
+typeof function () {}; // 'function'
 ```
 
 Arrays and functions are **subtypes of objects**, so `typeof []` returns `'object'`.
@@ -57,6 +57,6 @@ Arrays and functions are **subtypes of objects**, so `typeof []` returns `'objec
 - For accurate type determination of complex structures, use:
 
 ```jsx
-Array.isArray([]);         // true
-obj.constructor === Object // true
+Array.isArray([]); // true
+obj.constructor === Object; // true
 ```
