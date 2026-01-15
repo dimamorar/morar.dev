@@ -6,8 +6,8 @@
     "what-happens-when-you-run-git-add-and-git-commit",
     "how-does-git-store-data-snapshots-or-differences",
     "git-checkout-vs-git-switch",
-    "git merge vs git rebase",
-    "merge commit vs squash merge vs rebase merge",
+    "git-merge-vs-git-rebase",
+    "merge-commit-vs-squash-merge-vs-rebase-merge",
     "detached-head",
     "cherry-pick"
   ]
