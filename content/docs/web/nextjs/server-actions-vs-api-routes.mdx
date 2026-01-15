@@ -1,88 +1,25 @@
 ---
-title: "Server Actions vs. API Routes"
-description: "Server Actions are direct server functions that React calls without an HTTP request."
+title: "Actions vs API Routes"
+description: ""
 ---
-
-## **How Server Actions differ from API Routes in Next.js**
-
-> Server Actions are direct server functions that React calls without an HTTP request.  
-> API Routes are full-fledged HTTP endpoints that serve clients, mobile applications, or any third-party systems.  
-> Server Actions are suitable for internal mutations in the UI, while API Routes are for integrations and public APIs.
-
----
-
-### Technical Explanation
-
-#### Server Actions
-
-- Executed **directly on the server**, without the HTTP protocol.
-    
-- Called from:
-    
-    - forms (`action={fn}`),
-        
-    - code (import and call).
-        
-- Intended for **internal mutations**: changing a profile, creating records, updating state.
-    
-- Not accessible from the outside (no public endpoint).
-    
-- Do not add JS to the client bundle.
-    
-- Have access to the database, cookies, and server secrets.
-    
-
-**Suitable for:**  
-UI interactions, CRUD inside the application, forms.
-
----
-
-#### API Routes (Route Handlers)
-
-- Implement **full-fledged HTTP endpoints**.
-    
-- Called from any client: browser, mobile application, backend services.
-    
-- Needed when:
-    
-    - an external API is needed;
-        
-    - there is integration with third-party systems;
-        
-    - methods need to be controlled (GET/POST/PUT/DELETE).
-        
-- Have all HTTP aspects:
-    
-    - statuses, headers, CORS, cookies, streaming responses.
-    
-
-**Minimal GET example:**
-
+Server Actions are direct server calls from React. API Routes are HTTP endpoints for external clients.
+## Server Actions
+- Run on the server without HTTP.
+- Called via forms or direct imports.
+- For internal mutations and UI workflows.
+- Not publicly accessible; no client bundle JS.
+- Full access to DB, cookies, and secrets.
+## API Routes (Route Handlers)
+- HTTP endpoints callable by any client.
+- Use for external APIs, integrations, webhooks, mobile.
+- Full HTTP surface: status, headers, CORS, streaming.
 ```js
 export function POST(request) {
   return Response.json({ ok: true });
 }
 ```
-
----
-
-### Key Differences
-
-#### Protocol
-
-- Server Actions → **React protocol, without HTTP**
-    
-- API Routes → **HTTP API**
-    
-
-#### Accessibility
-- Server Actions → internal to the UI
-- API Routes → accessible to external clients
-
-#### Performance
-- Server Actions → minimal overhead, no fetch
-- API Routes → network request, full HTTP cycle
-
-#### Purpose
-- Server Actions → forms, local mutations
-- API Routes → public APIs, integrations, webhooks
+## Key differences
+- Protocol: React vs HTTP.
+- Access: internal UI vs public/external.
+- Overhead: no fetch vs network request.
+- Purpose: mutations vs integrations.

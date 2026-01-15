@@ -1,101 +1,32 @@
 ---
-title: "Static Generation and ISR"
-description: "App Router automatically determines whether a page is static, dynamic, or revalidatable."
+title: "Static Generation"
+description: ""
 ---
-
-## **How static generation works in App Router (`revalidate`, ISR, static fetch)**
-
-> App Router automatically determines whether a page is static, dynamic, or revalidatable.  
-> Static pages are generated during build or updated in the background via ISR.  
-> Cache policies are defined at the route level (`revalidate`) or at the `fetch` level.
-
----
-
-### Technical Explanation
-
-#### Static Rendering (SSG)
-
-- Enabled automatically if:
-    
-    - the route has no dynamic parameters,
-        
-    - `fetch` does not contain `no-store`,
-        
-    - there is no access to cookies/headers.
-        
-- HTML + RSC payload is generated **during build**.
-    
-- Suitable for pages with stable data.
-    
-
----
-
-#### ISR (Incremental Static Regeneration)
-
-- Allows Next.js to update static pages **in the background** after a certain time.
-    
-- Configured via:
-    
-
-##### 1. At the route level:
-
+App Router decides whether a page is static, dynamic, or revalidatable based on cache rules.
+## Static rendering (SSG)
+- Automatic when no dynamic params, no `no-store`, no cookies/headers.
+- HTML + RSC payload generated at build time.
+## ISR
+- Background revalidation after a time window.
 ```js
-export const revalidate = 60; // ISR every minute
+export const revalidate = 60;
 ```
-
-##### 2. At the fetch level:
-
 ```js
 fetch(url, { next: { revalidate: 120 } });
 ```
-
-#### How ISR Works
-
-1. The user receives the **cached version**.
-    
-2. If the `revalidate` time has passed, Next.js triggers a background update.
-    
-3. The new version replaces the old one after generation.
-    
-4. No delays for the user.
-    
-
----
-
-#### Static Fetch
-
-- Any `fetch()` in RSC with `cache: "force-cache"` makes the data static.
-    
-- All requests are cached separately:
-    
-    - Data Cache (fetch cache)
-        
-    - RSC Cache
-        
-    - Full-Route Cache
-    
-
----
-
-#### What makes a route dynamic
-
-- `fetch({ cache: "no-store" })`
-    
-- dependency on cookies/headers
-    
-- `export const dynamic = "force-dynamic"`
-    
-- dynamic parameters (without pre-generation)
-    
-
----
-
-### Summary of Behavior
-
+## How ISR works
+1. User gets cached version.
+2. After `revalidate`, Next.js regenerates in background.
+3. New version replaces old.
+## Static fetch
+- `fetch()` with `cache: "force-cache"` keeps data static.
+- Caches: Data Cache, RSC Cache, Full-Route Cache.
+## What makes a route dynamic
+- `cache: "no-store"`
+- cookies/headers
+- `dynamic = "force-dynamic"`
+- dynamic params without pre-generation
+## Summary
 - `revalidate = N` → ISR
-    
-- without `revalidate`, without dynamics → SSG
-    
+- no dynamics → SSG
 - `no-store` → SSR
-    
-- static fetch → SSG/ISR

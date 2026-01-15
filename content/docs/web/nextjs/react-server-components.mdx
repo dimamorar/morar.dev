@@ -1,51 +1,20 @@
 ---
-title: "React Server Components and why they are at the core of App Router"
-description: "React Server Components execute on the server and allow building UI without passing unnecessary JavaScript to the browser."
+title: "React Server Components"
+description: ""
 ---
-
-## **React Server Components and why they are at the core of App Router**
-
-> React Server Components execute on the server and allow building UI without passing unnecessary JavaScript to the browser.  
-> They enable rendering data, executing server logic, and forming the component tree before sending it to the client.  
-> In App Router, RSC is the default mode that defines the architecture of rendering, caching, and navigation.
-
----
-
-### Technical Explanation
-
-#### The Main Idea of RSC
-
-- Components execute **in the server environment**, not the browser.
-    
-- The result of their work is a **serialized tree** that React can combine with client components.
-    
-- No access to DOM, state, effect hooks, and browser APIs.
-    
-
-#### Why they are the core of App Router
-
-- Allow moving heavy logic (requests, data processing, list rendering) to the server.
-    
-- Provide a **minimal client bundle** and reduce hydration.
-    
-- Building UI via RSC makes rendering **streaming** and **partial** (partial rendering) via Suspense.
-    
-- Enables server interactions without API endpoints (e.g., **Server Actions**).
-    
-
-#### What tasks RSC solve
-
-- Working with databases and secrets without exposure to the client.
-    
-- Flexible caching at the fetch level and at the route level.
-    
-- Creating fast UIs where the client receives ready HTML + RSC payload.
-    
-
-#### When Client Components are needed
-
-- Interactivity (events, state, useEffect).
-    
-- Working with DOM API.
-    
-- Animations, drag-n-drop, client-only logic.
+RSC render on the server and send a serialized tree to the client, minimizing client JS.
+## Core idea
+- Components run on the server, not the browser.
+- Output is a serialized tree merged with Client Components.
+- No DOM, state, effect hooks, or browser APIs.
+## Why App Router depends on RSC
+- Move data fetching and heavy logic to the server.
+- Smaller client bundle, less hydration.
+- Enables streaming and partial rendering via Suspense.
+- Supports Server Actions without HTTP endpoints.
+## What RSC enable
+- Secure access to DB and secrets.
+- Caching at fetch and route levels.
+- Fast UI delivery with HTML + RSC payload.
+## When Client Components are needed
+- Interactivity, state, effects, DOM APIs, client-only libraries.

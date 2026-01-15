@@ -1,48 +1,20 @@
 ---
-title: "App Router in Next.js and its differences from Pages Router"
-description: "App Router is a modern RSC-oriented architecture in Next.js that organizes the interface through segments, layouts, and streaming rendering."
+title: "App Router vs Pages Router"
+description: ""
 ---
-
-## **App Router in Next.js and its differences from Pages Router**
-
-> App Router is a modern RSC-oriented architecture in Next.js that organizes the interface through segments, layouts, and streaming rendering.  
-> It minimizes client-side JavaScript and moves most of the logic to the server.  
-> Pages Router is the previous model that relied on client-side React and separate lifecycle functions for SSR/SSG.
-
----
-
-### Technical Explanation
-
-#### App Router (`/app` directory)
-
-- Built on **React Server Components**, where the server is the source of UI.
-    
-- Has a hierarchical system of files: **layout.js**, **page.js**, **loading.js**, **error.js**, **not-found.js**, **route.js**.
-    
-- Supports **streaming**, **partial rendering**, **parallel routes**, **intercepting routes**, and **Server Actions**.
-    
-- Unified data fetching model via **fetch() with caching and revalidation**.
-    
-- Smaller volume of client JS, less hydration.
-    
-
-#### Pages Router (`/pages` directory)
-
-- Works through **Client Components** + SSR/SSG in the form of `getStaticProps`, `getServerSideProps`, `getInitialProps`.
-    
-- Uses global files `_app.js`, `_document.js` for composition.
-    
-- Does not support RSC, streaming, layout segments, or Server Actions.
-    
-- Hydration is more complex, bundle is larger.
-    
-
-#### Main Architectural Differences
-
-- App Router is **server-first**, Pages Router is **client-first**.
-    
-- App Router forms the UI through a **layout tree**, Pages Router — through a global container.
-    
-- App Router automates caching and rendering, Pages Router — no.
-    
-- App Router significantly reduces runtime on the client.
+App Router is server-first with RSC and segment layouts. Pages Router is client-first with `getStaticProps`/`getServerSideProps`.
+## App Router (`/app`)
+- Built on React Server Components; server is the UI source.
+- Segment files: `layout.js`, `page.js`, `loading.js`, `error.js`, `not-found.js`, `route.js`.
+- Supports streaming, partial rendering, parallel and intercepting routes, Server Actions.
+- Unified data fetching via `fetch()` with caching and revalidation.
+- Smaller client JS and less hydration.
+## Pages Router (`/pages`)
+- Uses Client Components plus SSR/SSG via `getStaticProps`, `getServerSideProps`, `getInitialProps`.
+- Global composition with `_app.js`, `_document.js`.
+- No RSC, streaming, layout segments, or Server Actions.
+- More hydration and larger bundles.
+## Key differences
+- App Router is server-first; Pages Router is client-first.
+- App Router builds a layout tree; Pages Router uses a global shell.
+- App Router automates caching; Pages Router does not.

@@ -1,80 +1,24 @@
 ---
-title: "Server vs. Client Navigation"
-description: "In Next.js, navigation can be performed on the server or on the client depending on the type of components and the way of transition."
+title: "Navigation"
+description: ""
 ---
-
-## **Difference between server navigation and client navigation in Next.js (13–15)**
-
-> In Next.js, navigation can be performed on the server or on the client depending on the type of components and the way of transition.  
-> Server navigation allows streaming and partial replacement of RSC payload without loading unnecessary JS.  
-> Client navigation is needed only for Client Components and interactive logic.
-
----
-
-### Technical Explanation
-
-#### Server Navigation (App Router default)
-
-- Used when navigating **between RSC pages or segments**.
-    
-- React receives **new RSC payload** from the server.
-    
-- No full reload → React only updates the changed segments.
-    
-
-Characteristics:
-
-- minimal amount of network data;
-    
-- streaming via Suspense;
-    
-- layout preservation without re-mounting;
-    
-- no client-side JS for navigation.
-    
-
-**Used automatically** with `Link` between RSC pages.
-
----
-
-#### Client Navigation
-
-Needed when:
-
-- the page contains Client Components;
-    
-- navigation is called via `router.push()` in the client;
-    
-- there is interactive logic, dependencies on state, effects.
-    
-
-In fact:
-
-- Next.js performs navigation in the browser, without a new SSR.
-    
-- But it also loads the **updated RSC payload** from the server.
-    
-- Client-side JS continues to work without a full reset.
-    
-
----
-
-#### Main Differences
-
-| Feature | Server Navigation | Client Navigation |
+Navigation can be server-driven (default) or client-driven, depending on component type and trigger.
+## Server navigation
+- Default for RSC pages and segments.
+- Server sends a new RSC payload; React updates changed segments.
+- Streaming via Suspense; layouts persist.
+- Triggered by `Link` between RSC routes.
+## Client navigation
+- Used with Client Components or `router.push()`.
+- Browser performs navigation but still fetches new RSC payloads.
+- Client JS stays active; no full reset.
+## Key differences
+| Feature | Server | Client |
 | --- | --- | --- |
-| Triggered from | RSC | Client Components |
-| JS on client | None | Requires JS in browser |
-| Uses streaming | Yes | No streaming in client-only transitions |
-| Payload size | Smaller | Depends on number of client components |
-| Preserves layout | Yes | Yes |
-
----
-
-#### Important Nuance
-
-Navigation always **loads a new RSC payload**, but:
-
-- in Server Navigation, this is done by the server without JS;
-    
-- in Client Navigation, this is done by the browser using JS.
+| Trigger | RSC | Client Components |
+| Client JS | None | Required |
+| Streaming | Yes | No |
+| Payload size | Smaller | Larger with more client components |
+| Layout preserved | Yes | Yes |
+## Note
+Both modes load a new RSC payload; the difference is where navigation logic runs.

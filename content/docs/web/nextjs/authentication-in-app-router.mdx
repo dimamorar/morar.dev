@@ -1,86 +1,32 @@
 ---
-title: "Authentication in App Router"
-description: "Authentication in App Router is based on server-side execution of components, cookies, and middleware."
+title: "Auth in App Router"
+description: ""
 ---
-
-## **How to implement authentication in App Router (middleware, server-only logic, session)**
-
-> Authentication in App Router is based on server-side execution of components, cookies, and middleware.  
-> Access check logic is executed on the server or at the Edge level, which makes it impossible for secrets to leak to the client.  
-> App Router allows building a secure auth flow without unnecessary client-side JavaScript.
-
----
-
-### Technical Explanation
-
-#### 1. Session Storage
-
-- In Next.js, authentication is most often based on:
-    
-    - **HTTP-only cookies** (recommended),
-        
-    - **JWT in cookies**,
-        
-    - **session tokens** (for example, in Postgres + Prisma).
-        
-- Cookies are read only by the server via:
-    
-
+Auth in App Router is server-first: cookies, middleware, and server components handle access checks.
+## Session storage
+- HTTP-only cookies (recommended), JWT in cookies, or DB-backed sessions.
+- Read cookies on the server:
 ```js
 import { cookies } from "next/headers";
 ```
-
----
-
-#### 2. Authorization Check in Middleware
-
-- Executed **before the route**, on Edge Runtime.
-    
-- Ideal for:
-    
-    - redirecting unauthorized users;
-        
-    - protecting admin zones;
-        
-    - i18n logic;
-        
-    - rate limiting.
-    
-
-**Example:**
-
+## Middleware checks
+- Runs before the route on Edge Runtime.
+- Use for redirects, admin protection, i18n, rate limiting.
 ```js
 import { NextResponse } from "next/server";
-
 export function middleware(request) {
   const token = request.cookies.get("token");
   if (!token) return NextResponse.redirect(new URL("/login", request.url));
   return NextResponse.next();
 }
 ```
-
----
-
-#### 3. Server Components as Protected Layers
-
-- Since RSCs execute on the server, access checks can be done directly in `page.js`:
-    
-
+## Server components as guards
+- Check access in `page.js`:
 ```js
 const user = await getUser();
 if (!user) notFound();
 ```
-
-- This does not pass any auth logic to the client code.
-    
-
----
-
-#### 4. Login / Signup via Server Actions
-
-- Mutations can be done directly without API routes:
-    
-
+## Login/signup with Server Actions
 ```js
 "use server";
 export async function login(formData) {
@@ -89,37 +35,11 @@ export async function login(formData) {
   cookies().set("session", session.token, { httpOnly: true });
 }
 ```
-
-- Used in a form:
-    
-
 ```jsx
 <form action={login}>...</form>
 ```
-
----
-
-#### 5. When API Routes are Needed
-
-- For:
-    
-    - mobile applications,
-        
-    - integrations with external services,
-        
-    - webhooks,
-        
-    - OAuth callbacks.
-    
-
-`/api/auth/...` via Route Handlers remains a full-fledged backend API.
-
----
-
-### Important Notes
-
-- Never store tokens in localStorage → XSS vulnerability.
-    
-- Middleware does not have access to Node API — only Edge code.
-    
-- Server Actions + cookies is the modern recommended way for auth in App Router.
+## When API routes are needed
+- Mobile apps, external integrations, webhooks, OAuth callbacks.
+## Notes
+- Never store tokens in localStorage (XSS risk).
+- Middleware is Edge-only; no Node APIs.

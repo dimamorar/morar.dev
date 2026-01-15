@@ -1,88 +1,32 @@
 ---
-title: "API Routes Route Handlers"
-description: "In App Router, API routes are implemented via Route Handlers — `route.js` files that return HTTP responses."
+title: "Route Handlers"
+description: ""
 ---
-
-## **How API Routes work in App Router (`app/api/.../route.js`)**
-
-> In App Router, API routes are implemented via Route Handlers — `route.js` files that return HTTP responses.  
-> They allow creating backend endpoints without a separate server and run in a server environment.  
-> Route Handlers integrate with middleware, cache, and can be dynamic depending on the directory structure.
-
----
-
-### Technical Explanation
-
-#### Route Handlers Basics
-
+Route Handlers are API routes in App Router. They live in `app/api/.../route.js` and return HTTP responses.
+## Basics
 - Located in `app/api/.../route.js`.
-    
-- Run **exclusively on the server** — secrets, databases, file system are available.
-    
-- Have separate HTTP methods as exported functions:
-    
-    - `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD`, `OPTIONS`.
-    
-
-**Minimal GET example:**
-
+- Server-only execution; secrets, DB, file system available.
+- Export HTTP methods: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD`, `OPTIONS`.
 ```js
 export async function GET() {
   return Response.json({ status: "ok" });
 }
 ```
-
----
-
-#### Routing
-
-- The directory defines the path:
-    
-    - `app/api/users/route.js` → `/api/users`
-        
-    - `app/api/products/[id]/route.js` → `/api/products/:id`
-        
-- Parameters are available via:
-    
-
+## Routing
+- `app/api/users/route.js` → `/api/users`
+- `app/api/products/[id]/route.js` → `/api/products/:id`
 ```js
 export function GET(request, { params }) {
   return Response.json({ id: params.id });
 }
 ```
-
----
-
-#### Server Environment
-
-- Executes in **Node.js runtime or Edge runtime** (at your choice).
-    
-- You can use:
-    
-    - databases (Prisma, Mongo, Postgres),
-        
-    - cookies (`cookies()`),
-        
-    - headers (`headers()`),
-        
-    - streaming responses.
-    
-
----
-
-#### Caching in Route Handlers
-
-- Edge runtime is cached by CDN (unless disabled).
-    
-- Node runtime — non-cached by default.
-    
-- Can be controlled via `Cache-Control` headers.
-    
-
----
-
-#### Route Handler vs Server Actions
-
-- Route Handlers are the **HTTP API layer**.
-    
-- Server Actions are **direct functions** called from a component without HTTP.
+## Runtime
+- Node.js runtime or Edge runtime.
+- Can use databases, `cookies()`, `headers()`, streaming responses.
+## Caching
+- Edge routes are cached by CDN unless disabled.
+- Node routes are not cached by default.
+- Control via `Cache-Control` headers.
+## vs Server Actions
+- Route Handlers are HTTP endpoints.
+- Server Actions are direct server functions without HTTP.

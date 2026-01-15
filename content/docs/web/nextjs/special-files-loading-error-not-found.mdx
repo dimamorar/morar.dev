@@ -1,51 +1,22 @@
 ---
-title: "Special files loading error not found"
-description: "These special files define the behavior of a segment during loading, an error, or the absence of a resource."
+title: "Special Files"
+description: ""
 ---
-
-## **How `loading.js`, `error.js`, and `not-found.js` work in App Router routes**
-
-> These special files define the behavior of a segment during loading, an error, or the absence of a resource.  
-> They integrate with React Suspense, allowing streaming rendering and control over UX in different states.  
-> App Router handles them at the segment level, forming a predictable hierarchy of fallback states.
-
----
-
-### Technical Explanation
-
-#### `loading.js`
-
-- Called automatically when a segment or child segment **is not yet ready** (loading data or rendering RSC).
-    
-- Works through **React Suspense boundaries** that Next.js creates around segments.
-    
-- Does not block rendering of the entire layout — shows a partial UI.
-    
-
-**Example:**
-
+`loading.js`, `error.js`, and `not-found.js` define segment states for loading, errors, and missing data.
+## `loading.js`
+- Shown while a segment is pending.
+- Uses Suspense boundaries created around segments.
+- Does not block the parent layout.
 ```jsx
 export default function Loading() {
   return <p>Loading...</p>;
 }
 ```
-
----
-
-#### `error.js`
-
-- Rendered if a **server or rendering error** occurs within the segment.
-    
-- Has a special interface with a required `error` prop and a `reset` function.
-    
-- `reset()` restarts the segment for a retry.
-    
-
-**Example:**
-
+## `error.js`
+- Renders on server or render errors within the segment.
+- Receives `error` and `reset`; `reset()` retries the segment.
 ```jsx
 "use client";
-
 export default function Error({ error, reset }) {
   return (
     <div>
@@ -55,36 +26,16 @@ export default function Error({ error, reset }) {
   );
 }
 ```
-
-> ❗ `error.js` is always a Client Component because it contains a UI with interaction.
-
----
-
-#### `not-found.js`
-
-- Called when a segment did not find a resource:
-    
-    - manually via `notFound()`,
-        
-    - automatically in the absence of data.
-        
-- Supports a **segment-specific** 404 page (at any level).
-    
-
-**Example:**
-
+`error.js` is always a Client Component because it has interactivity.
+## `not-found.js`
+- Triggered by `notFound()` or missing data.
+- Defines segment-level 404 UI.
 ```jsx
 export default function NotFound() {
   return <h1>Not found</h1>;
 }
 ```
-
----
-
-### Priority Order
-
-1. `loading.js` — during loading.
-    
-2. `error.js` — on error.
-    
-3. `not-found.js` — in the absence of data or resource.
+## Priority order
+1. `loading.js`
+2. `error.js`
+3. `not-found.js`

@@ -1,101 +1,32 @@
 ---
-title: "Metadata in Next.js"
-description: "Metadata API allows defining SEO parameters of pages (title, description, Open Graph, canonical, etc.) directly in server components."
+title: "Metadata"
+description: ""
 ---
-
-## **How Next.js handles metadata (`export const metadata`, dynamic metadata)**
-
-> Metadata API allows defining SEO parameters of pages (title, description, Open Graph, canonical, etc.) directly in server components.  
-> Next.js builds metadata on the server during rendering, which ensures correct HTML for search engines.  
-> Data can be static or dynamic, depending on whether access to parameters or external data is needed.
-
----
-
-### Technical Explanation
-
-#### Static metadata
-
-- Declared in the segment file (layout or page):
-    
-
+Next.js metadata is defined in server components and rendered into `<head>` on the server.
+## Static metadata
+- Add `metadata` in `layout.js` or `page.js`.
 ```js
 export const metadata = {
   title: "Dashboard",
   description: "User dashboard",
 };
 ```
-
-- Generated **during build**, if it does not contain dynamics.
-    
-- Suitable for stable pages.
-    
-
----
-
-#### Dynamic metadata
-
-- Declared via the server function `generateMetadata`.
-    
-- Used when metadata depends on:
-    
-    - `params` (slug, id),
-        
-    - fetch requests,
-        
-    - business logic conditions.
-    
-
-**Example:**
-
+- Built at build time when static.
+## Dynamic metadata
+- Use `generateMetadata` when it depends on params or data.
 ```js
 export async function generateMetadata({ params }) {
   const post = await getPost(params.slug);
-  return {
-    title: post.title,
-    description: post.summary,
-  };
+  return { title: post.title, description: post.summary };
 }
 ```
-
-- Called on the server before rendering the page.
-    
-- If it performs `fetch` with dynamics (`no-store`), the page becomes SSR.
-    
-
----
-
-#### Where metadata works
-
-- In `layout.js` (globally or per segment).
-    
-- In `page.js` (specifically for the page).
-    
-- Can consist of several layers: child metadata complements parent metadata.
-    
-
----
-
-#### What can be defined
-
-- `title`, `description`
-    
-- Open Graph → `openGraph` (title, images)
-    
-- Twitter cards → `twitter`
-    
-- `robots`, `canonical`, `icons`
-    
-- `alternates` (for i18n)
-    
-- `viewport`, `themeColor`
-    
-
----
-
-### Behavior during rendering
-
-- Metadata is included in `<head>` by the server.
-    
-- During navigation, React updates the head partially without a full reload.
-    
-- For dynamic pages, metadata is calculated with each SSR or ISR.
+- Runs on the server before render; dynamic `fetch` makes the page SSR.
+## Where it applies
+- `layout.js` (global or per segment) and `page.js` (per page).
+- Child metadata layers on top of parent metadata.
+## Supported fields
+- `title`, `description`, `openGraph`, `twitter`, `robots`, `canonical`, `icons`,
+  `alternates`, `viewport`, `themeColor`.
+## Rendering behavior
+- Server injects metadata into `<head>`.
+- Client navigation updates the head without full reload.

@@ -1,86 +1,30 @@
 ---
-title: "Fetch in Next.js"
-description: "In App Router, `fetch` is executed on the server and has built-in integration with cache and regeneration policies."
+title: "Fetch"
+description: ""
 ---
-
-## **Features of `fetch` in Next.js and the caching/revalidation mechanism**
-
-> In App Router, `fetch` is executed on the server and has built-in integration with cache and regeneration policies.  
-> The result of `fetch` can be static, dynamic, or re-validated in the background through ISR.  
-> The `fetch` configuration directly determines the page's rendering mode.
-
----
-
-### Technical Explanation
-
-#### Server-side `fetch`
-
-- In RSC, `fetch` **is always executed on the server**, even if the call is made from a Client Component through imported server code.
-    
-- In RSC, `fetch` by default **caches** the result (`cache: "force-cache"`).
-    
-- In Client Components, `fetch` works like a regular browser one.
-    
-
----
-
-#### Caching Policies
-
-##### 1. **Static Cache**
-
+In App Router, `fetch` runs on the server in RSC and ties into caching and rendering modes.
+## Server-side fetch
+- In RSC, `fetch` runs on the server and caches by default.
+- In Client Components, `fetch` behaves like browser `fetch`.
+## Cache policies
 ```js
 fetch(url); // cache: "force-cache" (default)
 ```
-
-- Triggers SSG or ISR depending on the presence of `revalidate`.
-    
-
-##### 2. **Dynamic (no-store)**
-
 ```js
-fetch(url, { cache: "no-store" });
+fetch(url, { cache: "no-store" }); // SSR every request
 ```
-
-- Forces **SSR on every request**.
-    
-- Disables cache at all levels.
-    
-
-##### 3. **Revalidate (ISR)**
-
 ```js
-fetch(url, { next: { revalidate: 60 } });
+fetch(url, { next: { revalidate: 60 } }); // ISR
 ```
-
-- The page will update in the background after 60 seconds.
-    
-- Suitable for semi-dynamic data.
-    
-
----
-
-#### fetch Interaction → rendering mode
-
-| fetch Configuration | Mode |
+## Rendering mode mapping
+| fetch config | Mode |
 | --- | --- |
 | `cache: "force-cache"` | SSG / ISR |
 | `next: { revalidate }` | ISR |
 | `cache: "no-store"` | SSR |
-| dependency on cookies/headers | SSR |
-
-
----
-
-#### Important Feature
-
-Any **dynamic factor** turns the page into SSR:
-
-- reading cookies;
-    
-- reading headers;
-    
-- `cache: "no-store"`;
-    
-- `dynamic = "force-dynamic"`;
-    
-- dynamic parameters.
+| cookies/headers | SSR |
+## What makes a route dynamic
+- cookies or headers
+- `cache: "no-store"`
+- `dynamic = "force-dynamic"`
+- dynamic params

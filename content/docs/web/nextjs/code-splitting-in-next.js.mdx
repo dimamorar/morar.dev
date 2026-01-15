@@ -1,73 +1,21 @@
 ---
-title: "Code splitting in Next.js"
-description: "Code splitting in Next.js automatically splits the bundle into smaller parts so that the browser only loads the necessary code."
+title: "Code Splitting"
+description: ""
 ---
-
-## **How code splitting works in Next.js**
-
-> Code splitting in Next.js automatically splits the bundle into smaller parts so that the browser only loads the necessary code.  
-> App Router uses RSC, dynamic imports, and isolation of Client Components, which minimizes the amount of JS on the client.  
-> This increases performance, reduces hydration time, and speeds up the first render.
-
----
-
-### Technical Explanation
-
-#### Automatic Code Splitting
-
-- Next.js splits code **by files**, **by route segments**, and **by the layout tree**.
-    
-- Each `page.js` and each Client Component has its own chunk.
-    
-- The bundle is loaded **only when navigating to the route** that the chunk concerns.
-    
-
----
-
-#### Code splitting thanks to RSC
-
-- Server Components **do not end up** in the client bundle.
-    
-- Only Client Components and their dependent logic are loaded to the client.
-    
-- This radically reduces the volume of JS.
-    
-
----
-
-#### Dynamic Imports
-
-- Used for deferred loading of components:
-    
-
+Next.js splits code by route, segment, and component so the browser loads only what is needed.
+## Automatic splitting
+- Chunks created per `page.js`, layout, and Client Component.
+- Loaded only when navigating to the related route.
+## RSC impact
+- Server Components never ship to the client bundle.
+- Only Client Components and their deps are sent to the browser.
+## Dynamic imports
 ```jsx
 const Chart = dynamic(() => import("./Chart"), { ssr: false });
 ```
-
-- Allow not including heavy components in the main bundle.
-    
-- Can disable SSR (for example, for libraries that only work in the browser).
-    
-
----
-
-#### Route Separation
-
-- App Router isolates bundles for:
-    
-    - each route segment;
-        
-    - layouts;
-        
-    - parallel segments (`@modal`, `@feed`).
-        
-- Upon transition, Next.js loads only the necessary chunks.
-    
-
----
-
-#### Advantages
-- smaller initial JS;
-- faster hydration;
-- efficient transitions between pages;
-- possibility of lazy loading heavy components.
+- Use to defer heavy components or browser-only libraries.
+## Route separation
+- Segments, layouts, and parallel routes get isolated bundles.
+- Transitions fetch only required chunks.
+## Advantages
+- Smaller initial JS, faster hydration, efficient transitions.

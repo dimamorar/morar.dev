@@ -1,76 +1,26 @@
 ---
-title: "Suspense boundaries and RSC streaming"
-description: "Suspense boundaries define UI areas that can be rendered and streamed independently of each other."
+title: "Suspense & Streaming"
+description: ""
 ---
-
-## **Suspense boundaries and their impact on RSC streaming in Next.js**
-
-> Suspense boundaries define UI areas that can be rendered and streamed independently of each other.  
-> In App Router, Next.js automatically creates Suspense around segments, which allows showing a partial UI during loading.  
-> This ensures a faster time-to-first-byte and smooth page updates.
-
----
-
-### Technical Explanation
-
-#### Suspense in the context of RSC
-
-- Suspense works at the **server rendering** level, streaming ready parts of the tree as they are built.
-    
-- If a component or a fetch request delays rendering, Suspense shows a fallback.
-    
-- The RSC payload can be transmitted **step-by-step**, reducing wait time.
-    
-
----
-
-#### Automatic Suspense boundaries in App Router
-
-Next.js surrounds these elements with a Suspense boundary:
-
-- **each segment with `loading.js`**,
-    
-- **each nested layout**,
-    
-- **dynamic segments**,
-    
-- **partially loaded RSCs**.
-    
-
-This means:
-
-- `loading.js` → fallback for the segment;
-    
-- top-level segments are not blocked by slow children.
-    
-
----
-
-#### Behavior during streaming
-
-- The server sends HTML and RSC in parts.
-    
-- The client receives minimal HTML immediately and then loads RSC fragments.
-    
-- The UI updates without a full re-render, similar to "progressive rendering."
-    
-
----
-
-#### Suspense in Client Components
-
-Suspense also works in client components, but without RSC streaming.  
-Example:
-
+Suspense boundaries allow parts of the UI to stream independently in App Router.
+## Suspense with RSC
+- Server streams ready parts of the tree as they finish.
+- Slow components or fetches show fallbacks.
+- RSC payload arrives in steps.
+## Automatic boundaries
+- Around segments with `loading.js`.
+- Around nested layouts and dynamic segments.
+- Enables partial UI while slower parts load.
+## Streaming behavior
+- Server sends HTML and RSC in chunks.
+- Client renders minimal HTML first, then updates with fragments.
+## Suspense in Client Components
+Suspense works on the client but without RSC streaming.
 ```jsx
 <Suspense fallback={<Spinner />}>
   <Chart />
 </Suspense>
 ```
-
----
-
-### Why this is needed
-- Significantly reduces wait time for complex pages.
-- Allows independent parts of the UI to render in parallel.
-- Critically important for large App Router layout trees.
+## Why it matters
+- Faster perceived load.
+- Parallel rendering for large layout trees.

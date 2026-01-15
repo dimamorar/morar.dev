@@ -1,89 +1,31 @@
 ---
-title: "Image and Font optimization"
-description: "Next.js automatically optimizes images and fonts to reduce bundle size, speed up rendering, and improve LCP."
+title: "Images and Fonts"
+description: ""
 ---
-
-## **Image and Font Optimization in App Router (next/image, next/font)**
-
-> Next.js automatically optimizes images and fonts to reduce bundle size, speed up rendering, and improve LCP.  
-> `next/image` provides responsive, optimized images with lazy loading.  
-> `next/font` inlines critical fonts and eliminates layout shifts without additional network requests.
-
----
-
-### Technical Explanation
-
-#### `next/image`
-
-- Component for optimized images that:
-    
-    - automatically selects format (WebP/AVIF);
-        
-    - creates adaptive sizes (responsive srcset);
-        
-    - has built-in lazy loading;
-        
-    - optimizes caching;
-        
-    - reduces CLS thanks to mandatory sizes (`width`, `height`) or `fill`.
-    
-
-**Example:**
-
+Next.js optimizes images and fonts to improve performance and reduce layout shift.
+## `next/image`
+- Auto-selects formats (WebP/AVIF), responsive sizes, and lazy loading.
+- Optimizes caching; reduces CLS with `width`/`height` or `fill`.
 ```jsx
 import Image from "next/image";
-
 <Image src="/hero.jpg" width={1200} height={600} alt="Hero" />
 ```
-
-#### Core Features
-
-- `priority` for LCP elements;
-    
-- `placeholder="blur"` for UX;
-    
-- automatic CDN caching when deploying to Vercel.
-    
-
----
-
-### `next/font`
-
-- Replaces Google Fonts API, eliminating network requests.
-    
-- Fonts are **inlined into the bundle** or delivered optimally (self-hosted).
-    
-- Eliminates font flickering (FOIT/FOUT).
-    
-
-#### Two APIs
-
-1. **`next/font/google`**
-    
-    - font import directly from Google, but delivered locally.
-        
-2. **`next/font/local`**
-    
-    - local fonts from the project.
-    
-
-**Example:**
-
+### Core features
+- `priority` for LCP elements.
+- `placeholder="blur"` for perceived speed.
+- CDN caching on Vercel.
+## `next/font`
+- Removes Google Fonts network requests.
+- Fonts are inlined or self-hosted; reduces FOIT/FOUT.
+### APIs
+- `next/font/google` (served locally).
+- `next/font/local` (project fonts).
 ```js
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 ```
-
-Then:
-
 ```jsx
 <body className={inter.className}>...</body>
 ```
-
----
-
-### Next.js Optimization Benefits
-- Smaller JS and CSS volume.
-- No layout shift from fonts.
-- Optimized images improve LCP, FCP.
-- Minimal client code — everything via server-side optimization.
+## Benefits
+- Smaller CSS/JS, improved LCP/FCP, less CLS.

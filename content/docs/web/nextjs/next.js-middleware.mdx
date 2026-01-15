@@ -1,90 +1,28 @@
 ---
-title: "Next.js Middleware"
-description: "Middleware is a server-side layer that executes **before a request is completed** and allows you to modify requests, redirect, limit access, and apply security "
+title: "Middleware"
+description: ""
 ---
-
-## **What is Next.js Middleware and how is it used in App Router**
-
-> Middleware is a server-side layer that executes **before a request is completed** and allows you to modify requests, redirect, limit access, and apply security rules.  
-> It runs on Edge Runtime with low latency and affects every request that matches its matcher.  
-> Middleware is a key tool for authentication, feature flags, A/B testing, and access control.
-
----
-
-### Technical Explanation
-
-#### Middleware Basics
-
-- The file is located in the **root of the project**:  
-    `middleware.js`
-    
-- It executes **before the route**, even before RSC rendering or Route Handlers.
-    
-- It runs in **Edge Runtime** — without server-side Node API.
-    
-
-**Minimal example:**
-
+Middleware runs before a request is completed. It executes on the Edge Runtime and can rewrite, redirect, and protect routes.
+## Basics
+- File at project root: `middleware.js`.
+- Runs before routes, RSC rendering, and Route Handlers.
+- Edge-only; no Node APIs.
 ```js
 import { NextResponse } from "next/server";
-
 export function middleware(request) {
   return NextResponse.next();
 }
 ```
-
----
-
-### Typical Use Cases
-
-#### 1. Authentication and Authorization
-
-- Checking cookies or tokens.
-    
-- Redirecting unauthorized users.
-    
-
+## Use cases
+- Auth checks and redirects.
 ```js
 if (!isAuthenticated) return NextResponse.redirect(new URL("/login", request.url));
 ```
-
-#### 2. Rewrites / Redirects
-
-- Transparent route redirection.
-    
-- Localization (i18n) via rewrite.
-    
-
-#### 3. Page Protection
-
-- Limiting access to admin zones.
-    
-- Blocking bots or unwanted user agents.
-    
-
-#### 4. Feature flags / A/B testing
-
-- Routing logic depending on experiments.
-    
-
----
-
-### Matcher
-
-- Specifies which paths the Middleware should run for.
-    
-
+- Rewrites/redirects, i18n routing, feature flags, A/B tests.
+- Page protection and bot blocking.
+## Matcher
 ```js
-export const config = {
-  matcher: ["/dashboard/:path*"],
-};
+export const config = { matcher: ["/dashboard/:path*"] };
 ```
-
----
-
-### Middleware Limitations
-- No access to:
-    - databases directly (no Node API),
-    - environment variables (except prefixed public),
-    - server-side libraries.
-- Only edge-compatible operations.
+## Limitations
+- No direct DB access, no Node APIs, no server-only libraries.
