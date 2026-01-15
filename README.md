@@ -1,4 +1,16 @@
-- How many JavaScript developers does it take to change a light bulb? None, that's a hardware problem!
-- Why do JavaScript developers prefer dark mode? Because light attracts bugs!
-- What did the JavaScript array say to the object? "You're so object-ive!"
-- How do you know you're a programmer? You try to CTRL+Z in real life.
+# morar.dev
+
+Personal portfolio site with a docs section powered by MDX content.
+
+## Stack
+- Next.js 16 + React 19
+- TypeScript
+- Tailwind CSS
+- Fumadocs (MDX, docs search/navigation)
+- Radix UI primitives
+
+## Scripts
+- `pnpm dev` — local dev server
+- `pnpm build` — production build
+- `pnpm start` — run production server
+- `pnpm lint` — lint check
