@@ -1,13 +1,13 @@
 ---
 title: "Virtual DOM"
-description: "Virtual DOM is React's internal model representing the structure of the real DOM as a tree of JavaScript objects. It allows React to calculate the difference be"
+description: ""
 ---
 
 > Virtual DOM is React's internal model representing the structure of the real DOM as a tree of JavaScript objects. It allows React to calculate the difference between UI states in memory and update the real DOM with a minimum number of operations.
 
 ---
 
-### 🧩 What is Virtual DOM
+### What is Virtual DOM
 
 - **Virtual DOM (VDOM)** is a tree of **React Elements** created when calling `React.createElement()` (or when using JSX).
 - Each element is an **ordinary object** describing what DOM node or component should be displayed.
@@ -46,7 +46,7 @@ Result — React Element object:
 
 ---
 
-### 🧩 Diffing and Reconciliation
+### Diffing and Reconciliation
 
 - When state changes, React creates a **new Virtual DOM tree** and compares it with the old one.
 - Comparison is performed by the **diffing** algorithm, which analyzes differences by:
@@ -57,7 +57,7 @@ Result — React Element object:
 
 ---
 
-### 🧩 Performance
+### Performance
 
 - DOM operations are expensive, operations with objects in memory are cheap.
 - Virtual DOM allows:
@@ -67,7 +67,7 @@ Result — React Element object:
 
 ---
 
-### 💡 Key Ideas
+### Key ideas
 
 - Virtual DOM = **abstract tree of React Elements** existing in memory.
 - React creates a new tree with each update and compares it with the old one.

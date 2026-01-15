@@ -1,18 +1,14 @@
 ---
 title: "forwardRef and useImperativeHandle"
-description: "forwardRef and useImperativeHandle are React tools for managing references (ref) between components."
+description: ""
 ---
 
-## forwardRef and useImperativeHandle
-
 > forwardRef and useImperativeHandle are React tools for managing references (ref) between components.
-> 
-> 
 > They allow a parent component to gain access to DOM elements or methods of a child component without breaking encapsulation.
 
 ---
 
-### 🧩 `forwardRef`
+### `forwardRef`
 
 - Used for **passing a ref from parent to child element**.
 - By default, functional components do not accept `ref`.
@@ -44,7 +40,7 @@ const Parent = () => {
 
 ---
 
-### 🧩 `useImperativeHandle`
+### `useImperativeHandle`
 
 - Allows **controlling which properties and methods are available to the parent** when using `ref`.
 - Used **inside a component wrapped in `forwardRef`**.
@@ -68,7 +64,7 @@ Now the parent can call `ref.current.focus()` or `ref.current.clear()`.
 
 ---
 
-### 🧩 When to use
+### When to use
 
 - For managing **focus**, **scroll**, **animation**.
 - For providing an **imperative API** to a component (e.g., forms).
@@ -76,7 +72,7 @@ Now the parent can call `ref.current.focus()` or `ref.current.clear()`.
 
 ---
 
-### 💡 Key Ideas
+### Key ideas
 
 - `forwardRef` allows passing a ref through component levels.
 - `useImperativeHandle` defines an **explicit access interface** from the parent.

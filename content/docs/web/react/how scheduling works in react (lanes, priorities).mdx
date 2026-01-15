@@ -1,14 +1,14 @@
 ---
-title: "How scheduling works in React (lanes, priorities)"
-description: "|> The React Scheduler determines _which updates should be performed first_, _which can wait_, and _when rendering should be suspended or restored_."
+title: "Scheduling"
+description: ""
 ---
 
-|> The React Scheduler determines _which updates should be performed first_, _which can wait_, and _when rendering should be suspended or restored_.  
-|> In modern React, this is implemented through a system of **lanes (priority bands)** built on top of Fiber.
+> The React Scheduler determines which updates should be performed first, which can wait, and when rendering should be suspended or restored.
+> In modern React, this is implemented through a system of **lanes (priority bands)** built on top of Fiber.
 
 ---
 
-### 🧩 Why React needs scheduling
+### Why React needs scheduling
 
 - The UI must remain responsive even under load.
     
@@ -27,7 +27,7 @@ Scheduling is the basis of **concurrent rendering**.
 
 ---
 
-### 🧩 What are lanes
+### What are lanes
 
 **Lane** is a "priority band" that React assigns to each update.
 
@@ -46,7 +46,7 @@ Updates from different lanes can be performed separately, at different moments.
 
 ---
 
-### 🧩 How prioritization works
+### How prioritization works
 
 1. React receives an event or state change.
     
@@ -62,7 +62,7 @@ Updates from different lanes can be performed separately, at different moments.
     
 ---
 
-### 🧩 When React suspends work
+### When React suspends work
 
 - when the time allocated for the frame (deadline) has passed,
     
@@ -80,7 +80,7 @@ render → yield → browser tasks → continue render
 
 ---
 
-### 🧩 The role of transitions
+### The role of transitions
 
 Updates wrapped in `startTransition` receive **low priority**.
 
@@ -101,7 +101,7 @@ React guarantees UI smoothness.
 
 ---
 
-### 🧩 Scheduler tools
+### Scheduler tools
 
 - **cooperative scheduling** — React divides work into small parts
     
@@ -116,7 +116,7 @@ React guarantees UI smoothness.
     
 ---
 
-### 💡 Key Ideas
+### Key ideas
 
 - lanes = mechanism of update priorities in React.
     
@@ -135,7 +135,3 @@ React guarantees UI smoothness.
     - optimal UX without freezes.
         
 
----
-
-Next card:  
-**“Why React can pause, resume, and restart rendering”**?

@@ -1,19 +1,16 @@
 ---
-title: "Conditional rendering"
-description: "Conditional rendering is a mechanism that allows React components to display different elements depending on state or props."
+title: "Conditional Rendering"
+description: ""
 ---
 
-## Conditional rendering
-
 > Conditional rendering is a mechanism that allows React components to display different elements depending on state or props.
-> 
 > It is based on the principle: **UI = function of data**, and changes when the input conditions change.
 
 ---
 
-### 🧩 Main Ways of Conditional Rendering
+### Main Ways of Conditional Rendering
 
-### 1. **`if` operator or `return null`**
+### 1. `if` operator or `return null`
 
 Used to completely exclude an element from render.
 
@@ -25,7 +22,7 @@ return <Dashboard />;
 
 ---
 
-### 2. **Ternary operator `? :`**
+### 2. Ternary operator `? :`
 
 The most common way to display one of two states.
 
@@ -36,7 +33,7 @@ The most common way to display one of two states.
 
 ---
 
-### 3. **Logical AND (`&&`)**
+### 3. Logical AND (`&&`)
 
 Convenient for outputting an element if the condition is true.
 
@@ -47,7 +44,7 @@ Convenient for outputting an element if the condition is true.
 
 ---
 
-### 4. **Switch or dynamic component**
+### 4. Switch or dynamic component
 
 Used when there are several options.
 
@@ -62,9 +59,9 @@ switch (status) {
 
 ---
 
-### 🧩 Advanced Techniques
+### Advanced Techniques
 
-### 🔹 Render Props
+### Render Props
 
 Allows passing display logic as a function in props.
 
@@ -88,7 +85,7 @@ or via function children:
 
 ---
 
-### 🔹 Dynamic Import of Components
+### Dynamic Import of Components
 
 Allows conditionally loading heavy components only when necessary.
 
@@ -107,7 +104,7 @@ const AdminPanel = React.lazy(() => import('./AdminPanel'));
 
 ---
 
-### 🔹 Short-circuit evaluation
+### Short-circuit evaluation
 
 For complex expressions, you can use logical operators for concise code:
 
@@ -119,7 +116,7 @@ For complex expressions, you can use logical operators for concise code:
 
 ---
 
-### 🔹 Fragments and helper components
+### Fragments and helper components
 
 To avoid duplicating conditions, you can wrap logic in a component:
 
@@ -137,7 +134,7 @@ function RenderIf({ condition, children }) {
 
 ---
 
-### 💡 Key Ideas
+### Key ideas
 
 - Conditional rendering in React is **pure JavaScript inside JSX**.
 - The choice between `if`, `? :`, `&&` and other approaches depends on context.

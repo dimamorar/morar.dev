@@ -1,19 +1,14 @@
 ---
-title: "useTransition useDeferredValue"
-description: "`useTransition` and `useDeferredValue` are React 18 hooks that implement cooperative rendering in concurrent mode."
+title: "useTransition vs useDeferredValue"
+description: ""
 ---
-
-## useTransition / useDeferredValue — cooperative updates in concurrent mode
 
 > `useTransition` and `useDeferredValue` are React 18 hooks that implement cooperative rendering in concurrent mode.
-> 
-> 
 > They allow deferring less priority updates so the interface remains responsive during input or data filtering.
-> 
 
 ---
 
-### 🧩 `useTransition`
+### `useTransition`
 
 - Allows **splitting updates by priority**:
     - urgent (input, clicks)
@@ -39,7 +34,7 @@ while filtering is performed asynchronously without blocking the UI.
 
 ---
 
-### 🧩 `useDeferredValue`
+### `useDeferredValue`
 
 - Defers the application of a rapidly changing value (e.g., text input) to optimize performance.
 - React "freezes" the old value until it finishes a heavy update.
@@ -59,7 +54,7 @@ but the input field remains responsive.
 
 ---
 
-### 🧩 Difference between them
+### Difference between them
 
 | Hook | What it does | When to use |
 | --- | --- | --- |
@@ -68,7 +63,7 @@ but the input field remains responsive.
 
 ---
 
-### 💡 Key Ideas
+### Key ideas
 
 - Both hooks use **Concurrent Rendering** for load balancing.
 - `useTransition` — manual priority management; `useDeferredValue` — automatic value delay.

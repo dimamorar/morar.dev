@@ -1,6 +1,6 @@
 ---
-title: "What is a React Element"
-description: "A React Element is the minimum building unit of UI in React: a simple immutable object that describes *exactly what* needs to be rendered."
+title: "React Element"
+description: ""
 ---
 
 > A React Element is the minimum building unit of UI in React: a simple immutable object that describes *exactly what* needs to be rendered.  
@@ -8,30 +8,21 @@ description: "A React Element is the minimum building unit of UI in React: a sim
 
 ---
 
-### 🧩 Essence of a React Element
+### Essence of a React Element
 
 - Represents the interface structure as an **ordinary JavaScript object**.
-    
 - Created via JSX or `React.createElement()`.
-    
 - Is **immutable** — any UI update creates a new element.
-    
 - Describes:
-    
-    - node type (`div`, `Component`),
-        
-    - props,
-        
-    - child elements,
-        
-    - key (`key`),
-        
-    - reference (`ref`).
-    
+  - node type (`div`, `Component`)
+  - props
+  - child elements
+  - key (`key`)
+  - reference (`ref`)
 
 ---
 
-### 🧩 React Element Structure
+### React Element Structure
 
 ```js
 {   
@@ -55,24 +46,18 @@ Main fields:
 - **ref** — access to the real DOM or component instance.
 - **$$typeof** — a React internal field for type checking.
 
-### 🧩 Why elements are immutable
+### Why elements are immutable
 
-- Immutability allows React to quickly compare old and new trees.
-    
+-- Immutability allows React to quickly compare old and new trees.
 - Any UI change ⇒ a **new React Element** is created.
-    
 - React determines if an update is needed only by **changing references**, rather than deep comparison.
-    
 - This makes reconciliation simpler and more performant.
 
 ---
 
-### 💡 Key Ideas
+### Key ideas
 
 - React Element = declarative description of UI, not the DOM.
-    
 - Immutability of elements is the basis for fast diffing.
-    
 - Elements are input data for Virtual DOM and Fiber.
-    
 - Changing elements triggers the render process and minimal updates to the real DOM.

@@ -1,19 +1,14 @@
 ---
-title: "Concurrent Rendering and Suspense"
-description: "Concurrent Rendering is a new rendering model in React 18 based on the Fiber architecture."
+title: "Concurrent Rendering"
+description: ""
 ---
-
-## Concurrent Rendering and Suspense
 
 > Concurrent Rendering is a new rendering model in React 18 based on the Fiber architecture.
-> 
-> 
 > It allows React to suspend, resume, and cancel updates, making the interface responsive even during heavy computations or data loading.
-> 
 
 ---
 
-### 🧩 Concurrent Rendering
+### Concurrent Rendering
 
 - **Old model (legacy)** — synchronous: updates block the main thread until completion.
 - **Concurrent Rendering** — asynchronous and cooperative:
@@ -35,7 +30,7 @@ React defers a low-priority state update to maintain responsiveness during text 
 
 ---
 
-### 🧩 Suspense
+### Suspense
 
 - **Suspense** is a React mechanism that allows **deferring the render** of a component until data or resources are ready.
 - Works together with Concurrent Rendering so as not to block the rest of the UI.
@@ -54,7 +49,7 @@ const UserProfile = React.lazy(() => import('./UserProfile'));
 
 ---
 
-### 🧩 Integration with Data
+### Integration with Data
 
 React 18 supports **data-fetching Suspense** through libraries (React Query, Relay, SWR).
 
@@ -71,7 +66,7 @@ Example (with experimental API):
 
 ---
 
-### 🧩 Priorities and Smoothness
+### Priorities and Smoothness
 
 - React itself distributes task priorities:
     - critical updates (input, clicks) — performed immediately,
@@ -80,7 +75,7 @@ Example (with experimental API):
 
 ---
 
-### 💡 Key Ideas
+### Key ideas
 
 - **Concurrent Rendering** = React's ability to perform work in parts.
 - **Suspense** = declarative management of the waiting state.

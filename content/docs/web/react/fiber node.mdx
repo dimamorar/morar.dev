@@ -1,6 +1,6 @@
 ---
 title: "Fiber Node"
-description: "Fiber Node is the primary structural unit of the Fiber architecture."
+description: ""
 ---
 
 > Fiber Node is the primary structural unit of the Fiber architecture.  
@@ -8,7 +8,7 @@ description: "Fiber Node is the primary structural unit of the Fiber architectur
 
 ---
 
-### 🧩 Core Concept of Fiber Node
+### Core Concept of Fiber Node
 
 - Every React element in the tree is converted into a **Fiber node**.
     
@@ -31,7 +31,7 @@ Fiber forms a **tree that React can traverse and manipulate iteratively**, rathe
 
 ---
 
-### 🧩 Fiber Node Structure
+### Fiber Node Structure
 
 Typical Fiber structure (simplified):
 
@@ -53,11 +53,11 @@ Typical Fiber structure (simplified):
 
 ---
 
-### 🧩 Pointer Tree Structure
+### Pointer Tree Structure
 
 Fiber uses **pointers like in a singly linked list**, rather than recursion.
 
-#### Key Pointers:
+#### Key pointers
 
 - **`child`** — first child
     
@@ -79,7 +79,7 @@ This allows React to:
 
 ---
 
-### 🧩 alternate: double-buffering
+### alternate: double-buffering
 
 - Each Fiber has a clone — **`alternate`**,  
     which corresponds to the previous state of the node.
@@ -97,7 +97,7 @@ This allows React to:
 
 ---
 
-### 🧩 flags: effect system
+### flags: effect system
 
 The `flags` field records effects to be executed in the commit phase:
 
@@ -116,7 +116,7 @@ This allows performing DOM operations optimally and in batches.
 
 ---
 
-### 💡 Key Ideas
+### Key ideas
 - Fiber Node is a React working block that replaced the recursive stack.
 - It contains data about the component, state, updates, and effects.
 - The pointer system allows React to pause rendering and manage the process.

@@ -1,17 +1,14 @@
 ---
-title: "shouldComponentUpdate vs. memoization hooks"
-description: "Both shouldComponentUpdate and memoization hooks (React.memo, useMemo, useCallback) serve the same purpose — to prevent unnecessary re-renders."
+title: "SCU vs Memoization"
+description: ""
 ---
 
-## shouldComponentUpdate vs memoization hooks
-
 > Both shouldComponentUpdate and memoization hooks (React.memo, useMemo, useCallback) serve the same purpose — to prevent unnecessary re-renders.
-
 > The only difference is that the former is used in **class components**, while hooks are used in **functional components**.
 
 ---
 
-### 🧩 shouldComponentUpdate
+### shouldComponentUpdate
 
 - A lifecycle method of a class component.
 - Called **before a re-render** and allows deciding whether the component needs to be updated.
@@ -35,7 +32,7 @@ class UserCard extends React.Component {
 
 ---
 
-### 🧩 PureComponent
+### PureComponent
 
 - An optimized version of a class component with a **built-in `shouldComponentUpdate`**,
     
@@ -53,7 +50,7 @@ class UserCard extends React.PureComponent {
 
 ---
 
-### 🧩 React.memo (analogue for functional components)
+### React.memo (analogue for functional components)
 
 - Performs the same shallow check but for **functional components**.
 - If the props haven't changed, the component does not re-render.
@@ -65,7 +62,7 @@ const UserCard = React.memo(({ name }) => <div>{name}</div>);
 
 ---
 
-### 🧩 useMemo and useCallback
+### useMemo and useCallback
 
 - Optimize **internal calculations and callbacks** to avoid triggering cascade re-renders of child components.
 
@@ -77,7 +74,7 @@ const handleClick = useCallback(() => doSomething(id), [id]);
 
 ---
 
-### 🧩 Comparison
+### Comparison
 
 | Approach | Component Type | What it controls | Comparison Level |
 | --- | --- | --- | --- |
@@ -88,7 +85,7 @@ const handleClick = useCallback(() => doSomething(id), [id]);
 
 ---
 
-### 💡 Key Ideas
+### Key ideas
 
 - All these tools serve the purpose of **render optimization**.
 - Class components use `shouldComponentUpdate` or `PureComponent`.

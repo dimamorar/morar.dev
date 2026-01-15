@@ -1,13 +1,13 @@
 ---
-title: "React.memo vs. useMemo vs. useCallback"
-description: "Memoization in React is used to prevent unnecessary re-renders and repeated calculations. It allows remembering the results of functions, computations, and components to avoid redundant work."
+title: "React.memo vs useMemo vs useCallback"
+description: ""
 ---
 
 > Memoization in React is used to prevent unnecessary re-renders and repeated calculations. It allows "remembering" the results of functions, computations, and components between renders if their dependencies have not changed.
 
 ---
 
-### 🧩 React.memo
+### React.memo
 
 - HOC (Higher-Order Component) that **memoizes the render result of a functional component**.
 - If props have not changed (shallow comparison `shallowEqual`), the component will not be re-rendered.
@@ -33,7 +33,7 @@ React.memo(Component, (prevProps, nextProps) => prevProps.id === nextProps.id);
 
 ---
 
-### 🧩 useMemo
+### useMemo
 
 - A hook that **caches the result of computations** between renders.
 - Computations are performed only if dependencies have changed.
@@ -46,11 +46,11 @@ const visibleItems = useMemo(
 );
 ```
 
-⚠️ You should not use `useMemo` for every calculation — only if it is really expensive.
+Note: Do not use `useMemo` for every calculation — only if it is really expensive.
 
 ---
 
-### 🧩 useCallback
+### useCallback
 
 - Memoizes the **reference to a function** so it's not re-created on every render.
 - Especially important when passing callbacks to child components wrapped in `React.memo`.
@@ -65,7 +65,7 @@ Without `useCallback`, every new render creates a new function → the child com
 
 ---
 
-### 🧩 Connection Between Them
+### Connection Between Them
 
 | Tool            | What it memoizes             | When to apply                               |
 | --------------- | ---------------------------- | ------------------------------------------- |
@@ -75,7 +75,7 @@ Without `useCallback`, every new render creates a new function → the child com
 
 ---
 
-### 💡 Key Ideas
+### Key ideas
 
 - Memoization = **remembering the result** between renders.
 - `React.memo` prevents unnecessary renders.

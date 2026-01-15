@@ -1,9 +1,7 @@
 ---
-title: "Class lifecycle vs. useEffect"
-description: "`useEffect` replaces most lifecycle methods related to side effects,"
+title: "Lifecycle vs useEffect"
+description: ""
 ---
-
-## Class lifecycle vs useEffect (including Error Boundaries)
 
 > `useEffect` replaces most lifecycle methods related to side effects,
 > but **is not a full replacement for all class capabilities**.
@@ -11,7 +9,7 @@ description: "`useEffect` replaces most lifecycle methods related to side effect
 
 ---
 
-### Class lifecycle (React ≤16)
+### Class lifecycle (React <=16)
 
 * Logic is split between phases:
   * `componentDidMount`
@@ -85,9 +83,3 @@ Therefore Error Boundaries **cannot be implemented via hooks**.
 `useEffect` replaces lifecycle methods for side effects but **does not replace Error Boundaries**.
 Catching rendering errors is only possible via class components, so classes are still necessary in modern React.
 
----
-
-If you want — logical continuation with cards:
-
-* **Why Error Boundaries cannot be hooks**
-* **What happens when React render throws**

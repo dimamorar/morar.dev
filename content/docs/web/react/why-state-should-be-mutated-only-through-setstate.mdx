@@ -1,23 +1,21 @@
 ---
-title: "Why state should be mutated only through setState"
-description: "In React, state should only be updated through `setState` (in class components) or setter functions from `useState`."
+title: "Why Use setState"
+description: ""
 ---
 
-## Why state should be mutated only through setState / state setters
-
-> In React, state should only be updated through `setState` (in class components) or setter functions from `useState`.  
+> In React, state should only be updated through `setState` (in class components) or setter functions from `useState`.
 > Direct state mutation violates React principles and can lead to unpredictable UI behavior.
 
 ---
 
-### 🧩 The Problem of Direct Mutation
+### The Problem of Direct Mutation
 
 React does not track object changes directly — it relies on **reference comparison** (shallow comparison).
 
 If you change the state directly, React won't see that the object reference has changed and **won't trigger a re-render**.
 
 ```jsx
-// ❌ Incorrect
+// Incorrect
 state.user.name = 'Alex';
 ```
 
@@ -26,7 +24,7 @@ state.user.name = 'Alex';
 
 ---
 
-### 🧩 The Correct Way to Update
+### The Correct Way to Update
 
 ### Class Components
 
@@ -44,7 +42,7 @@ setUser(prev => ({ ...prev, name: 'Alex' }));
 
 ---
 
-### 🧩 Why This Matters
+### Why This Matters
 
 1. **Immutability** — the foundation of React's principle.
     - Allows optimizing comparison (`shouldComponentUpdate`, `React.memo`).
@@ -54,12 +52,12 @@ setUser(prev => ({ ...prev, name: 'Alex' }));
 
 ---
 
-### 🧩 Common Mistakes
+### Common Mistakes
 
 - Mutating arrays directly (`push`, `splice`) instead of creating copies:
     
     ```jsx
-    setList(prev => [...prev, newItem]); // ✅
+    setList(prev => [...prev, newItem]); // Correct
     ```
     
 - Mutating nested objects without spread or `structuredClone`.
@@ -67,7 +65,7 @@ setUser(prev => ({ ...prev, name: 'Alex' }));
 
 ---
 
-### 💡 Key Ideas
+### Key ideas
 
 - React determines changes by **new reference**, not by content.
 - State mutation breaks Reconciliation and prevents re-rendering.

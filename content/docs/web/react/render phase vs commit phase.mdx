@@ -1,6 +1,6 @@
 ---
-title: "Render Phase vs. Commit Phase"
-description: "React Fiber performs updates in two separate phases: **Render Phase** and **Commit Phase**."
+title: "Render vs Commit"
+description: ""
 ---
 
 > React Fiber performs updates in two separate phases: **Render Phase** and **Commit Phase**.  
@@ -8,7 +8,7 @@ description: "React Fiber performs updates in two separate phases: **Render Phas
 
 ---
 
-### 🧩 Render Phase (reconciliation)
+### Render Phase (reconciliation)
 
 **Goal:** calculate *what* needs to be updated in the UI.
 The Render Phase is also called the **reconciliation phase** because in it React:
@@ -18,7 +18,7 @@ The Render Phase is also called the **reconciliation phase** because in it React
 - determines which Fibers are changed, added, or deleted,
 - forms the **effect list** (a list of changes for the DOM).
 
-#### 🔹 Properties of Render Phase
+#### Properties of Render Phase
 
 - **Can be interrupted** → React will give control back to the browser.
 - **Can be resumed** → will continue from the moment of pause.
@@ -31,7 +31,7 @@ It's pure computational work.
 
 ---
 
-### 🧩 Commit Phase
+### Commit Phase
 
 **Goal:** apply all calculated changes to the real DOM.
 
@@ -40,7 +40,7 @@ In the commit phase, React:
 2. Calls layout effects (`useLayoutEffect`).
 3. Activates passive effects (`useEffect`) in a deferred cycle.
 
-#### 🔹 Properties of Commit Phase
+#### Properties of Commit Phase
 - **Always synchronous**.
 - **Cannot be interrupted**.
 - **Executed quickly**, because only the physical application of calculated changes is done.
@@ -50,7 +50,7 @@ In the commit phase, React:
 
 ---
 
-### 🧩 Why two phases?
+### Why two phases?
 
 - Separation allows avoiding browser blocking.
 - Unnecessary or outdated results of the render phase can be cancelled.
@@ -59,7 +59,7 @@ In the commit phase, React:
 
 ---
 
-### 💡 Key Ideas
+### Key ideas
 
 - Render Phase = "what to change". Commit Phase = "apply changes".
 - Render phase can be interrupted, resumed, or cancelled.

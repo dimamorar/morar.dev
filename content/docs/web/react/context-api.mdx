@@ -1,13 +1,13 @@
 ---
 title: "Context API"
-description: "Context API is a built-in React mechanism for passing data through a component tree without having to pass props manually. It solves the *prop drilling* problem"
+description: ""
 ---
 
 > Context API is a built-in React mechanism for passing data through a component tree without having to pass props manually. It solves the *prop drilling* problem, making common values (theme, language, authorization) available at any level of the hierarchy.
 
 ---
 
-### 🧩 What is Context
+### What is Context
 
 - Context creates a **global store** for the React tree.
 - It consists of three elements:
@@ -35,7 +35,7 @@ function Toolbar() {
 
 ---
 
-### 🧩 How Context Works
+### How Context Works
 
 - All components located **inside a Provider** subscribe to changes in the context value.
 - When `value` is updated, React re-renders only the **subscribed components**.
@@ -43,7 +43,7 @@ function Toolbar() {
 
 ---
 
-### 🧩 Typical Use Cases
+### Typical Use Cases
 
 - **Theming (Theme switching)**
 ```jsx
@@ -62,7 +62,7 @@ function Toolbar() {
 
 ---
 
-### 🧩 Limitations and Best Practices
+### Limitations and Best Practices
 - Frequent context updates can cause **redundant re-renders**.
 - It is better to split contexts by responsibility zones (theme, language, data).
 - For complex state, it is better to use **Redux** or **Zustand**.
@@ -70,7 +70,7 @@ function Toolbar() {
 
 ---
 
-### 💡 Key Ideas
+### Key ideas
 - Context API eliminates the need for *prop drilling*.
 - `Provider` defines the data source, `useContext` — the consumer.
 - Works at the React tree level, not the global state level of the application.

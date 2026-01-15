@@ -1,19 +1,15 @@
 ---
-title: "Controlled vs. Uncontrolled components"
-description: "In React, there are two ways to work with forms — controlled and uncontrolled."
+title: "Controlled vs Uncontrolled"
+description: ""
 ---
 
-## Controlled vs Uncontrolled components
-
 > In React, there are two ways to work with forms — controlled and uncontrolled.
-> 
-> 
 > They differ in who manages the input state: React or the DOM itself.
 > 
 
 ---
 
-### 🧩 Controlled Components
+### Controlled Components
 
 - The form element state is completely controlled by React.
 - The element value (`value`, `checked`, etc.) is stored in **state**, and updates happen via `onChange`.
@@ -45,7 +41,7 @@ function Form() {
 
 ---
 
-### 🧩 Uncontrolled Components
+### Uncontrolled Components
 
 - The element value is stored **inside the DOM**, not in React state.
 - `ref` is used to access data.
@@ -71,7 +67,7 @@ function Form() {
 
 ---
 
-### 💡 Key Ideas
+### Key ideas
 
 - **Controlled** — React owns the value; every change triggers a state update.
 - **Uncontrolled** — DOM stores the value, React only accesses it through `ref`.

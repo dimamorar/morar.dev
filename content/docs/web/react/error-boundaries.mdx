@@ -1,17 +1,14 @@
 ---
-title: "Error boundaries"
-description: "Error Boundaries are special React components that catch errors occurring during rendering, in lifecycle methods, or in child components."
+title: "Error Boundaries"
+description: ""
 ---
 
-## Error boundaries — how they catch render errors
-
 > Error Boundaries are special React components that catch errors occurring during rendering, in lifecycle methods, or in child components.
-> 
 > They prevent the entire application from "falling," isolating the error inside a local section of the UI.
 
 ---
 
-### 🧩 What is an Error Boundary
+### What is an Error Boundary
 
 - Error Boundary is a **React container component** implementing error handling methods.
 - It catches errors **only in child components**, but not in itself.
@@ -22,7 +19,7 @@ description: "Error Boundaries are special React components that catch errors oc
 
 ---
 
-### 🧩 Implementation in Class Components
+### Implementation in Class Components
 
 Error Boundary must implement at least one of two methods:
 
@@ -60,7 +57,7 @@ Usage:
 
 ---
 
-### 🧩 Error Boundaries in Functional Components
+### Error Boundaries in Functional Components
 
 Currently, Hooks **do not provide a direct analogue** of Error Boundary.
 
@@ -80,7 +77,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 
 ---
 
-### 🧩 Limitations
+### Limitations
 
 Error Boundaries **do not catch errors**:
 
@@ -96,7 +93,7 @@ For these cases, use:
 
 ---
 
-### 💡 Key Ideas
+### Key ideas
 
 - Error Boundaries protect the UI from critical errors in child components.
 - Implemented through `getDerivedStateFromError` and `componentDidCatch` methods.

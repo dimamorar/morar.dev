@@ -1,16 +1,14 @@
 ---
-title: "Functional vs. Class Components"
-description: "React supports two types of components: functional and class-based."
+title: "Functional vs Class"
+description: ""
 ---
 
-## Functional Components vs Class Components
-
-> React supports two types of components: functional and class-based.  
+> React supports two types of components: functional and class-based.
 > Both describe the UI but differ in how they manage state, lifecycle, and syntax.
 
 ---
 
-### 🧩 Functional Components
+### Functional Components
 
 - Defined as **pure functions** taking `props` and returning JSX.
 - Do not have their own `this` or class context.
@@ -29,7 +27,7 @@ function Counter() {
 
 ---
 
-### 🧩 Class Components
+### Class Components
 
 - Created using **ES6 classes** extending `React.Component`.
 - Use lifecycle methods (`componentDidMount`, `shouldComponentUpdate`, `componentWillUnmount`, etc.).
@@ -52,7 +50,7 @@ class Counter extends React.Component {
 
 ---
 
-### 🧩 Comparison
+### Comparison
 
 | Characteristic | Functional | Class |
 | --- | --- | --- |
@@ -64,7 +62,7 @@ class Counter extends React.Component {
 
 ---
 
-### 💡 Key Ideas
+### Key ideas
 
 - **Hooks** made functional components a full replacement for class components.
 - Today it is recommended to use **only functional components**.

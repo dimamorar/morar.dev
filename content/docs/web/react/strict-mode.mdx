@@ -1,17 +1,14 @@
 ---
 title: "Strict Mode"
-description: "StrictMode is a React tool for identifying potential problems in code."
+description: ""
 ---
 
-## Strict Mode — purpose and double render behavior in dev mode
-
 > StrictMode is a React tool for identifying potential problems in code.
-
 > It does not affect production behavior but helps detect unsafe side effects, incorrect hooks, and deprecated patterns during development.
 
 ---
 
-### 🧩 What Strict Mode Does
+### What Strict Mode Does
 
 - Enabled using a wrapper component:
     
@@ -27,7 +24,7 @@ description: "StrictMode is a React tool for identifying potential problems in c
 
 ---
 
-### 🧩 Main Checks
+### Main Checks
 
 - Double invocation of lifecycles and hooks (mount → unmount → mount).
 - Identification of side effects outside of `useEffect`.
@@ -36,7 +33,7 @@ description: "StrictMode is a React tool for identifying potential problems in c
 
 ---
 
-### 🧩 Double Render (double invoke)
+### Double Render (double invoke)
 
 - React **intentionally calls the component twice** when mounting in Strict Mode.
 - Purpose — to check that:
@@ -72,14 +69,14 @@ Effect runs
 
 ---
 
-### 🧩 When to Use
+### When to Use
 
 - Always wrap the root of the application in `<React.StrictMode>` during development.
 - Disable only when integrating with third-party libraries that do not support double rendering.
 
 ---
 
-### 💡 Key Ideas
+### Key ideas
 
 - Strict Mode works **only in dev mode**.
 - Helps identify unsafe or uncleansed side effects.

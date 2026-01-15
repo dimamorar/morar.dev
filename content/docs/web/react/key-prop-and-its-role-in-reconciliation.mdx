@@ -1,19 +1,15 @@
 ---
-title: "Key prop and its role in reconciliation"
-description: "key is a special React prop used to identify elements in lists."
+title: "Key Prop"
+description: ""
 ---
 
-## Key prop and its role in reconciliation
-
 > key is a special React prop used to identify elements in lists.
-> 
-> 
 > It helps the **Reconciliation** mechanism precisely determine which elements have changed, been added or removed, minimizing operations with the DOM.
 > 
 
 ---
 
-### 🧩 Why `key` is needed
+### Why `key` is needed
 
 - During render of lists, React compares the old and new Virtual DOM tree.
 - Without `key` it is guided only by **element positions**, which can lead to erroneous re-renders.
@@ -28,7 +24,7 @@ description: "key is a special React prop used to identify elements in lists."
 
 ---
 
-### 🧩 How Reconciliation works with keys
+### How Reconciliation works with keys
 
 **1. If `key` matches** → React **reuses the element** and updates only changed props.
 
@@ -51,16 +47,16 @@ with keys, it will understand that the data has swapped places, rather than bein
 
 ---
 
-### 🧩 Incorrect Use
+### Incorrect Use
 
-- ❌ Using the array index (`key={index}`) during dynamic changes:
+- Bad: Using the array index (`key={index}`) during dynamic changes:
     - leads to state desynchronization (for example, inputs lose focus).
-- ❌ Random or unstable keys (`Math.random()`).
+- Bad: Random or unstable keys (`Math.random()`).
     - React cannot map elements between renders → recreates them every time.
 
 ---
 
-### 🧩 Best Practices
+### Best Practices
 
 - Use **unique and stable keys** (`id`, `uuid`, constant slug).
 - The key must be **unique among neighbors**, not globally.
@@ -68,7 +64,7 @@ with keys, it will understand that the data has swapped places, rather than bein
 
 ---
 
-### 💡 Key Ideas
+### Key ideas
 
 - `key` is part of the internal Reconciliation mechanism.
 - Helps React precisely determine which elements need to be updated.

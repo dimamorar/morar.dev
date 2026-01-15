@@ -1,19 +1,14 @@
 ---
-title: "Rendering behavior and batching in React 18"
-description: "In React 18, the principle of how the render works and how state updates are combined (batching) has changed."
+title: "Batching in React 18"
+description: ""
 ---
-
-## Rendering behavior and batching in React 18
 
 > In React 18, the principle of how the render works and how state updates are combined (batching) has changed.
-> 
-> 
 > The new architecture makes updates asynchronous and optimized, maintaining interface responsiveness even with a large number of events.
-> 
 
 ---
 
-### 🧩 What is batching
+### What is batching
 
 - **Batching** is the grouping of multiple `setState` calls into a single render pass.
 - React groups updates to **minimize the number of re-renders**.
@@ -29,7 +24,7 @@ setVisible(v => !v);
 
 ---
 
-### 🧩 Automatic batching in React 18
+### Automatic batching in React 18
 
 - With React 18, batching is applied **everywhere**:
     - inside promises,
@@ -51,7 +46,7 @@ setTimeout(() => {
 
 ---
 
-### 🧩 Rendering and Priorities
+### Rendering and Priorities
 
 - React 18 introduces **asynchronous (concurrent) rendering**.
 - Now updates can:
@@ -61,7 +56,7 @@ setTimeout(() => {
 
 ---
 
-### 🧩 Synchronous and Asynchronous Updates
+### Synchronous and Asynchronous Updates
 
 - **Synchronous** — important user actions (text input, clicks).
 - **Asynchronous** — background updates, such as data preloading.
@@ -69,7 +64,7 @@ setTimeout(() => {
 
 ---
 
-### 💡 Key Ideas
+### Key ideas
 
 - React 18 combines all updates into a single render cycle — **automatic batching**.
 - Rendering has become **asynchronous and prioritized**, reducing interface lags.
