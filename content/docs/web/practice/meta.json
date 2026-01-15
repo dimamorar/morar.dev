@@ -1,13 +1,4 @@
 {
   "title": "Practice",
-  "pages": [
-    "it company-old",
-    "js-practice",
-    "practice",
-    "practice questions",
-    "react-practice",
-    "theory",
-    "ts-practice",
-    "watch interview"
-  ]
+  "pages": ["js-practice", "practice questions"]
 }
