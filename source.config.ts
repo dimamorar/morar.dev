@@ -4,6 +4,4 @@ export const docs = defineDocs({
   dir: "content/docs",
 });
 
-export default defineConfig({
-  search: "disabled",
-});
+export default defineConfig({});
