@@ -1,21 +1,21 @@
 ---
 title: "Types as a set"
-description: "Understanding TypeScript types as sets and nested type structures."
+description: ""
 ---
-
-## Types as a set
-
-### Nesting
-
-```jsx
+Types can be viewed as sets of possible values. Narrowing makes the set smaller.
+## Nesting
+```tsx
 string[]
 boolean[]
 [string, number]
-Array<{size: number}>
+Array<{ size: number }>
 ```
-
-{/* Image missing: image 5.png */}
-
-{/* Image missing: image 6.png */}
-
-{/* Image missing: image 7.png */}
+## Narrowing example
+```tsx
+type Id = string | number;
+function print(id: Id) {
+  if (typeof id === "string") {
+    id.toUpperCase();
+  }
+}
+```

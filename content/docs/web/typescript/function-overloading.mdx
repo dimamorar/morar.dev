@@ -2,3 +2,17 @@
 title: "Function Overloading"
 description: ""
 ---
+Function overloading defines multiple call signatures for the same function.
+## Example
+```tsx
+function format(value: string): string;
+function format(value: number): string;
+function format(value: string | number): string {
+  return typeof value === "number" ? value.toFixed(2) : value.trim();
+}
+const a = format(2);
+const b = format("  ok ");
+```
+## Notes
+- Only one implementation is allowed.
+- The implementation signature must handle all overloads.

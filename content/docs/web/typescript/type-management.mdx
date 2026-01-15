@@ -1,10 +1,24 @@
 ---
 title: "Type management"
-description: "Type management in TypeScript including type guards."
+description: ""
 ---
-
-## Type management
-
-{/* Image missing: image 8.png */}
-
-### TypeGuard
+Type management focuses on narrowing and validating types at runtime.
+## Type guards
+```tsx
+function isString(value: unknown): value is string {
+  return typeof value === "string";
+}
+function print(value: unknown) {
+  if (isString(value)) {
+    console.log(value.toUpperCase());
+  }
+}
+```
+## Discriminated unions
+```tsx
+type Shape = { kind: "circle"; r: number } | { kind: "square"; size: number };
+function area(shape: Shape) {
+  if (shape.kind === "circle") return Math.PI * shape.r ** 2;
+  return shape.size * shape.size;
+}
+```

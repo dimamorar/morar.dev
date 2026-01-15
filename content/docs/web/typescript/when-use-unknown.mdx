@@ -1,59 +1,20 @@
 ---
-title: "When use unknown"
-description: "`unknown` is a safer alternative to `any` that denotes a value of an unknown type."
+title: "unknown"
+description: ""
 ---
-
-> `unknown` is a safer alternative to `any` that denotes a value of an unknown type.
-> It should be used when the type is not yet defined, but you want to **maintain type safety** and not lose control over checks.
-
----
-
-### 🧩 Main Idea
-
-- Any value can be assigned to a variable of type `unknown`.
-- But using it (accessing properties, calling methods) is **impossible without a type check**.
-- This forces the developer to **explicitly refine the type** before working with the data.
-
+`unknown` is a safer alternative to `any` that forces type checks.
+## Example
 ```tsx
 let value: unknown = "Hello";
-
-value.toUpperCase(); // ❌ Error — type unknown
-
 if (typeof value === "string") {
-  console.log(value.toUpperCase()); // ✅ Safe
+  console.log(value.toUpperCase());
 }
 ```
-
----
-
-### 🧩 Comparison with `any`
-
-| Property | `any` | `unknown` |
-| --- | --- | --- |
-| Can assign anything | ✅ | ✅ |
-| Can call methods without check | ✅ | ❌ |
-| Checked by compiler | ❌ | ✅ |
-
-`unknown` requires additional type checks, preventing most runtime errors.
-
----
-
-### 🧩 Typical Use Cases
-
-- Working with **dynamic data** (e.g., result of `JSON.parse`, data from an API).
-- Functions that can return **different types** depending on conditions.
-- In generic types when the argument type is not yet determined.
-
+## Use cases
+- Dynamic data like `JSON.parse`.
+- APIs with variable response shapes.
 ```tsx
 function parseData(input: string): unknown {
   return JSON.parse(input);
 }
 ```
-
----
-
-### 💡 Key Ideas
-
-- `unknown` preserves the flexibility of `any`, but **forces type checking**.
-- It is better to use `unknown` when you don't know the type yet but want to stay within the type system.
-- `any` is "TypeScript turned off," while `unknown` is **controlled chaos**.

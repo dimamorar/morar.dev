@@ -1,79 +1,31 @@
 ---
 title: "Mapped types"
-description: "Mapped types allow creating new types based on existing ones, iterating through all the keys of a type or interface. They are often used for building **utility "
+description: ""
 ---
-
-> Mapped types allow creating new types based on existing ones, iterating through all the keys of a type or interface. They are often used for building **utility types** (`Partial`, `Readonly`, `Pick`, `Record`).
-
----
-
-### 🧩 Core Idea
-
-- Mapped type syntax is based on **iteration over keys** of a type using `keyof`.
-
+Mapped types build new types by iterating keys from another type.
+## Example
 ```tsx
 type User = {
   id: number;
   name: string;
   email: string;
 };
-
 type OptionalUser = {
   [K in keyof User]?: User[K];
 };
-/*
-  type OptionalUser = {
-    id?: number;
-    name?: string;
-    email?: string;
-  }
-*/
 ```
-
-- `[K in keyof User]` goes through each key of the `User` type
-    
-    and creates a new type with the necessary modifications.
-    
-
----
-
-### 🧩 Modification of Properties
-
-Mapped types allow changing properties:
-
-- making them **optional** `?`
-- making them **read-only** `readonly`
-- changing the value type
-
+## Variations
 ```tsx
 type ReadonlyUser = {
   readonly [K in keyof User]: User[K];
 };
-
 type StringifyUser = {
   [K in keyof User]: string;
 };
 ```
-
----
-
-### 🧩 Combination with generic types
-
-- Mapped types often generalize a template and work for any type:
-
+## Generic template
 ```tsx
 type PartialType<T> = {
   [K in keyof T]?: T[K];
 };
-
-type PartialUser = PartialType<User>;
 ```
-
----
-
-### 💡 Key Ideas
-
-- Mapped types = **mass transformation of types**.
-- Allows creating new types without code duplication.
-- Actively used in built-in TypeScript utilities (`Partial`, `Readonly`, `Pick`, `Record`, `Omit`).
-- Increases the **flexibility and scalability** of the type system.

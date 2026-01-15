@@ -1,66 +1,28 @@
 ---
-title: "Conditional types in TS"
-description: "Conditional types allow creating types that depend on conditions, similar to the ternary operator in JavaScript (A extends B ? X : Y)."
+title: "Conditional types"
+description: ""
 ---
-
-> Conditional types allow creating types that depend on conditions, similar to the ternary operator in JavaScript (A extends B ? X : Y).
-> This enables building flexible and adaptive type expressions based on the relationship between types.
-
----
-
-### 🧩 Syntax
-
+Conditional types choose a result based on a type relationship, similar to `A extends B ? X : Y`.
+## Syntax
 ```tsx
 T extends U ? X : Y
 ```
-
-- If `T` **extends** type `U`, the result will be type `X`.
-- Otherwise — type `Y`.
-
 ```tsx
 type IsString<T> = T extends string ? "yes" : "no";
-
 type A = IsString<string>; // "yes"
 type B = IsString<number>; // "no"
 ```
-
----
-
-### 🧩 Use in Utility Types
-
-Conditional types are the foundation of many built-in TypeScript utility types (`Exclude`, `Extract`, `NonNullable`):
-
+## Utility types
+Many built-ins use this pattern.
 ```tsx
 type Exclude<T, U> = T extends U ? never : T;
-
-type Result = Exclude<"a" | "b" | "c", "a" | "c">;
-// "b"
+type Result = Exclude<"a" | "b" | "c", "a" | "c">; // "b"
 ```
-
-- Here, each element `"a" | "b" | "c"` is checked separately — this is called a **distributive conditional type**.
-
----
-
-### 🧩 Nested Conditional Types
-
-- Types can be nested for complex logic checks:
-
+## Nested checks
 ```tsx
 type Check<T> = T extends string
   ? "string"
   : T extends number
   ? "number"
   : "other";
-
-type A = Check<42>;       // "number"
-type B = Check<"test">;   // "string"
-type C = Check<boolean>;  // "other"
 ```
-
----
-
-### 💡 Key Ideas
-
-- Conditional types = **"if–else" type logic** for checking relationships between types.
-- Heavily used in generic utilities and type libraries.
-- Enable creating **adaptive types** that change based on input.

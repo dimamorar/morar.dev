@@ -1,73 +1,22 @@
 ---
-title: "Typeof in TS"
-description: "In TypeScript, `typeof` is used not to get the type during runtime, but to extract the type of a variable or object at the compilation stage. This allows reusin"
+title: "typeof"
+description: ""
 ---
-
-> In TypeScript, `typeof` is used not to get the type during runtime, but to extract the type of a variable or object at the compilation stage. This allows reusing the type of an already existing value without duplicating definitions.
-
----
-
-### 🧩 Main Idea
-
-- Unlike `typeof` in JavaScript, which returns a string (`"string"`, `"number"`, etc.),
-    
-    in TypeScript `typeof` returns the **type form** of a variable or object.
-    
-
+In TypeScript, `typeof` extracts a type from a value at compile time.
+## Example
 ```tsx
-const user = {
-  id: 1,
-  name: "Anna",
-  active: true,
-};
-
+const user = { id: 1, name: "Anna", active: true };
 type User = typeof user;
-/*
-  type User = {
-    id: number;
-    name: string;
-    active: boolean;
-  }
-*/
 ```
-
----
-
-### 🧩 Application in Generic Functions
-
-- `typeof` is often combined with `keyof` to create **type-safe utilities**:
-
+## With `keyof`
 ```tsx
-const settings = {
-  theme: "dark",
-  version: 3,
-};
-
-type SettingsKeys = keyof typeof settings;
-// "theme" | "version"
+const settings = { theme: "dark", version: 3 };
+type SettingsKeys = keyof typeof settings; // "theme" | "version"
 ```
-
-- This allows typing values dynamically based on an already existing object.
-
----
-
-### 🧩 Usage with Classes
-
-- In classes, `typeof` returns the **constructor type**, not the instance type:
-
+## Classes
 ```tsx
 class User {
   name = "Olha";
 }
-
-type UserType = User;         // instance type
-type UserConstructor = typeof User; // constructor type
+type UserConstructor = typeof User;
 ```
-
----
-
-### 💡 Key Ideas
-
-- `typeof` in TypeScript is a **type operator**, not a runtime function.
-- Allows creating types based on real variables or objects.
-- In combination with `keyof`, it ensures **maximum consistency between data and types**.

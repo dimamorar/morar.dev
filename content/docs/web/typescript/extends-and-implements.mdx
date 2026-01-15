@@ -1,64 +1,33 @@
 ---
 title: "Extends and implements"
-description: "extends and implements are two TypeScript mechanisms that define inheritance and implementation of interfaces or classes. `extends` is used for **inheriting imp"
+description: ""
 ---
-
-> extends and implements are two TypeScript mechanisms that define inheritance and implementation of interfaces or classes. `extends` is used for **inheriting implementation**, while `implements` is used for **adhering to a type contract**.
-
----
-
-### 🧩 `extends` — Inheritance
-
-- Used when a **class inherits another class** or an **interface inherits another interface**.
-- The child class receives **all properties and methods of the parent class**, and can override or extend them.
-
+`extends` inherits implementation, `implements` enforces a contract.
+## `extends`
 ```tsx
 class Animal {
   move() {
     console.log("Moving...");
   }
 }
-
 class Dog extends Animal {
   bark() {
     console.log("Woof!");
   }
 }
-
-const rex = new Dog();
-rex.move(); // ✅ inherited
-rex.bark(); // ✅ own method
 ```
-
-- You can inherit only **one class**, but **multiple interfaces**.
-
----
-
-### 🧩 `implements` — Contract Implementation
-
-- Used when a class **commits to implementing an interface**.
-- Provides correspondence of form (structure), but **does not provide a ready-made implementation**.
-
+## `implements`
 ```tsx
 interface Flyable {
   fly(): void;
 }
-
 class Bird implements Flyable {
   fly() {
     console.log("Flying...");
   }
 }
 ```
-
-- If a class does not implement all methods of the interface — the compiler issues an error.
-
----
-
-### 🧩 Combination
-
-You can simultaneously **inherit a class** and **implement interfaces**:
-
+## Together
 ```tsx
 class Eagle extends Bird implements Flyable {
   fly() {
@@ -66,13 +35,3 @@ class Eagle extends Bird implements Flyable {
   }
 }
 ```
-
----
-
-### 💡 Key Ideas
-
-- `extends` → **inherits implementation** from another class or interface.
-- `implements` → **guarantees contract compliance**, but does not provide code.
-- `extends` = "get behavior",
-    
-    `implements` = "follow structure".

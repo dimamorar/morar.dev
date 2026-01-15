@@ -1,91 +1,25 @@
 ---
-title: "Enums in TS"
-description: "**enum** is a special type in TypeScript that allows defining a set of named constants."
+title: "Enums"
+description: ""
 ---
-
-> **enum** is a special type in TypeScript that allows defining a set of named constants.
-> Used for convenient handling of fixed sets of values — for example, statuses, roles, or directions.
-
----
-
-### 🧩 Numeric Enums
-
-- By default, enum values are **numeric**, starting from `0`.
-- Each subsequent element automatically gets an incremented value.
-
+Enums group related constants under one name.
+## Numeric enums
 ```tsx
 enum Direction {
-  Up,       // 0
-  Down,     // 1
-  Left,     // 2
-  Right,    // 3
-}
-
-const move = Direction.Left; // 2
-```
-
-- Initial values can be explicitly set:
-
-```tsx
-enum Status {
-  Pending = 1,
-  Success = 2,
-  Failed = 3,
+  Up,
+  Down,
+  Left,
+  Right,
 }
 ```
-
----
-
-### 🧩 String Enums
-
-- Each member of an `enum` can be a string — this increases readability and safety.
-
+## String enums
 ```tsx
 enum Role {
   Admin = "ADMIN",
   User = "USER",
   Guest = "GUEST",
 }
-
-const access = Role.Admin; // "ADMIN"
 ```
-
----
-
-### 🧩 Heterogeneous Enums
-
-- TypeScript allows combining string and numeric values, but this is **not recommended** due to unclear behavior.
-
-```tsx
-enum Mix {
-  No = 0,
-  Yes = "YES",
-}
-```
-
----
-
-### 🧩 Reverse Mapping
-
-- For numeric `enums`, TypeScript creates a **reverse mapping** — you can get the name by value.
-
-```tsx
-enum Color {
-  Red,
-  Green,
-  Blue,
-}
-
-console.log(Color[0]); // "Red"
-```
-
-- There is no reverse mapping for string `enums`.
-
----
-
-### 💡 Key Ideas
-
-- `enum` is a way to group related constants under one name.
-- There are **numeric**, **string**, and **heterogeneous** variations.
-- They increase code readability and simplify working with predefined sets of values.
-- When compiled, they turn into a JavaScript object with keys and values.
+## Notes
+- Numeric enums have reverse mapping.
+- Heterogeneous enums are allowed but discouraged.

@@ -1,55 +1,18 @@
 ---
-title: "Type assertions in TS"
-description: "Type assertion is a mechanism that allows you to explicitly tell the compiler what type a value has."
+title: "Type assertions"
+description: ""
 ---
-
-> Type assertion is a mechanism that allows you to explicitly tell the compiler what type a value has.
-> 
-> 
-> It does not change the data itself during execution, but only helps **convince the compiler** of the correctness of the type.
-> 
-
----
-
-### 🧩 Essence
-
-- Used when the developer **knows the type of value better** than TypeScript.
-- Allows **overriding or refining the type** determined by the compiler.
-- Does not perform any runtime checks — only affects the type system.
-
+Type assertions tell the compiler what type a value should be.
+They do not change runtime values or perform checks.
+## Example
 ```tsx
 let value: unknown = "Hello TS";
-let strLength = (value as string).length; // ✅ compiler knows this is a string
+let strLength = (value as string).length;
 ```
-
----
-
-### 🧩 Alternative Syntax
-
-TypeScript supports two forms of notation:
-
+## Syntax
 ```tsx
 const input = document.querySelector("input") as HTMLInputElement;
 ```
-
-or (old syntax, not recommended in JSX files):
-
-```tsx
-const input = <HTMLInputElement>document.querySelector("input");
-```
-
----
-
-### 🧩 Limitations
-
-- Type assertion **does not perform a check** — you can specify any type, even an incorrect one.
-- Misuse can lead to runtime errors.
-- It is safer to use **user-defined type guards** or type checks if in doubt.
-
----
-
-### 💡 Key Ideas
-
-- Type assertion ≠ type casting (does not actually convert the type).
-- Applied when TypeScript cannot infer the exact type itself.
-- Use with caution, only when you are sure of the data type.
+## Notes
+- Use when you are sure of the value type.
+- Prefer type guards when possible.

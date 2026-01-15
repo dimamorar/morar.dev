@@ -1,74 +1,27 @@
 ---
-title: "public private protected TS"
-description: "Access modifiers in TypeScript control the accessibility of class properties and methods. They determine which parts of the code can access a specific class mem"
+title: "Access modifiers"
+description: ""
 ---
-
-> Access modifiers in TypeScript control the accessibility of class properties and methods. They determine which parts of the code can access a specific class member, helping to implement **encapsulation** — one of the key principles of OOP.
-
----
-
-### 🧩 `public` (default)
-
-- Accessible **everywhere** — inside the class, in its descendants, and outside.
-- If no modifier is specified, the property or method is considered `public`.
-
+Access modifiers control visibility of class members.
+## `public`
 ```tsx
 class User {
   public name: string = "Olha";
 }
-
-const user = new User();
-console.log(user.name); // ✅ accessible
 ```
-
----
-
-### 🧩 `private`
-
-- Accessible only **inside the same class**.
-- Inaccessible from the outside or in descendant classes.
-
+## `private`
 ```tsx
 class Account {
   private balance: number = 1000;
-
-  private getBalance() {
-    return this.balance;
-  }
 }
-
-const acc = new Account();
-acc.balance;      // ❌ Error
-acc.getBalance(); // ❌ Error
 ```
-
----
-
-### 🧩 `protected`
-
-- Accessible **within the class and its descendants**, but **not from the outside**.
-- Used when a subclass should have access to certain properties of the parent class.
-
+## `protected`
 ```tsx
 class Base {
   protected id: number = 1;
 }
-
-class Derived extends Base {
-  showId() {
-    console.log(this.id); // ✅ allowed
-  }
-}
-
-const d = new Derived();
-d.id; // ❌ Error
 ```
-
----
-
-### 💡 Key Ideas
-
-- `public` → full access.
-- `private` → only inside the same class.
-- `protected` → inside the class and its descendants.
-- Access modifiers are applied only at the compilation stage — **they do not exist in JavaScript**, but they ensure type safety and a clear architecture.
+## Notes
+- `public` is the default.
+- `private` is only within the class.
+- `protected` is for the class and its subclasses.

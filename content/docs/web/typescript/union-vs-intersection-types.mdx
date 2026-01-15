@@ -1,66 +1,21 @@
 ---
-title: "Union vs. intersection types"
-description: "Union types (|) allow a variable to take one of several types, while **intersection types (`&`)** combine several types into **one shared type** that contains p"
+title: "Union vs intersection"
+description: ""
 ---
-
-> Union types (|) allow a variable to take one of several types, while **intersection types (`&`)** combine several types into **one shared type** that contains properties of all components. They represent two opposite ways of combining types in TypeScript.
-
----
-
-### 🧩 Union Types (`|`)
-
-- Means: **"either this type or another"**.
-- The value must match at least one of the listed types.
-- Used for values with several valid forms.
-
+Union types allow one of several types, intersection types combine them.
+## Union
 ```tsx
 let id: string | number;
-id = 123;
-id = "ABC123";
 ```
-
-- The type can be checked using **type narrowing**:
-
 ```tsx
 function printId(id: string | number) {
-  if (typeof id === "string") {
-    console.log(id.toUpperCase());
-  } else {
-    console.log(id.toFixed(2));
-  }
+  if (typeof id === "string") return id.toUpperCase();
+  return id.toFixed(2);
 }
 ```
-
----
-
-### 🧩 Intersection Types (`&`)
-
-- Means: **"and this type and another at the same time"**.
-- Combines properties of several types into a new, extended type.
-
+## Intersection
 ```tsx
-interface Person {
-  name: string;
-}
-interface Employee {
-  id: number;
-}
-
+interface Person { name: string }
+interface Employee { id: number }
 type Worker = Person & Employee;
-
-const user: Worker = {
-  name: "Olha",
-  id: 101,
-};
 ```
-
-- The object must contain **all properties** from both types.
-
----
-
-### 💡 Key Ideas
-
-- **Union (`|`)** → selection of one of several types.
-- **Intersection (`&`)** → combining several types into one.
-- Union is suitable for **alternative options**, intersection — for **object composition**.
-- Together they make the TypeScript type system extremely flexible.

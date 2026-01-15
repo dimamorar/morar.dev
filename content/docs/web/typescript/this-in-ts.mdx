@@ -1,17 +1,9 @@
 ---
-title: "This in TS"
-description: "In TypeScript, `this` is typed explicitly, which helps avoid errors during method calls and passing functions as callbacks. The compiler analyzes the context in"
+title: "this in TS"
+description: ""
 ---
-
-> In TypeScript, `this` is typed explicitly, which helps avoid errors during method calls and passing functions as callbacks. The compiler analyzes the context in which `this` is used and may require **explicit type annotation** to guarantee correct binding.
-
----
-
-### 🧩 `this` in Classes
-
-- In class methods, `this` automatically points to the **instance of the class**.
-- The type of `this` corresponds to the class itself.
-
+TypeScript types `this` to avoid context loss in callbacks and methods.
+## In classes
 ```tsx
 class Counter {
   count = 0;
@@ -20,74 +12,20 @@ class Counter {
   }
 }
 ```
-
-- TypeScript guarantees that inside `increment()`, `this` will always have the `Counter` type.
-
----
-
-### 🧩 `this` in Callbacks
-
-- If a method is passed as a callback, the `this` context can be **lost**, so TS helps detect this.
-
+## In callbacks
 ```tsx
 class Button {
   label = "Click";
-
   handleClick() {
     console.log(this.label);
   }
 }
-
 const b = new Button();
-setTimeout(b.handleClick, 1000); // ❌ this = undefined in strict mode
+setTimeout(() => b.handleClick(), 1000);
 ```
-
-- To avoid the error, you can use an arrow function or explicit binding:
-
-```tsx
-setTimeout(() => b.handleClick(), 1000); // ✅
-```
-
----
-
-### 🧩 Explicit `this` Typing in Functions
-
-- In regular functions, you can **explicitly specify the type of `this`** in the first parameter — it is not part of the arguments list.
-
+## Explicit `this` typing
 ```tsx
 function greet(this: { name: string }) {
   console.log(`Hello, ${this.name}`);
 }
-
-const user = { name: "Anna", greet };
-user.greet(); // ✅ Hello, Anna
 ```
-
-- If the function is called without context, the compiler will show a type error.
-
----
-
-### 🧩 `this` in Generic Types
-
-- `this` can be used as a **return type** in methods that support fluent API (method chaining):
-
-```tsx
-class Builder {
-  set() { return this; }
-}
-
-class UserBuilder extends Builder {
-  build() { return this; }
-}
-```
-
-> Returning `this` allows methods to maintain the exact type of the subclass without losing information.
-
----
-
-### 💡 Key Ideas
-
-- TypeScript **strictly types `this`** to prevent context loss.
-- You can explicitly annotate `this` in regular functions.
-- In classes, `this` always belongs to the instance, but in callbacks, the context must be fixed manually.
-- Using `this` in generic classes supports **method chaining** with correct typing.

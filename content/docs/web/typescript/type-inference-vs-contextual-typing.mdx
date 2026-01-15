@@ -1,50 +1,16 @@
 ---
-title: "What is the difference between type inference and contextual typing?"
-description: "TypeScript can determine types automatically — this is called type inference. When a type is inferred based on the context of use, this is contextual typing."
+title: "Type inference vs contextual typing"
+description: ""
 ---
-
-## What is the difference between type inference and contextual typing?
-
-> TypeScript can determine types automatically — this is called type inference.
-> 
-> 
-> When a type is inferred based on the **context of use** (for example, when passing a function or callback), this is **contextual typing**.
-> 
-
----
-
-### 🧩 Type Inference
-
-- The compiler **independently determines the type** of a variable or expression if it is not explicitly specified.
-- Inference is based on the assigned value or the result of the expression.
-
+Type inference derives types from values. Contextual typing derives types from usage.
+## Type inference
 ```tsx
-let count = 5; // type: number
-const name = "Alex"; // type: string
+let count = 5;
+const name = "Alex";
 ```
-
-- Type inference allows avoiding unnecessary type duplication in simple cases.
-- If the type cannot be determined, the compiler assigns `any` (if `noImplicitAny` is not enabled).
-
----
-
-### 🧩 Contextual Typing
-
-- The type is determined **based on the context** in which the value is used (in particular, functions or callbacks).
-- Often applied for events, handlers, or function parameters.
-
+## Contextual typing
 ```tsx
 window.addEventListener("click", (event) => {
-  console.log(event.clientX); // event: MouseEvent (inferred from context)
+  console.log(event.clientX);
 });
 ```
-
-- In this example, the `MouseEvent` type is not explicitly declared — it is determined by the **context of the `addEventListener` method**.
-
----
-
-### 💡 Key Ideas
-
-- **Type inference** — the type is determined **from assignment** or **expression**.
-- **Contextual typing** — the type is determined **from the context of use**.
-- Both mechanisms reduce the number of explicit annotations, making the code cleaner and more understandable.

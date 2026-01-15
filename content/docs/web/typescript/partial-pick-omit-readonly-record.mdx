@@ -1,95 +1,25 @@
 ---
-title: "Partial Pick Omit Readonly Record"
-description: "Utility types are built-in generalized types in TypeScript that simplify working with objects,"
+title: "Utility types"
+description: ""
 ---
-
-> Utility types are built-in generalized types in TypeScript that simplify working with objects,
-> 
-> 
-> allowing you to quickly create modified versions of existing types without repeated description.
-> 
-> They are based on **mapped types** and **conditional types** mechanisms.
-> 
-
----
-
-### 🧩 `Partial<T>`
-
-- Makes all properties of type `T` **optional** (`?`).
-
+Utility types transform existing types without duplication.
+## `Partial<T>`
 ```tsx
-interface User {
-  id: number;
-  name: string;
-}
-
-type PartialUser = Partial<User>;
-/*
-  { id?: number; name?: string; }
-*/
+type PartialUser = Partial<{ id: number; name: string }>;
 ```
-
----
-
-### 🧩 `Readonly<T>`
-
-- Makes all properties **read-only** (`readonly`).
-
+## `Readonly<T>`
 ```tsx
-type ReadonlyUser = Readonly<User>;
-/*
-  { readonly id: number; readonly name: string; }
-*/
+type ReadonlyUser = Readonly<{ id: number; name: string }>;
 ```
-
----
-
-### 🧩 `Pick<T, K>`
-
-- Creates a new type with **selected keys** `K` from type `T`.
-
+## `Pick<T, K>`
 ```tsx
-type UserPreview = Pick<User, "id" | "name">;
-/*
-  { id: number; name: string; }
-*/
+type UserPreview = Pick<{ id: number; name: string }, "id">;
 ```
-
----
-
-### 🧩 `Omit<T, K>`
-
-- Creates a type, **excluding certain keys** `K` from `T`.
-
+## `Omit<T, K>`
 ```tsx
-type UserWithoutId = Omit<User, "id">;
-/*
-  { name: string; }
-*/
+type UserWithoutId = Omit<{ id: number; name: string }, "id">;
 ```
-
----
-
-### 🧩 `Record<K, T>`
-
-- Creates an object type where **keys have type `K`**, and value has type `T`.
-
+## `Record<K, T>`
 ```tsx
-type Roles = "admin" | "user" | "guest";
-type Permissions = Record<Roles, boolean>;
-/*
-  {
-    admin: boolean;
-    user: boolean;
-    guest: boolean;
-  }
-*/
+type Permissions = Record<"admin" | "user", boolean>;
 ```
-
----
-
-### 💡 Key Ideas
-
-- All utility types are templates built on the basis of mapped types.
-- They increase **flexibility, consistency, and reusability of types**.
-- Most often used in large codebases for transformations of objects without structure duplication.
