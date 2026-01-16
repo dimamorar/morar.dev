@@ -1,13 +1,29 @@
-import { CodeBlock } from './code-block';
-import type { MDXComponents } from 'mdx/types';
+import type { ReactElement, ReactNode } from "react";
+import { isValidElement } from "react";
+import { CodeBlock } from "./code-block";
+import type { MDXComponents } from "mdx/types";
+
+const extractText = (node: unknown): string => {
+  if (node == null) return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(extractText).join("");
+  if (isValidElement(node)) {
+    const element = node as ReactElement<{ children?: ReactNode }>;
+    return extractText(element.props.children);
+  }
+  if (typeof node === "object" && "value" in (node as any)) {
+    return String((node as any).value);
+  }
+  return "";
+};
 
 export const mdxComponents: MDXComponents = {
   // Code blocks - use existing CodeBlock component
   pre: ({ children, ...props }: any) => {
     // Extract code and language from MDX structure
-    const code = children?.props?.children || '';
-    const className = children?.props?.className || '';
-    const language = className.replace('language-', '') || 'text';
+    const code = extractText(children?.props?.children);
+    const className = children?.props?.className || "";
+    const language = className.replace("language-", "") || "text";
 
     return <CodeBlock code={code} language={language} />;
   },
@@ -20,10 +36,13 @@ export const mdxComponents: MDXComponents = {
   ),
 
   // Headings - preserve emoji, add proper spacing
+  h1: ({ children }: any) => (
+    <h1 className="text-3xl font-bold mt-8 mb-4 tracking-tight">{children}</h1>
+  ),
+
+  // Headings - preserve emoji, add proper spacing
   h2: ({ children }: any) => (
-    <h2 className="text-2xl font-bold mt-8 mb-4 tracking-tight">
-      {children}
-    </h2>
+    <h2 className="text-2xl font-bold mt-8 mb-4 tracking-tight">{children}</h2>
   ),
 
   h3: ({ children }: any) => (
@@ -35,9 +54,7 @@ export const mdxComponents: MDXComponents = {
   // Tables - responsive wrapper
   table: ({ children }: any) => (
     <div className="overflow-x-auto my-4">
-      <table className="min-w-full border-collapse">
-        {children}
-      </table>
+      <table className="min-w-full border-collapse">{children}</table>
     </div>
   ),
 };

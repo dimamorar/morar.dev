@@ -3,6 +3,7 @@ import { DocsPage, DocsBody } from "fumadocs-ui/layouts/docs/page";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import defaultMdxComponents from "fumadocs-ui/mdx";
+import { mdxComponents } from "@/components/mdx-components";
 
 export default async function Page(props: {
   params: Promise<{ slug?: string[] }>;
@@ -17,8 +18,10 @@ export default async function Page(props: {
   return (
     <DocsPage toc={page.data.toc}>
       <DocsBody>
-        <h1>{page.data.title}</h1>
-        <MDX components={{ ...defaultMdxComponents }} />
+        <h1 className="text-3xl font-bold mt-8 mb-4 tracking-tight">
+          {page.data.title}
+        </h1>
+        <MDX components={{ ...defaultMdxComponents, ...mdxComponents }} />
       </DocsBody>
     </DocsPage>
   );
