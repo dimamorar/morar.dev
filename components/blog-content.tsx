@@ -9,10 +9,10 @@ interface BlogContentProps {
 
 const extractText = (node: DOMNode): string => {
   if (node.type === "text") {
-    return (node as unknown as { data?: string }).data ?? "";
+    return "data" in node && typeof node.data === "string" ? node.data : "";
   }
   if ("children" in node && Array.isArray(node.children)) {
-    return node.children.map(extractText).join("");
+    return node.children.map((child) => extractText(child as DOMNode)).join("");
   }
   return "";
 };
@@ -39,7 +39,9 @@ export function BlogContent({ html }: BlogContentProps) {
       if (!codeChild) return;
 
       const language = getLanguage(codeChild.attribs?.class);
-      const code = codeChild.children.map(extractText).join("");
+      const code = codeChild.children
+        .map((child) => extractText(child as DOMNode))
+        .join("");
       return <CodeBlock code={code} language={language} />;
     },
   });
