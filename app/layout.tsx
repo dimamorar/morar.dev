@@ -30,6 +30,9 @@ export default function RootLayout({
           search={{
             enabled: false,
           }}
+          theme={{
+            enabled: false,
+          }}
         >
           <SiteHeader />
           <ScrollProgressIndicator />

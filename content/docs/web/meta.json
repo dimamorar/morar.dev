@@ -4,6 +4,7 @@
   "icon": "Globe",
   "root": true,
   "pages": [
+    "index",
     "fundamentals",
     "hml-css",
     "javascript",

@@ -1,15 +1,20 @@
-import Image from "next/image"
-import Link from "next/link"
-import { Card } from "@/components/ui/card"
+import Image from "next/image";
+import Link from "next/link";
+import { Card } from "@/components/ui/card";
 
 interface ProjectCardProps {
-  title: string
-  category: string
-  image: string
-  slug: string
+  title: string;
+  category: string;
+  image: string;
+  slug: string;
 }
 
-export function ProjectCard({ title, category, image, slug }: ProjectCardProps) {
+export function ProjectCard({
+  title,
+  category,
+  image,
+  slug,
+}: ProjectCardProps) {
   return (
     <Link href={`/projects/${slug}`} className="block h-full">
       <Card className="bg-zinc-800/50 border-zinc-700 overflow-hidden group hover:border-cyan-500/50 transition-all h-full">
@@ -28,5 +33,5 @@ export function ProjectCard({ title, category, image, slug }: ProjectCardProps) 
         </div>
       </Card>
     </Link>
-  )
+  );
 }

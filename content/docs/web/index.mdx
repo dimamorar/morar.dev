@@ -1,0 +1,52 @@
+---
+title: "Web Overview"
+description: "A guided map of the core web topics in this track."
+---
+
+import { Compass, Braces, Layers, Shield } from "lucide-react";
+
+## Introduction
+
+The Web track covers fundamentals, language mastery, frameworks,
+and shipping-ready practices.
+
+Web has different parts:
+
+<Cards>
+  <Card 
+  icon={<Compass className="text-purple-300" />} 
+  title="Foundations & HTML/CSS" 
+  href="/docs/web/fundamentals/what-the-url-is">
+    Browser basics, networking, essentials, and HTML/CSS building blocks.
+  </Card>
+
+{" "}
+
+<Card
+  icon={<Braces className="text-blue-300" />}
+  title="JavaScript & TypeScript"
+  href="/docs/web/javascript/js-data-types"
+>
+  Language fundamentals, modern patterns, and strong typing with TypeScript.
+
+</Card>
+
+{" "}
+
+<Card
+  icon={<Layers className="text-amber-300" />}
+  title="React, State & Next.js"
+  href="/docs/web/react/react"
+>
+  Component architecture, state management, and Next.js app patterns.
+
+</Card>
+
+  <Card 
+  icon={<Shield className="text-emerald-300" />} 
+  title="Auth, Git & Practice" 
+  href="/docs/web/auth/authentication">
+    Authentication flows, version control, and practical drills.
+
+  </Card>
+</Cards>
