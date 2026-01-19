@@ -5,6 +5,10 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
+        protocol: "http",
+        hostname: "cms.morar.dev",
+      },
+      {
         protocol: "https",
         hostname: "cms.morar.dev",
       },

@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ExternalLink, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { ImageWithSkeleton } from "@/components/image-with-skeleton";
 import { getProjectBySlug } from "@/lib/projects";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
@@ -57,14 +57,15 @@ export default function ProjectPage({ params }: ProjectPageProps) {
         </div>
 
         {project.coverImage && (
-          <div className="relative h-64 md:h-96 w-full rounded-lg overflow-hidden border">
-            <Image
-              src={project.coverImage}
-              alt={project.title}
-              fill
-              className="object-cover"
-            />
-          </div>
+          <ImageWithSkeleton
+            src={project.coverImage}
+            alt={project.title}
+            fill
+            sizes="(min-width: 768px) 768px, 100vw"
+            loading="lazy"
+            className="object-cover"
+            wrapperClassName="relative h-64 md:h-96 w-full rounded-lg overflow-hidden border"
+          />
         )}
 
         <div className="prose max-w-none">
@@ -124,17 +125,16 @@ export default function ProjectPage({ params }: ProjectPageProps) {
               <h2>Project Gallery</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 not-prose">
                 {project.gallery.map((image, index) => (
-                  <div
+                  <ImageWithSkeleton
                     key={index}
-                    className="relative h-64 rounded-lg overflow-hidden border"
-                  >
-                    <Image
-                      src={image.url}
-                      alt={image.caption || `Gallery image ${index + 1}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
+                    src={image.url}
+                    alt={image.caption || `Gallery image ${index + 1}`}
+                    fill
+                    sizes="(min-width: 768px) 50vw, 100vw"
+                    loading="lazy"
+                    className="object-cover"
+                    wrapperClassName="relative h-64 rounded-lg overflow-hidden border"
+                  />
                 ))}
               </div>
             </>

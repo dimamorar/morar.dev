@@ -245,11 +245,17 @@ export function serializeLexicalContent(content: CmsLexicalContent): string {
               /"/g,
               "&quot;"
             );
+            const width = Number.isFinite(media.width) ? media.width : undefined;
+            const height = Number.isFinite(media.height) ? media.height : undefined;
+            const dimensionAttrs =
+              width && height
+                ? ` width="${width}" height="${height}" style="aspect-ratio: ${width} / ${height};"`
+                : "";
             const captionText = caption
               ? serializeNestedContent(caption, conv)
               : "";
 
-            html += `<img src="${PAYLOAD_CMS_URL}${mediaUrl}" alt="${alt}" class="border border-border mb-2 mt-2 aspect-video w-full rounded-md object-cover" />`;
+            html += `<img src="${PAYLOAD_CMS_URL}${mediaUrl}" alt="${alt}" class="border border-border mb-2 mt-2 aspect-video w-full rounded-md object-cover" loading="lazy" decoding="async" fetchpriority="low"${dimensionAttrs} />`;
             if (captionText) {
               html += `<div class="mt-6">${captionText}</div>`;
             }
@@ -267,7 +273,13 @@ export function serializeLexicalContent(content: CmsLexicalContent): string {
               /"/g,
               "&quot;"
             );
-            return `<img src="${PAYLOAD_CMS_URL}${mediaUrl}" alt="${alt}" class="border border-border mb-2 mt-2 aspect-video w-full rounded-md object-cover" />`;
+            const width = Number.isFinite(value.width) ? value.width : undefined;
+            const height = Number.isFinite(value.height) ? value.height : undefined;
+            const dimensionAttrs =
+              width && height
+                ? ` width="${width}" height="${height}" style="aspect-ratio: ${width} / ${height};"`
+                : "";
+            return `<img src="${PAYLOAD_CMS_URL}${mediaUrl}" alt="${alt}" class="border border-border mb-2 mt-2 aspect-video w-full rounded-md object-cover" loading="lazy" decoding="async" fetchpriority="low"${dimensionAttrs} />`;
           }
           return "";
         },

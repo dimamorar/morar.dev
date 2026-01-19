@@ -28,7 +28,7 @@ export default function RootLayout({
       style={{ colorScheme: "light" }}
       suppressHydrationWarning
     >
-      <body>
+      <body suppressHydrationWarning>
         {umamiScriptUrl && umamiWebsiteId ? (
           <Script
             defer

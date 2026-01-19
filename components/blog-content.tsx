@@ -2,6 +2,7 @@
 
 import parse, { type DOMNode, type Element } from "html-react-parser";
 import { CodeBlock } from "./code-block";
+import { ImageWithSkeleton } from "./image-with-skeleton";
 
 interface BlogContentProps {
   html: string;
@@ -25,11 +26,35 @@ const getLanguage = (className?: string): string => {
   return languageClass ? languageClass.replace("language-", "") : "text";
 };
 
+const parseDimension = (value?: string): number | undefined => {
+  if (!value) return undefined;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : undefined;
+};
+
 export function BlogContent({ html }: BlogContentProps) {
   const content = parse(html, {
     replace: (node) => {
       if (node.type !== "tag") return;
       const element = node as Element;
+      if (element.name === "img") {
+        const width = parseDimension(element.attribs?.width);
+        const height = parseDimension(element.attribs?.height);
+        const loading =
+          (element.attribs?.loading as "eager" | "lazy") || "lazy";
+
+        return (
+          <ImageWithSkeleton
+            src={element.attribs?.src || ""}
+            alt={element.attribs?.alt || ""}
+            width={width}
+            height={height}
+            className={element.attribs?.class}
+            loading={loading}
+            sizes="100vw"
+          />
+        );
+      }
       if (element.name !== "pre") return;
 
       const codeChild = element.children.find(
