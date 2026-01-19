@@ -7,9 +7,25 @@ import { getAllPosts, getAllPostSlugs } from "@/lib/blog";
 import { PAYLOAD_CMS_URL } from "@/lib/payload";
 
 export const metadata: Metadata = {
-  title: "Blog - Dmytro Morar",
+  title: "Blog",
   description:
     "Articles about web development, software engineering, and technology by Dmytro Morar.",
+  openGraph: {
+    title: "Blog - Dmytro Morar",
+    description:
+      "Articles about web development, software engineering, and technology by Dmytro Morar.",
+    type: "website",
+    url: "https://morar.dev/blog",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Blog - Dmytro Morar",
+    description:
+      "Articles about web development, software engineering, and technology by Dmytro Morar.",
+  },
+  alternates: {
+    canonical: "https://morar.dev/blog",
+  },
 };
 
 // Enable ISR - revalidate every hour
@@ -42,7 +58,7 @@ export default async function Blog() {
           </div>
         ) : (
           <div className="space-y-8">
-            {posts.map((post) => {
+            {posts.map((post, index) => {
               const publishedDate = post.publishedAt
                 ? format(new Date(post.publishedAt), "d MMM, yyyy")
                 : "Draft";
@@ -71,6 +87,7 @@ export default async function Blog() {
                             src={`${PAYLOAD_CMS_URL}${post.cover.url}`}
                             alt={post.cover.alt || post.title}
                             fill
+                            priority={index < 3}
                             className="object-cover rounded border border-border"
                           />
                         </div>

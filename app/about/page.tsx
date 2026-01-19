@@ -8,9 +8,25 @@ import {
 import { Download } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "About - Dmytro Morar",
+  title: "About",
   description:
     "Learn more about Dmytro Morar - React/Next.js developer with 7+ years of experience.",
+  openGraph: {
+    title: "About Dmytro Morar",
+    description:
+      "Learn more about Dmytro Morar - React/Next.js developer with 7+ years of experience.",
+    type: "profile",
+    url: "https://morar.dev/about",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Dmytro Morar",
+    description:
+      "Learn more about Dmytro Morar - React/Next.js developer with 7+ years of experience.",
+  },
+  alternates: {
+    canonical: "https://morar.dev/about",
+  },
 };
 
 export default function About() {

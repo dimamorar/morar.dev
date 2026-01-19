@@ -21,20 +21,34 @@ export async function generateMetadata({
 }: {
   params: { tag: string };
 }): Promise<Metadata> {
-  const tagSlug = params.tag;
+  const { tag: tagSlug } = await params;
   const tags = await getAllTags();
   const tag = tags.find((t) => t.slug === tagSlug);
 
   if (!tag) {
     return {
-      title: "Tag Not Found - Dmytro Morar",
+      title: "Tag Not Found",
       description: "The requested tag could not be found.",
     };
   }
 
   return {
-    title: `${tag.title} - Dmytro Morar`,
+    title: `${tag.title} Articles`,
     description: `All articles tagged with "${tag.title}".`,
+    openGraph: {
+      title: `${tag.title} Articles`,
+      description: `All articles tagged with "${tag.title}".`,
+      type: "website",
+      url: `https://morar.dev/tags/${tagSlug}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${tag.title} Articles`,
+      description: `All articles tagged with "${tag.title}".`,
+    },
+    alternates: {
+      canonical: `https://morar.dev/tags/${tagSlug}`,
+    },
   };
 }
 
@@ -69,7 +83,7 @@ export default async function TagPage({
           </div>
         ) : (
           <div className="space-y-8">
-            {posts.map((post) => {
+            {posts.map((post, index) => {
               const publishedDate = post.publishedAt
                 ? format(new Date(post.publishedAt), "d MMM, yyyy")
                 : "Draft";
@@ -98,6 +112,7 @@ export default async function TagPage({
                             src={`${PAYLOAD_CMS_URL}${post.cover.url}`}
                             alt={post.cover.alt || post.title}
                             fill
+                            priority={index < 3}
                             className="object-cover rounded border border-border"
                           />
                         </div>

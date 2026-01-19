@@ -12,15 +12,30 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const project = getProjectBySlug(params.slug);
+  const { slug } = await params;
+  const project = getProjectBySlug(slug);
   if (!project) {
     return {
       title: "Project Not Found",
     };
   }
   return {
-    title: `${project.title} - Dmytro Morar`,
+    title: project.title,
     description: project.shortDescription,
+    openGraph: {
+      title: project.title,
+      description: project.shortDescription,
+      type: "article",
+      url: `https://morar.dev/projects/${slug}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: project.title,
+      description: project.shortDescription,
+    },
+    alternates: {
+      canonical: `https://morar.dev/projects/${slug}`,
+    },
   };
 }
 

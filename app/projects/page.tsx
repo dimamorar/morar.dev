@@ -5,8 +5,22 @@ import { Badge } from "@/components/ui/badge";
 import { getAllProjects } from "@/lib/projects";
 
 export const metadata: Metadata = {
-  title: "Projects - Dmytro Morar",
+  title: "Projects",
   description: "Explore projects and work by Dmytro Morar.",
+  openGraph: {
+    title: "Projects by Dmytro Morar",
+    description: "Explore projects and work by Dmytro Morar.",
+    type: "website",
+    url: "https://morar.dev/projects",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Projects by Dmytro Morar",
+    description: "Explore projects and work by Dmytro Morar.",
+  },
+  alternates: {
+    canonical: "https://morar.dev/projects",
+  },
 };
 
 export default function Projects() {

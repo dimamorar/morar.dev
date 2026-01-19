@@ -3,8 +3,11 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { format } from "date-fns";
 import { getPostBySlug, getAllPostSlugs } from "@/lib/blog";
+import { PAYLOAD_CMS_URL } from "@/lib/payload";
 import { CalendarRange } from "lucide-react";
 import { BlogContent } from "@/components/blog-content";
+import { BlogPostSchema } from "@/components/blog-post-schema";
+import { BreadcrumbSchema } from "@/components/breadcrumb-schema";
 import { InlineTopButton } from "@/components/inline-top-button";
 
 // export const revalidate = 3600;
@@ -26,15 +29,18 @@ export async function generateMetadata({
 
   if (!post) {
     return {
-      title: "Post Not Found - Dmytro Morar",
+      title: "Post Not Found",
       description: "The requested blog post could not be found.",
     };
   }
 
   const excerpt = post.excerpt || post.title;
+  const ogImage = post.cover?.url
+    ? `${PAYLOAD_CMS_URL}${post.cover.url}`
+    : "/og-image.png";
 
   return {
-    title: `${post.title} - Dmytro Morar`,
+    title: post.title,
     description: excerpt,
     authors: post.authors.map((a) => ({ name: a.name })),
     openGraph: {
@@ -42,12 +48,18 @@ export async function generateMetadata({
       description: excerpt,
       type: "article",
       publishedTime: post.publishedAt,
+      modifiedTime: post.updatedAt,
       authors: post.authors.map((a) => a.name),
+      images: [{ url: ogImage }],
     },
     twitter: {
       card: "summary_large_image",
       title: post.title,
       description: excerpt,
+      images: [ogImage],
+    },
+    alternates: {
+      canonical: `https://morar.dev/blog/${slug}`,
     },
   };
 }
@@ -69,9 +81,18 @@ export default async function BlogPost({
     : "Draft";
 
   return (
-    <div className="container-narrow py-6 md:py-6">
-      <article className="prose max-w-none leading-[28px] px-4 -ml-6 -mr-6">
-        <header className="mb-8">
+    <>
+      <BlogPostSchema post={post} />
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: "https://morar.dev" },
+          { name: "Blog", url: "https://morar.dev/blog" },
+          { name: post.title },
+        ]}
+      />
+      <div className="container-narrow py-6 md:py-6">
+        <article className="prose max-w-none leading-[28px] px-4 -ml-6 -mr-6">
+          <header className="mb-8">
           <h1 className="inline-block text-2xl font-bold text-accent sm:text-3xl mb-2">
             {post!.title}
           </h1>
@@ -107,7 +128,8 @@ export default async function BlogPost({
             <InlineTopButton className="self-center sm:self-auto" />
           </div>
         </footer>
-      </article>
-    </div>
+        </article>
+      </div>
+    </>
   );
 }
