@@ -43,7 +43,7 @@ export default async function TagPage({
 }: {
   params: { tag: string };
 }) {
-  const tagSlug = params.tag;
+  const {tag: tagSlug} = await params;
   const tags = await getAllTags();
   const tag = tags.find((t) => t.slug === tagSlug);
 
