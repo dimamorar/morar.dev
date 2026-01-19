@@ -86,10 +86,13 @@ export interface BlogPost {
 }
 
 // In dev mode, bypass cache to always get fresh data
-const fetchOptions: RequestInit =
+const baseRevalidateSeconds = 3600;
+const buildFetchOptions = (tags?: string[]): RequestInit =>
   process.env.NODE_ENV === "development"
     ? { cache: "no-store" }
-    : { next: { revalidate: 3600 } };
+    : tags && tags.length > 0
+      ? { next: { revalidate: baseRevalidateSeconds, tags } }
+      : { next: { revalidate: baseRevalidateSeconds } };
 
 export async function getAllPosts(): Promise<BlogPost[]> {
   try {
@@ -98,7 +101,7 @@ export async function getAllPosts(): Promise<BlogPost[]> {
       "where[_status][equals]=published&depth=1&sort=-publishedAt"
     );
 
-    const response = await fetch(url, fetchOptions);
+    const response = await fetch(url, buildFetchOptions(["posts"]));
 
     if (!response.ok) {
       throw new Error(`Failed to fetch posts: ${response.statusText}`);
@@ -125,7 +128,7 @@ export async function getLatestPosts(limit: number = 3): Promise<BlogPost[]> {
       `where[_status][equals]=published&depth=1&sort=-publishedAt&limit=${limit}`
     );
 
-    const response = await fetch(url, fetchOptions);
+    const response = await fetch(url, buildFetchOptions(["posts"]));
 
     if (!response.ok) {
       throw new Error(`Failed to fetch latest posts: ${response.statusText}`);
@@ -146,7 +149,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
       `where[slug][equals]=${slug}&where[_status][equals]=published&depth=1`
     );
 
-    const response = await fetch(url, fetchOptions);
+    const response = await fetch(url, buildFetchOptions(["posts"]));
     if (!response.ok) {
       throw new Error(`Failed to fetch post: ${response.statusText}`);
     }
@@ -391,7 +394,7 @@ export async function getAllTags(): Promise<CmsTag[]> {
   try {
     const url = getCollectionUrl("tags", "");
 
-    const response = await fetch(url, fetchOptions);
+    const response = await fetch(url, buildFetchOptions());
 
     if (!response.ok) {
       throw new Error(`Failed to fetch tags: ${response.statusText}`);

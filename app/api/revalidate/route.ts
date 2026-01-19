@@ -50,6 +50,8 @@ export async function POST(request: NextRequest) {
       }
       // Revalidate blog list page
       revalidatePath("/blog");
+      // Revalidate home page (recent posts section)
+      revalidatePath("/");
       revalidateTag("posts", {});
       console.log("Revalidated posts collection");
     }
