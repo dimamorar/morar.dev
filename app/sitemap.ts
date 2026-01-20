@@ -1,6 +1,5 @@
 import { MetadataRoute } from "next";
 import { getAllPosts, getAllTags } from "@/lib/blog";
-import { projects } from "@/lib/projects";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://morar.dev";
@@ -26,7 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/projects`,
+      url: `${baseUrl}/docs`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
@@ -51,13 +50,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }));
 
-  // Project pages
-  const projectPages: MetadataRoute.Sitemap = projects.map((project) => ({
-    url: `${baseUrl}/projects/${project.slug}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly",
-    priority: 0.6,
-  }));
+  // TODO: Add docs pages
+  const docPages: MetadataRoute.Sitemap = [];
 
-  return [...staticPages, ...blogPages, ...tagPages, ...projectPages];
+  return [...staticPages, ...blogPages, ...tagPages, ...docPages];
 }
