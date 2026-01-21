@@ -7,6 +7,7 @@ import { SiteHeader } from "@/components/site-header";
 import { PersonSchema } from "@/components/person-schema";
 import { getMetaInfo } from "@/lib/data";
 import { RootProvider } from "fumadocs-ui/provider/next";
+import { GoogleTranslateToggle } from "@/components/google-translate-toggle";
 
 const metaInfo = getMetaInfo();
 const umamiScriptUrl = process.env.NEXT_PUBLIC_UMAMI_SCRIPT_URL;
@@ -80,6 +81,7 @@ export default function RootLayout({
             enabled: false,
           }}
         >
+          <GoogleTranslateToggle />
           <SiteHeader />
           <ScrollProgressIndicator />
           {children}

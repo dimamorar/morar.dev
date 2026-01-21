@@ -306,3 +306,50 @@ body {
 .animate-pulse-glow {
   animation: pulse-glow 3s ease-in-out infinite;
 }
+
+/* --- Google Translate (website widget) --- */
+.google-translate-root {
+  display: none;
+}
+
+/* Hide Google's top banner (prevents layout jump) */
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+/* Optional: hide the floating gadget if it gets injected */
+.goog-te-gadget {
+  display: none !important;
+}
+
+.google-translate-fab {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1000;
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--card));
+  color: hsl(var(--foreground));
+  border-radius: 9999px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  user-select: none;
+}
+
+.google-translate-fab:hover {
+  background: color-mix(in oklab, hsl(var(--card)) 85%, hsl(var(--muted)));
+}
+
+.google-translate-fab:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
