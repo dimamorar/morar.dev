@@ -49,6 +49,7 @@
 
 ## High-Priority Improvements
 
+DONE
 ### 1. Add H1 to Homepage
 
 **Issue:** Home page starts with H2 ("Recent posts"), missing H1.
@@ -65,7 +66,7 @@
 **Impact:** Proper heading hierarchy signals page topic to search engines.
 
 ---
-
+POSTPONE - once I see real user interest
 ### 2. Add Newsletter Signup
 
 **Issue:** No email capture mechanism exists anywhere on the site.
@@ -98,7 +99,7 @@ export function NewsletterSignup() {
 ```
 
 ---
-
+POSTPONE - once I see real user interest
 ### 3. Connect Contact Form to Backend
 
 **Issue:** `components/contact-form.tsx` logs to console only (line ~160).
@@ -136,7 +137,7 @@ export async function POST(request: Request) {
 ```
 
 ---
-
+POSTPONE - once I see real user interest
 ### 4. Add Social Sharing Buttons to Blog Posts
 
 **Issue:** No way for readers to share articles.
@@ -169,7 +170,7 @@ export function ShareButtons({ url, title }: { url: string; title: string }) {
 **Impact:** Increases content reach and social signals.
 
 ---
-
+DONE
 ### 5. Complete Sitemap Generation
 
 **Issue:** Docs pages missing from sitemap.
@@ -195,7 +196,7 @@ return [...staticPages, ...blogPosts, ...tagPages, ...docPages];
 ---
 
 ## Medium-Priority Improvements
-
+POSTPONE - once I see real user interest
 ### 6. Add Related Posts Component
 
 **Why:** Increases page views, time on site, and internal linking.
@@ -222,7 +223,7 @@ export async function RelatedPosts({ currentSlug, tags }: Props) {
 **Location:** Add to `app/blog/[slug]/page.tsx` after main content.
 
 ---
-
+POSTPONE - once I see real user interest
 ### 7. Enable and Enhance Search
 
 **Issue:** Search API exists (`/api/search`) but UI is disabled.
@@ -237,7 +238,7 @@ export async function RelatedPosts({ currentSlug, tags }: Props) {
 3. Add search to site header for global access
 
 ---
-
+POSTPONE - once I see real user interest
 ### 8. Add RSS Feed
 
 **Why:** Many developers use RSS readers; standard for blogs.
@@ -283,7 +284,7 @@ alternates: {
 ```
 
 ---
-
+POSTPONE - once I see real user interest
 ### 9. Add Visual Breadcrumbs
 
 **Current:** Only schema markup exists, not visible on page.
@@ -312,7 +313,7 @@ export function Breadcrumbs({ items }: { items: { label: string; href?: string }
 ```
 
 ---
-
+POSTPONE - after I finish trend radar and PsyAssistant projects
 ### 10. Restore Projects/Portfolio Section
 
 **Note:** Git history shows "refactor: remove projects pages"
@@ -339,7 +340,7 @@ export function Breadcrumbs({ items }: { items: { label: string; href?: string }
 ---
 
 ## Strategic Improvements
-
+POSTPONE - once I see real user interest
 ### 11. Add Social Proof Elements
 
 **Current gaps:**
@@ -377,7 +378,7 @@ const testimonials = [
 - Specific metrics from past roles
 
 ---
-
+GOOD POINT
 ### 12. Implement Conversion Tracking
 
 **Current:** Only basic Umami pageviews.
@@ -405,7 +406,7 @@ umami.track('external_link', { url: 'destination' });
 ```
 
 ---
-
+GOOD POINT
 ### 13. Content Strategy Enhancements
 
 **Current:** Blog exists but no clear content organization.
@@ -435,7 +436,7 @@ umami.track('external_link', { url: 'destination' });
    - Internal links between them
 
 ---
-
+POSTPONE - once I see real user interest
 ### 14. Additional Schema Markup
 
 **Already implemented:** Person, BlogPosting, BreadcrumbList
@@ -482,7 +483,7 @@ umami.track('external_link', { url: 'destination' });
 ```
 
 ---
-
+GOOD POINT
 ### 15. Performance Verification
 
 **Already good:**

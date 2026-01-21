@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { getAllPosts, getAllTags } from "@/lib/blog";
+import { source } from "@/lib/source";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://morar.dev";
@@ -51,7 +52,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // TODO: Add docs pages
-  const docPages: MetadataRoute.Sitemap = [];
+  const docPages: MetadataRoute.Sitemap = source
+    .getPages()
+    .filter((page) => page.url.replace(/\/+$/, "") !== "/docs")
+    .map((page) => {
+      const path = page.url.startsWith("/") ? page.url : `/${page.url}`;
+      return {
+        url: `${baseUrl}${path}`,
+        lastModified: new Date(),
+        changeFrequency: "monthly",
+        priority: 0.6,
+      };
+    });
 
   return [...staticPages, ...blogPages, ...tagPages, ...docPages];
 }

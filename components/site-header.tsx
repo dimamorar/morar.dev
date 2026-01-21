@@ -67,21 +67,21 @@ export function SiteHeader() {
             <nav className="flex flex-col gap-4 text-base">
               <Link
                 href="/blog"
-                className="hover:opacity-70 transition-opacity !no-underline"
+                className="hover:opacity-70 transition-opacity no-underline!"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Blog
               </Link>
               <Link
                 href="/docs"
-                className="hover:opacity-70 transition-opacity !no-underline"
+                className="hover:opacity-70 transition-opacity no-underline!"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Docs
               </Link>
               <Link
                 href="/about"
-                className="hover:opacity-70 transition-opacity !no-underline"
+                className="hover:opacity-70 transition-opacity no-underline!"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 About

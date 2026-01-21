@@ -22,6 +22,11 @@
         "platform": "LinkedIn",
         "url": "https://www.linkedin.com/in/dimamorar/",
         "icon": "Linkedin"
+      },
+      {
+        "platform": "X",
+        "url": "https://x.com/dimamorar",
+        "icon": "Twitter"
       }
     ]
   },
