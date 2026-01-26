@@ -1,887 +1,328 @@
-# Morar.dev Portfolio Application Documentation
+# morar.dev — Application Documentation (Source of Truth)
 
-## Table of Contents
+This file is written to be **useful as ChatGPT context**.
+If you are an LLM reading this repo: treat this doc as the canonical overview of how the app works **today**.
 
-1. [Project Overview](#project-overview)
-2. [Technology Stack](#technology-stack)
-3. [Architecture](#architecture)
-4. [Project Structure](#project-structure)
-5. [Key Features](#key-features)
-6. [Data Flow](#data-flow)
-7. [Component Architecture](#component-architecture)
-8. [Animation System](#animation-system)
-9. [Styling System](#styling-system)
-10. [Development Setup](#development-setup)
-11. [Deployment](#deployment)
+## What this repo is
 
----
+Single **Next.js App Router** application that serves:
 
-## Project Overview
+- **Portfolio**: home + about, driven by `data/portfolio-data.json`
+- **Blog**: posts/tags from **Payload CMS** (`https://cms.morar.dev`)
+- **Docs/Wiki**: MDX knowledge base rendered by **Fumadocs**
 
-**Morar.dev** is a modern, responsive portfolio website showcasing the work and expertise of Dmytro Morar, a React/Next.js developer with 7+ years of experience. The application features a dark-themed, animated interface that presents professional information, technical skills, work experience, and project showcases.
+There is **no `/projects` route** in the current codebase (older docs referenced it).
 
-### Purpose
+## Commands
 
-- Display professional profile and credentials
-- Showcase technical skills and expertise
-- Present work experience and achievements
-- Feature portfolio projects with detailed views
-- Provide contact information and CV download
+From repo root:
 
-### Key Characteristics
-
-- **Dark Theme**: Zinc/black color scheme with cyan accent colors
-- **Animated UI**: Custom animation system with intersection observer
-- **Responsive Design**: Mobile-first approach with breakpoints
-- **Type-Safe**: Full TypeScript implementation
-- **Performance-Optimized**: Next.js App Router with optimized images
-
----
-
-## Technology Stack
-
-### Core Framework
-
-- **Next.js 14.2.25** - React framework with App Router
-- **React 18.2.0** - UI library
-- **TypeScript 5** - Type safety
-
-### Styling
-
-- **Tailwind CSS 3.4.17** - Utility-first CSS framework
-- **tailwindcss-animate** - Animation utilities
-- **PostCSS** - CSS processing
-
-### UI Components
-
-- **Radix UI** - Headless UI primitives (30+ components)
-- **shadcn/ui** - Component library built on Radix UI
-- **Lucide React** - Icon library
-
-### Form Handling
-
-- **React Hook Form 7.49.3** - Form state management
-- **Zod 3.22.4** - Schema validation
-- **@hookform/resolvers** - Form validation resolvers
-
-### Additional Libraries
-
-- **@payloadcms/richtext-lexical** - Lexical content serialization for Payload CMS
-- **next-themes** - Theme management
-- **date-fns** - Date utilities
-- **class-variance-authority** - Component variant management
-- **clsx** & **tailwind-merge** - Conditional class utilities
-
----
-
-## Architecture
-
-### App Router Structure
-
-The application uses Next.js 14 App Router with the following structure:
-
-```
-app/
-├── layout.tsx          # Root layout with providers
-├── page.tsx            # Home page
-├── blog/
-│   ├── page.tsx        # Blog listing (SSG)
-│   └── [slug]/
-│       └── page.tsx    # Blog post pages (SSG)
-├── projects/
-│   └── [slug]/
-│       ├── page.tsx    # Dynamic project pages
-│       └── not-found.tsx
-└── globals.css         # Global styles
+```bash
+pnpm dev
+pnpm build
+pnpm start
+pnpm lint
 ```
 
-### Component-Based Architecture
+## Tech stack (actual)
 
-- **Reusable Components**: Located in `components/` directory
-- **UI Primitives**: shadcn/ui components in `components/ui/`
-- **Context Providers**: Animation context for global state
-- **Custom Hooks**: Intersection observer and other utilities
+Core:
 
-### Data Management
+- **Next.js** `16.1.1` (App Router)
+- **React** `19.2.3`
+- **TypeScript** `^5`
 
-- **JSON-Based**: Portfolio data stored in `data/portfolio-data.json`
-- **Payload CMS**: Blog posts fetched from `https://cms.morar.dev/api/posts`
-- **Type-Safe Access**: Helper functions in `lib/data.ts`, `lib/projects.ts`, and `lib/blog.ts`
-- **Static Generation**: All data loaded at build time with ISR (1-hour revalidation)
+Styling/UI:
 
-### Routing
+- **Tailwind CSS** `4.0.0` (CSS-first via `@import "tailwindcss"`)
+- **Fumadocs UI** for docs layouts
+- **Radix UI** primitives + a small set of shadcn/ui components in `components/ui/`
 
-- **Static Routes**: Home page (`/`)
-- **Dynamic Routes**: Project pages (`/projects/[slug]`), Blog posts (`/blog/[slug]`)
-- **Hash Navigation**: Section anchors (`#skills`, `#experience`)
+Content:
 
----
+- **Docs**: `fumadocs-mdx` + `fumadocs-core` + `fumadocs-ui`
+- **Blog**: Payload CMS REST API + Lexical JSON → HTML (`@payloadcms/richtext-lexical`)
 
-## Project Structure
+## High-level architecture
 
-```
-morar.dev/
-├── app/                          # Next.js App Router
-│   ├── layout.tsx               # Root layout with providers
-│   ├── page.tsx                 # Home page
-│   ├── globals.css              # Global styles
-│   ├── projects/
-│   │   └── [slug]/
-│   │       ├── page.tsx         # Dynamic project pages
-│   │       └── not-found.tsx    # 404 for projects
-│   └── fonts/                   # Custom fonts (Geist)
-│
-├── components/                  # React components
-│   ├── ui/                      # shadcn/ui components
-│   ├── animated-section.tsx     # Animation wrapper
-│   ├── enhanced-profile.tsx     # Profile card with tabs
-│   ├── portfolio-header.tsx     # Navigation header
-│   ├── experience-card.tsx      # Work experience display
-│   ├── project-card.tsx          # Project thumbnail
-│   ├── scroll-progress-indicator.tsx
-│   └── ...                      # Other components
-│
-├── contexts/                    # React contexts
-│   └── animation-context.tsx    # Animation settings provider
-│
-├── data/                        # Data sources
-│   └── portfolio-data.json      # Portfolio information
-│
-├── hooks/                       # Custom React hooks
-│   └── use-intersection-observer.ts
-│
-├── lib/                         # Utility functions
-│   ├── data.ts                  # Portfolio data accessors
-│   ├── projects.ts              # Project data management
-│   ├── blog.ts                  # Blog utilities (Payload CMS integration)
-│   ├── payload.ts               # Payload CMS API configuration
-│   └── utils.ts                 # General utilities
-│
-├── public/                      # Static assets
-│   ├── *.png                    # Images
-│   ├── *.jpg                    # Photos
-│   └── *.pdf                    # Documents (CV)
-│
-├── next.config.mjs              # Next.js configuration
-├── tailwind.config.ts           # Tailwind CSS configuration
-├── tsconfig.json                # TypeScript configuration
-└── package.json                 # Dependencies
+```mermaid
+flowchart TD
+  user[UserBrowser] --> nextApp[NextJsApp]
+
+  subgraph portfolio[Portfolio]
+    portfolioJson[data/portfolio-data.json] --> libData[lib/data.ts]
+    libData --> home[app/page.tsx]
+    libData --> about[app/about/page.tsx]
+  end
+
+  subgraph blog[Blog]
+    payloadApi[PayloadCMS_API] --> libBlog[lib/blog.ts]
+    libBlog --> blogList[app/blog/page.tsx]
+    libBlog --> blogPost[app/blog/[slug]/page.tsx]
+    libBlog --> tagPage[app/tags/[tag]/page.tsx]
+  end
+
+  subgraph docs[Docs]
+    mdxFiles[content/docs/**.mdx] --> fumadocsBuild[fumadocs-mdx_build]
+    fumadocsBuild --> source[lib/source.ts]
+    source --> docsRoute[app/docs/[[...slug]]/page.tsx]
+  end
+
+  nextApp --> portfolio
+  nextApp --> blog
+  nextApp --> docs
 ```
 
----
+## Route map (current)
 
-## Key Features
+Pages:
 
-### 1. Professional Profile Display
+- **`/`**: Home (`app/page.tsx`) — renders `ProfileSection` + “Recent posts”
+- **`/about`**: About (`app/about/page.tsx`) — reads from `lib/data.ts`
+- **`/blog`**: Blog listing (`app/blog/page.tsx`) — Payload posts, **ISR 1h**
+- **`/blog/[slug]`**: Blog post (`app/blog/[slug]/page.tsx`) — Payload post by slug (static params generated)
+- **`/tags/[tag]`**: Posts by tag (`app/tags/[tag]/page.tsx`) — **ISR 1h**
+- **`/docs/...`**: Fumadocs pages (`app/docs/[[...slug]]/page.tsx`) — MDX from `content/docs`
 
-- **Enhanced Profile Component**: Sticky sidebar with avatar, badges, and social links
-- **Tabbed Interface**: About and Contact information
-- **Language Proficiency**: Visual progress bars
-- **Availability Status**: Real-time work availability indicator
-- **CV Download**: Direct PDF download functionality
+APIs:
 
-### 2. Technical Skills Showcase
+- **`POST /api/revalidate`**: on-demand revalidation for blog/home/list pages (`app/api/revalidate/route.ts`)
+- **`GET /api/search`**: docs search index API (Fumadocs server search) (`app/api/search/route.ts`)
 
-- **Categorized Skills**: Core, React ecosystem, Tools, Team Work, Other, Soft Skills
-- **Visual Tags**: Badge-based skill display
-- **Animated Sections**: Staggered animations for skill categories
+Other:
 
-### 3. Work Experience Timeline
+- **`/sitemap.xml`**: dynamic sitemap (`app/sitemap.ts`) includes static pages + blog posts + tag pages + docs pages
+- **`/robots.txt`**: robots rules (`app/robots.ts`)
+- **OG/Twitter images**: `app/opengraph-image.tsx`, `app/twitter-image.tsx` (Edge runtime)
 
-- **Experience Cards**: Detailed work history with:
-  - Job title and company
-  - Employment period
-  - Role description
-  - Key achievements (bulleted list)
-  - Technology stack badges
-- **Chronological Display**: Most recent first
+## Directory layout (important parts)
 
-### 4. Project Portfolio
+```text
+app/                      Next.js routes (App Router)
+  api/                    Route handlers (revalidate, search)
+  blog/                   Blog list + blog post routes
+  docs/                   Docs layout + catch-all docs page
+  tags/                   Tag routes
+  globals.css             Tailwind v4 + theme tokens + Fumadocs CSS
 
-- **Project Listings**: Grid-based project showcase (currently commented out on home)
-- **Dynamic Project Pages**: Individual project detail pages with:
-  - Cover image and description
-  - Feature lists
-  - Technology stack
-  - Project gallery
-  - Related projects
-  - Live and GitHub links
+components/               React components (UI + page-level)
+  ui/                     shadcn/ui components
 
-### 5. Navigation System
+content/docs/             Docs knowledge base (MDX) used by Fumadocs
+  meta.json               Top-level docs sections
+  (ai)/                   AI track
+  web/                    Web track
 
-- **Sticky Header**: Transparent to solid on scroll
-- **Active Section Detection**: Automatic highlighting based on scroll position
-- **Mobile Menu**: Full-screen overlay navigation
-- **Smooth Scrolling**: Hash-based section navigation
+data/portfolio-data.json  Portfolio source of truth
+lib/                      Business logic (Payload fetch, docs source, helpers)
+```
 
-### 6. Animation System
+## Content systems
 
-- **Custom Animation Context**: Global animation settings
-- **Intersection Observer**: Scroll-triggered animations
-- **Multiple Animation Types**: fade-up, fade-in, slide-left, slide-right, zoom-in, bounce
-- **Configurable Presets**: Subtle, moderate, playful, dramatic, none
-- **Performance Optimized**: Animations freeze once visible
+### 1) Portfolio data (JSON)
 
-### 7. Scroll Indicators
+Source:
 
-- **Progress Bar**: Top-of-page scroll progress indicator
-- **Scroll to Top**: Enhanced scroll indicator with smooth scrolling
+- `data/portfolio-data.json`
+- access helpers in `lib/data.ts`
 
-### 8. Responsive Design
+Used by:
 
-- **Mobile-First**: Optimized for all screen sizes
-- **Breakpoints**: sm, md, lg, xl, 2xl
-- **Adaptive Layouts**: Grid and flexbox with responsive columns
-- **Touch-Friendly**: Mobile menu and interactions
+- `components/site-header.tsx` (name)
+- `components/profile-section.tsx` (bio + social links)
+- `app/about/page.tsx` (bio, skills, experience)
+- `app/layout.tsx` (metadata title/description)
 
-### 9. Blog Integration (Payload CMS)
+Notes:
 
-- **Headless CMS**: Payload CMS for content management
-- **Static Generation**: All blog posts pre-rendered at build time (SSG)
-- **Incremental Static Regeneration**: Content updates every hour (ISR)
-- **Lexical Content**: Rich text editor content serialized to HTML
-- **SEO Optimized**: Dynamic metadata, Open Graph tags, structured data
-- **Reading Time**: Automatically calculated from content
+- `lib/data.ts` currently returns `[]` for `getCredentialsInfo()` (legacy placeholder).
 
----
+### 2) Docs/Wiki (Fumadocs + MDX)
 
-## Payload CMS Integration
+Docs content:
 
-### Overview
+- `content/docs/**.mdx`
+- navigation defined by `content/docs/meta.json` and per-section `meta.json` files
+  - Example roots: `(ai)` and `web` (`content/docs/(ai)/meta.json`, `content/docs/web/meta.json`)
 
-The blog section is powered by Payload CMS, a headless content management system. All blog posts are fetched from the Payload API and statically generated at build time for optimal performance.
+Build + runtime:
 
-### Configuration
+- `source.config.ts` points Fumadocs at `content/docs`
+- `lib/source.ts` loads the generated source and sets `baseUrl: "/docs"`
+- route: `app/docs/[[...slug]]/page.tsx` uses `source.getPage(params.slug)`
 
-- **CMS URL**: `https://cms.morar.dev` (configurable via `PAYLOAD_CMS_URL` env variable)
-- **API Endpoint**: `/api/posts`
-- **Admin Panel**: `https://cms.morar.dev/admin`
-- **Server**: Hetzner (77.42.17.21) - See [DEPLOYMENT.md](./DEPLOYMENT.md) for infrastructure details
+MDX components:
 
-### Key Files
+- Custom MDX rendering overrides in `components/mdx-components.tsx`:
+  - Code fences (`pre`) render via `components/code-block.tsx`
+  - Some typography wrappers (headings, blockquote, table)
 
-- **`lib/payload.ts`**: Payload CMS API configuration and URL helpers
-- **`lib/blog.ts`**: Blog utilities for fetching and processing posts
-- **`app/blog/page.tsx`**: Blog listing page with SSG
-- **`app/blog/[slug]/page.tsx`**: Individual blog post pages with SSG
+UI shell:
 
-### Functions
+- `app/docs/layout.tsx` uses `DocsLayout` (Fumadocs)
+- `components/site-header.tsx` hides the main header on docs pages; docs layout has its own nav.
 
-#### `getAllPosts()`
+Search:
 
-Fetches all published posts from Payload CMS API.
+- Server index exists at `GET /api/search` (`app/api/search/route.ts`)
+- The global `RootProvider` currently sets `search.enabled: false` in `app/layout.tsx` (so any built-in UI search is effectively disabled unless Fumadocs renders its own independently).
 
-- Returns: `Promise<BlogPost[]>`
-- Uses ISR with 1-hour revalidation
-- Automatically serializes Lexical content to HTML
-- Calculates reading time from content
+### 3) Blog (Payload CMS + Lexical → HTML)
 
-#### `getPostBySlug(slug: string)`
+CMS config:
 
-Fetches a single post by slug.
+- `lib/payload.ts`:
+  - `PAYLOAD_CMS_URL` defaults to `https://cms.morar.dev`
+  - `PAYLOAD_API_BASE = ${PAYLOAD_CMS_URL}/api`
 
-- Returns: `Promise<BlogPost | null>`
-- Uses ISR with 1-hour revalidation
-- Returns `null` if post not found
+Fetch + transform:
 
-#### `serializeLexicalContent(content: CmsLexicalContent)`
+- `lib/blog.ts`:
+  - `getAllPosts()`, `getLatestPosts(limit)`, `getPostBySlug(slug)`
+  - Fetches published posts via Payload REST (`/api/posts?...`)
+  - Serializes Lexical JSON to HTML via `convertLexicalToHTML`
+  - Computes reading time from serialized HTML
+  - Extracts `authors`, `cover`, `tags` (handles populated vs id-only shapes)
 
-Converts Lexical editor JSON to HTML.
+Rendering:
 
-- Uses `@payloadcms/richtext-lexical` package
-- Handles all block types (code, media, banners, etc.)
-- Returns serialized HTML string
+- Blog list: `app/blog/page.tsx` (ISR 1h) renders title/excerpt + cover (via `next/image`)
+- Post page: `app/blog/[slug]/page.tsx` renders:
+  - JSON-LD schema: `components/blog-post-schema.tsx`
+  - Breadcrumb schema: `components/breadcrumb-schema.tsx`
+  - Body: `components/blog-content.tsx` parses HTML and upgrades:
+    - `<pre><code class="language-...">` → `CodeBlock`
+    - `<img ...>` → `ImageWithSkeleton` (Next Image)
+- Tags: `app/tags/[tag]/page.tsx` lists posts filtered by tag slug
 
-#### `getAllPostSlugs()`
+## Caching, ISR, and revalidation
 
-Returns all post slugs for static generation.
+Blog ISR:
 
-- Used by `generateStaticParams()` in Next.js
-- Enables pre-rendering of all post pages at build time
+- `app/blog/page.tsx`: `export const revalidate = 3600`
+- `app/tags/[tag]/page.tsx`: `export const revalidate = 3600`
+- `lib/blog.ts` fetch behavior:
+  - Dev: `cache: "no-store"`
+  - Prod: `next: { revalidate: 3600, tags: ["posts"] }` for posts
 
-### Type Definitions
+On-demand revalidation:
 
-All types use the `Cms` prefix:
+- `POST /api/revalidate` (`app/api/revalidate/route.ts`)
+- Requires `REVALIDATE_SECRET` in request JSON body.
+- Revalidates:
+  - `path` (if passed)
+  - `tag` (if passed)
+  - when `collection === "posts"`: also revalidates `/blog`, `/`, and tag `"posts"`
 
-- `CmsPost` - Raw post data from API
-- `CmsAuthor` - Author information
-- `CmsLexicalContent` - Lexical editor content structure
-- `CmsMedia` - Media block information
-- `BlogPost` - Transformed post data for rendering
-
-### Static Generation
-
-Both blog pages use Next.js static generation:
-
-- **`generateStaticParams()`**: Pre-generates all post pages at build time
-- **`revalidate = 3600`**: Revalidates content every hour (ISR fallback)
-- **On-demand revalidation**: Immediate updates via `/api/revalidate` webhook
-- **Build-time fetching**: All posts fetched during build process
-- **Runtime updates**: New posts available immediately via on-demand revalidation, or within 1 hour via ISR
-
-### Content Rendering
-
-Lexical content is serialized to HTML server-side and rendered using `dangerouslySetInnerHTML`. The HTML includes:
-
-- Code blocks with syntax highlighting
-- Images with proper sizing
-- Banner/callout blocks
-- Custom block types
-
-### On-Demand Revalidation API
-
-**File**: `app/api/revalidate/route.ts`
-
-The portfolio site exposes a revalidation API endpoint that allows the CMS to trigger immediate cache invalidation when content changes.
-
-**Endpoint**: `POST /api/revalidate`
-
-**Authentication**: Requires `REVALIDATE_SECRET` token in request body
-
-**Request Body**:
+Expected request body:
 
 ```json
 {
-  "secret": "your-secret-token",
-  "path": "/blog/post-slug",
+  "secret": "REVALIDATE_SECRET",
+  "path": "/blog/some-slug",
   "tag": "posts",
   "collection": "posts"
 }
 ```
 
-**Response**:
+## Environment variables (actual usage)
 
-```json
-{
-  "revalidated": true,
-  "now": 1234567890,
-  "path": "/blog/post-slug",
-  "tag": "posts"
-}
+Server:
+
+- **`PAYLOAD_CMS_URL`**: overrides Payload host (default `https://cms.morar.dev`)
+- **`REVALIDATE_SECRET`**: required for `/api/revalidate`
+
+Public (client-safe):
+
+- **`NEXT_PUBLIC_UMAMI_SCRIPT_URL`**: if set with website id, loads Umami script in `app/layout.tsx`
+- **`NEXT_PUBLIC_UMAMI_WEBSITE_ID`**: paired with script URL
+
+## SEO & metadata
+
+Global metadata:
+
+- `app/layout.tsx` sets `metadataBase`, title template, OG/Twitter, canonical, and uses `getMetaInfo()` from `data/portfolio-data.json`.
+
+Sitemap:
+
+- `app/sitemap.ts` adds:
+  - static pages: `/`, `/about`, `/blog`, `/docs`
+  - all blog posts (from `getAllPosts()`)
+  - all tag pages (from `getAllTags()`)
+  - all docs pages (from `source.getPages()`)
+
+Structured data:
+
+- `components/person-schema.tsx`: `Person` JSON-LD on every page
+- `components/blog-post-schema.tsx`: `BlogPosting` JSON-LD on blog posts
+- `components/breadcrumb-schema.tsx`: breadcrumbs JSON-LD on blog posts
+
+## Styling & UI conventions
+
+Tailwind v4:
+
+- `app/globals.css`:
+  - `@import "tailwindcss";`
+  - imports Fumadocs CSS presets
+  - defines CSS variables for theme tokens (light palette) and utilities like `.container-narrow`
+
+Code highlighting:
+
+- `components/code-block.tsx` uses `react-syntax-highlighter` (PrismLight) + `nord` theme + copy button.
+
+Images:
+
+- `next.config.mjs` allows remote images from `cms.morar.dev`
+- Blog HTML images are upgraded to Next Image via `components/blog-content.tsx` + `components/image-with-skeleton.tsx`
+
+Google Translate:
+
+- `components/google-translate-toggle.tsx` injects the Google Translate widget script and toggles translation via the `googtrans` cookie.
+- UI is a fixed FAB (`.google-translate-fab` styles live in `app/globals.css`).
+
+## Analytics (Umami)
+
+- Script injected in `app/layout.tsx` only when both env vars are present.
+- Client helper: `lib/umami.ts` exports `track(event, data?)`.
+- Example usage: `components/tracked-social-link.tsx` emits `track("social_click", { platform })`.
+
+## Common tasks (“recipes”)
+
+### Add a new docs page
+
+1. Create an `.mdx` file under `content/docs/...` (match existing section structure).
+2. Add frontmatter:
+
+```yaml
+---
+title: "My Page"
+description: "One-line summary"
+---
 ```
 
-**How It Works**:
+3. Add it to the relevant section `meta.json` so it appears in nav (e.g. `content/docs/web/meta.json`).
+4. Visit `/docs/...` to confirm it renders.
 
-1. CMS saves content and calls this API endpoint
-2. API validates secret token
-3. API calls `revalidatePath()` for the specified path
-4. API calls `revalidateTag()` for cache tags
-5. Next request to that path fetches fresh data from CMS
+### Edit docs navigation / ordering
 
-**Security**:
+- Top-level sections: `content/docs/meta.json`
+- Each section has its own `meta.json` controlling `pages` order.
 
-- All requests must include valid `REVALIDATE_SECRET`
-- Token must match environment variable
-- Invalid requests return 401 Unauthorized
+### Publish a new blog post
 
-**Path Mapping**:
+1. Create/publish in Payload CMS (collection `posts`, `_status=published`).
+2. Ensure slug + content exist.
+3. Optionally call `POST /api/revalidate` with `collection: "posts"` to refresh `/`, `/blog`, and the post page immediately.
 
-- CMS path: `/posts/{slug}` → Portfolio path: `/blog/{slug}`
-- Collection updates also revalidate list pages (e.g., `/blog`)
+### Change Payload CMS host (staging/prod)
 
-See [CMS Revalidation Documentation](../5.1_cms/docs/REVALIDATION.md) for full details.
+- Set `PAYLOAD_CMS_URL` and rebuild/restart.
 
----
+### Update home/about copy or socials
 
-## Data Flow
+- Edit `data/portfolio-data.json`.
 
-### Architecture Diagram
+## Known mismatches vs older docs
 
-```mermaid
-graph TD
-    A[portfolio-data.json] -->|import| B[lib/data.ts]
-    C[lib/projects.ts] -->|export| D[Project Data]
-    E[Payload CMS API] -->|fetch| F[lib/blog.ts]
-
-    B -->|getPersonalInfo| G[EnhancedProfile]
-    B -->|getExperienceInfo| H[ExperienceCard]
-    B -->|getTechnicalSkillsInfo| I[Skills Section]
-    B -->|getNavItems| J[PortfolioHeader]
-    D -->|getProjectBySlug| K[Project Page]
-    D -->|getAllProjects| L[Project List]
-
-    F -->|getAllPosts| M[Blog Listing]
-    F -->|getPostBySlug| N[Blog Post]
-    F -->|serializeLexicalContent| N
-
-    G -->|render| O[Home Page]
-    H -->|render| O
-    I -->|render| O
-    J -->|render| O
-    K -->|render| P[Project Detail]
-    L -->|render| O
-    M -->|render| Q[Blog Page]
-    N -->|render| R[Post Page]
-
-    S[AnimationContext] -->|provide| T[AnimatedSection]
-    T -->|use| U[useIntersectionObserver]
-    U -->|trigger| V[Animations]
-```
-
-### Data Access Pattern
-
-1. **Data Source**: `data/portfolio-data.json` contains all portfolio information
-2. **Access Layer**: `lib/data.ts` provides typed helper functions:
-
-   - `getPersonalInfo()` - Personal information
-   - `getAboutInfo()` - Bio and languages
-   - `getExperienceInfo()` - Work history
-   - `getTechnicalSkillsInfo()` - Skills by category
-   - `getNavItems()` - Navigation structure
-   - `getMetaInfo()` - SEO metadata
-
-3. **Project Data**: `lib/projects.ts` manages project information:
-
-   - `getAllProjects()` - All projects array
-   - `getProjectBySlug(slug)` - Single project by slug
-   - `getRelatedProjects(slug, limit)` - Related projects
-
-4. **Component Consumption**: Components import and use these functions
-5. **Type Safety**: TypeScript interfaces ensure data structure consistency
-
----
-
-## Component Architecture
-
-### Core Components
-
-#### 1. EnhancedProfile (`components/enhanced-profile.tsx`)
-
-**Purpose**: Display personal information in a sticky sidebar
-
-**Features**:
-
-- Avatar with border styling
-- Name, title, and location
-- Badge display for key technologies
-- Social links integration
-- Tabbed interface (About/Contact)
-- Language proficiency bars
-- CV download button
-- Availability status indicator
-
-**Props**: None (uses data from `lib/data.ts`)
-
-#### 2. PortfolioHeader (`components/portfolio-header.tsx`)
-
-**Purpose**: Navigation header with scroll detection
-
-**Features**:
-
-- Sticky positioning
-- Background blur on scroll
-- Active section highlighting
-- Mobile menu overlay
-- Smooth scroll animations
-- Responsive breakpoints
-
-**State Management**:
-
-- `scrolled` - Scroll position state
-- `mobileMenuOpen` - Mobile menu visibility
-- `activeSection` - Current visible section
-
-#### 3. AnimatedSection (`components/animated-section.tsx`)
-
-**Purpose**: Wrapper component for scroll-triggered animations
-
-**Features**:
-
-- Intersection Observer integration
-- Multiple animation types
-- Configurable delay and intensity
-- Respects global animation settings
-- Performance optimized (freeze once visible)
-
-**Props**:
-
-- `animation`: Animation type
-- `delay`: Stagger delay multiplier
-- `threshold`: Intersection threshold
-- `rootMargin`: Observer margin
-- `id`: Section identifier
-- `forceAnimate`: Override settings
-
-#### 4. ExperienceCard (`components/experience-card.tsx`)
-
-**Purpose**: Display individual work experience entries
-
-**Features**:
-
-- Job title and company
-- Employment period badge
-- Description text
-- Key achievements list with icons
-- Technology stack badges
-- Responsive layout
-
-**Props**:
-
-- `title`, `company`, `period`, `description`
-- `achievements[]`, `technologies[]`
-
-#### 5. Project Page (`app/projects/[slug]/page.tsx`)
-
-**Purpose**: Dynamic project detail pages
-
-**Features**:
-
-- Cover image with overlay
-- Project description paragraphs
-- Feature list
-- Technology tags
-- Project gallery grid
-- Related projects sidebar
-- Live and GitHub links
-- Back navigation
-
-### Component Hierarchy
-
-```
-RootLayout
-├── AnimationProvider
-│   ├── ScrollProgressIndicator
-│   └── Home Page
-│       ├── PortfolioHeader
-│       ├── EnhancedProfile (sticky)
-│       ├── Skills Section
-│       │   └── AnimatedSection (multiple)
-│       └── Experience Section
-│           └── ExperienceCard (multiple)
-│               └── AnimatedSection
-└── Project Pages
-    ├── PortfolioHeader
-    ├── Project Header
-    ├── Project Content
-    └── Project Sidebar
-```
-
----
-
-## Animation System
-
-### Architecture
-
-The animation system uses a combination of React Context, Intersection Observer API, and CSS transitions to create performant, scroll-triggered animations.
-
-### Components
-
-#### 1. AnimationContext (`contexts/animation-context.tsx`)
-
-**Purpose**: Global animation settings management
-
-**Features**:
-
-- Persistent settings (localStorage)
-- Animation presets (subtle, moderate, playful, dramatic, none)
-- Customizable parameters:
-  - `duration`: Animation duration in ms
-  - `delay`: Base delay multiplier
-  - `easing`: CSS easing function
-  - `intensity`: Animation scale factor (0-1)
-  - `enabled`: Toggle animations on/off
-
-**API**:
-
-- `useAnimation()` - Hook to access settings
-- `updateSettings()` - Update individual settings
-- `applyPreset()` - Apply preset configuration
-
-#### 2. useIntersectionObserver (`hooks/use-intersection-observer.ts`)
-
-**Purpose**: React hook for Intersection Observer API
-
-**Features**:
-
-- Configurable threshold and rootMargin
-- Freeze once visible option
-- Automatic cleanup
-- Type-safe ref return
-
-**Returns**:
-
-- `ref`: Element reference
-- `isIntersecting`: Boolean intersection state
-
-#### 3. AnimatedSection (`components/animated-section.tsx`)
-
-**Purpose**: Animation wrapper component
-
-**Animation Types**:
-
-- `fade-up`: Fade in with upward translation
-- `fade-in`: Simple opacity fade
-- `slide-left`: Slide in from right
-- `slide-right`: Slide in from left
-- `zoom-in`: Scale up with fade
-- `bounce`: Upward bounce effect
-
-**Animation Flow**:
-
-1. Component mounts with initial hidden state
-2. Intersection Observer watches for visibility
-3. When intersecting, applies visible styles
-4. Animation respects global settings (duration, easing, intensity)
-5. Once visible, observer disconnects (performance)
-
-### Animation Presets
-
-| Preset   | Duration | Delay | Easing      | Intensity |
-| -------- | -------- | ----- | ----------- | --------- |
-| Subtle   | 500ms    | 50ms  | ease-out    | 0.3       |
-| Moderate | 700ms    | 100ms | ease-out    | 0.5       |
-| Playful  | 800ms    | 150ms | ease-in-out | 0.7       |
-| Dramatic | 1000ms   | 200ms | ease-in-out | 1.0       |
-| None     | -        | -     | -           | Disabled  |
-
----
-
-## Styling System
-
-### Tailwind CSS Configuration
-
-The application uses Tailwind CSS with custom configuration:
-
-**Color Palette**:
-
-- **Background**: Black (`bg-black`)
-- **Cards**: Zinc 900 with transparency (`bg-zinc-900/70`)
-- **Borders**: Zinc 800 (`border-zinc-800`)
-- **Accent**: Cyan 400 (`text-cyan-400`)
-- **Text**: White/Zinc scale for hierarchy
-
-**Design Tokens**:
-
-- Border radius: Custom radius variables
-- Spacing: Standard Tailwind scale
-- Typography: Inter font family
-- Shadows: Custom backdrop blur effects
-
-### Custom Styles
-
-**Global Styles** (`app/globals.css`):
-
-- CSS variables for theming
-- Base typography styles
-- Custom animations (accordion)
-
-**Component Styles**:
-
-- Utility-first approach with Tailwind
-- Conditional classes with `cn()` utility
-- Inline styles for dynamic values (animations)
-
-### Responsive Breakpoints
-
-- `sm`: 640px
-- `md`: 768px
-- `lg`: 1024px
-- `xl`: 1280px
-- `2xl`: 1400px
-
-### Design Patterns
-
-1. **Glass Morphism**: Backdrop blur with transparency
-2. **Gradient Accents**: Cyan to blue gradients
-3. **Grid Background**: Radial gradient dot pattern
-4. **Card-Based Layout**: Elevated cards with borders
-5. **Badge System**: Rounded pill badges for tags
-
----
-
-## Development Setup
-
-### Prerequisites
-
-- Node.js 18+ (or latest LTS)
-- pnpm (package manager)
-
-### Installation
-
-```bash
-# Install dependencies
-pnpm install
-
-# Run development server
-pnpm dev
-
-# Build for production
-pnpm build
-
-# Start production server
-pnpm start
-
-# Run linter
-pnpm lint
-```
-
-### Development Server
-
-- **URL**: http://localhost:3000
-- **Hot Reload**: Enabled
-- **TypeScript**: Strict mode enabled
-
-### Project Configuration
-
-**Next.js** (`next.config.mjs`):
-
-- Default configuration
-- Image optimization enabled
-- App Router enabled
-
-**TypeScript** (`tsconfig.json`):
-
-- Strict mode
-- Path aliases (`@/*` → `./*`)
-- Next.js plugin enabled
-
-**Tailwind** (`tailwind.config.ts`):
-
-- Content paths configured
-- Custom theme extensions
-- Animation plugin enabled
-
-### Code Structure Guidelines
-
-1. **Components**: Use functional components with TypeScript
-2. **Client Components**: Mark with `"use client"` when needed
-3. **Server Components**: Default for pages and layouts
-4. **Data Fetching**: Use helper functions from `lib/`
-5. **Styling**: Prefer Tailwind utilities over custom CSS
-6. **Animations**: Wrap content in `AnimatedSection` for scroll effects
-
----
-
-## Deployment
-
-### Build Process
-
-```bash
-# Create production build
-pnpm build
-
-# Output directory: .next/
-```
-
-### Build Output
-
-- Static pages (home, project pages)
-- Optimized images
-- Minified JavaScript and CSS
-- TypeScript compiled to JavaScript
-
-### Deployment Options
-
-**Vercel** (Recommended):
-
-- Automatic deployments from Git
-- Next.js optimized
-- Edge functions support
-- Environment variables configuration
-
-**Other Platforms**:
-
-- Netlify
-- AWS Amplify
-- Self-hosted (Node.js server)
-
-### Infrastructure
-
-**Payload CMS Server:**
-
-- **Domain**: `https://cms.morar.dev`
-- **Server**: Hetzner (77.42.17.21)
-- **API Endpoint**: `https://cms.morar.dev/api/posts`
-- **Local Development**: Requires SSH tunnel to MongoDB (see [DEPLOYMENT.md](./DEPLOYMENT.md))
-
-### Environment Variables
-
-**Required:**
-
-- None (Payload CMS URL defaults to `https://cms.morar.dev`)
-
-**Optional:**
-Add to `.env.local` to override defaults:
-
-```env
-# Payload CMS Configuration
-PAYLOAD_CMS_URL=https://cms.morar.dev
-
-# Future features
-NEXT_PUBLIC_ANALYTICS_ID=...
-```
-
-**For Local Payload CMS Development:**
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for SSH tunnel setup and local development workflow.
-
-**Revalidation API:**
-
-```env
-# Secret token for on-demand revalidation (must match CMS)
-REVALIDATE_SECRET=your-secret-token-here
-```
-
-### Performance Considerations
-
-1. **Image Optimization**: Next.js Image component with optimization
-2. **Code Splitting**: Automatic with App Router
-3. **Static Generation**: Pre-rendered pages where possible
-4. **Animation Performance**: CSS transforms (GPU accelerated)
-5. **Bundle Size**: Tree-shaking with ES modules
-
-### SEO
-
-**Metadata** (`app/layout.tsx`):
-
-- Title and description from `portfolio-data.json`
-- Open Graph tags (can be extended)
-- Semantic HTML structure
-
-**Improvements**:
-
-- Add sitemap.xml
-- Add robots.txt
-- Implement structured data (JSON-LD)
-- Add Open Graph images
-
----
-
-## Future Enhancements
-
-### Potential Features
-
-1. **Projects Section**: Uncomment and enhance project showcase on home
-2. **Blog Enhancements**:
-   - ✅ Payload CMS integration (completed)
-   - [ ] Related posts functionality
-   - [ ] Post categories and tags filtering
-   - [ ] RSS feed generation
-   - [ ] Search functionality
-3. **Contact Form**: Backend integration for contact form
-4. **Dark/Light Theme**: Theme switcher (next-themes already installed)
-5. **Analytics**: Integration with analytics service
-6. **Internationalization**: Multi-language support
-7. **Search**: Project and content search functionality
-
-### Technical Improvements
-
-1. **Testing**: Add unit and integration tests
-2. **E2E Testing**: Playwright or Cypress
-3. **Performance Monitoring**: Web Vitals tracking
-4. **Accessibility**: Enhanced ARIA labels and keyboard navigation
-5. **PWA**: Progressive Web App features
-6. **Offline Support**: Service worker implementation
-
----
-
-## Conclusion
-
-The Morar.dev portfolio application is a modern, performant, and well-structured Next.js application showcasing professional work. It demonstrates best practices in:
-
-- **Component Architecture**: Reusable, composable components
-- **Type Safety**: Full TypeScript implementation
-- **Performance**: Optimized animations and images
-- **User Experience**: Smooth animations and responsive design
-- **Code Organization**: Clear separation of concerns
-
-The application serves as both a portfolio showcase and a demonstration of modern React/Next.js development practices.
+- Old docs referenced **Next.js 14**, animation contexts, and a `/projects` feature set; those are **not present** in the current repo.
+- Current app is **Next.js 16 + React 19** and focuses on **Portfolio + Blog + Docs**.
