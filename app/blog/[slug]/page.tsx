@@ -34,17 +34,18 @@ export async function generateMetadata({
     };
   }
 
-  const excerpt = post.excerpt || post.title;
+  const seoTitle = post.meta?.title || post.title;
+  const excerpt = post.meta?.description || post.excerpt || post.title;
   const ogImage = post.cover?.url
     ? `${PAYLOAD_CMS_URL}${post.cover.url}`
     : "/og-image.png";
 
   return {
-    title: post.title,
+    title: seoTitle,
     description: excerpt,
     authors: post.authors.map((a) => ({ name: a.name })),
     openGraph: {
-      title: post.title,
+      title: seoTitle,
       description: excerpt,
       type: "article",
       publishedTime: post.publishedAt,
@@ -54,7 +55,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: post.title,
+      title: seoTitle,
       description: excerpt,
       images: [ogImage],
     },

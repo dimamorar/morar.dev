@@ -83,6 +83,10 @@ export interface BlogPost {
   readingTime: number; // in minutes
   excerpt?: string;
   cover?: CmsMedia;
+  meta?: {
+    title?: string;
+    description?: string;
+  };
 }
 
 // In dev mode, bypass cache to always get fresh data
@@ -354,6 +358,20 @@ async function transformPost(post: CmsPost): Promise<BlogPost> {
       ? `${autoExcerpt}...`
       : autoExcerpt);
 
+  const metaTitle =
+    typeof post.meta?.title === "string" ? post.meta.title.trim() : "";
+  const metaDescription =
+    typeof post.meta?.description === "string"
+      ? post.meta.description.trim()
+      : "";
+  const finalMeta =
+    metaTitle || metaDescription
+      ? {
+          ...(metaTitle ? { title: metaTitle } : {}),
+          ...(metaDescription ? { description: metaDescription } : {}),
+        }
+      : undefined;
+
   // Handle authors (can be populated objects or IDs)
   const authors: CmsAuthor[] =
     post.populatedAuthors ||
@@ -387,6 +405,7 @@ async function transformPost(post: CmsPost): Promise<BlogPost> {
     readingTime: readingTimeMinutes,
     excerpt: finalExcerpt,
     cover,
+    meta: finalMeta,
   };
 }
 

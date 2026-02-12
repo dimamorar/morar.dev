@@ -6,11 +6,14 @@ interface BlogPostSchemaProps {
 }
 
 export function BlogPostSchema({ post }: BlogPostSchemaProps) {
+  const schemaTitle = post.meta?.title || post.title;
+  const schemaDescription = post.meta?.description || post.excerpt;
+
   const schema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    headline: post.title,
-    description: post.excerpt,
+    headline: schemaTitle,
+    description: schemaDescription,
     author: {
       "@type": "Person",
       name: post.authors[0]?.name || "Dmytro Morar",
